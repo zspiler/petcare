@@ -1,3 +1,3 @@
 # petcare
 
-Run with `docker-compose -f docker-compose-dev.yml up`
+Run with `docker-compose up`
