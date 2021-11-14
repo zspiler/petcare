@@ -29,9 +29,36 @@
 				@input="$v.email.$touch()"
 				@blur="$v.email.$touch()"
 			/>
+
+			<v-text-field
+				v-model="password"
+				:error-messages="passwordErrors"
+				:append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
+				:type="showPasswords ? 'text' : 'password'"
+				name="password"
+				label="Password"
+				hint="Should be at least 8 characters"
+				counter
+				@click:append="showPasswords = !showPasswords"
+				@change="$v.password.$touch()"
+				@blur="$v.password.$touch()"
+			></v-text-field>
+
+			<v-text-field
+				v-model="repeatPassword"
+				:error-messages="repeatPasswordErrors"
+				:append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
+				:type="showPasswords ? 'text' : 'password'"
+				name="repeatPassword"
+				label="Confirm password"
+				@click:append="showPasswords = !showPasswords"
+				@change="$v.repeatPassword.$touch()"
+				@blur="$v.repeatPassword.$touch()"
+			></v-text-field>
+
 			<v-select
 				v-model="select"
-				:items="items"
+				:items="roles"
 				:error-messages="selectErrors"
 				label="Role"
 				required
@@ -45,6 +72,7 @@
 				:error-messages="profilePictureErrors"
 				prepend-icon="mdi-camera"
 				@change="onFileChange"
+				accept="image/*"
 			/>
 
 			<!-- Profile picture preview -->
@@ -62,7 +90,13 @@
 </template>
 
 <script>
-import { required, maxLength, email } from "vuelidate/lib/validators";
+import {
+	required,
+	maxLength,
+	email,
+	minLength,
+	sameAs,
+} from "vuelidate/lib/validators";
 
 function fileSizeValidation(file) {
 	if (!file) {
@@ -79,7 +113,7 @@ function fileTypeValidation(file) {
 }
 
 export default {
-	name: "Register",
+	name: "register",
 	validations: {
 		firstName: { required, maxLength: maxLength(20) },
 		lastName: { required, maxLength: maxLength(20) },
@@ -89,15 +123,20 @@ export default {
 			fileSizeValidation,
 			fileTypeValidation,
 		},
+		password: { required, minLength: minLength(8) },
+		repeatPassword: { sameAsPassword: sameAs("password") },
 	},
 	data: () => ({
 		firstName: "",
 		lastName: "",
 		email: "",
+		password: "",
+		repeatPassword: "",
 		select: null,
-		items: ["Pet sitter", "Owner"],
+		roles: ["Pet sitter", "Owner"],
 		profilePicture: null,
 		profilePictureUrl: "",
+		showPasswords: false,
 	}),
 	methods: {
 		submit() {
@@ -155,7 +194,21 @@ export default {
 
 			!this.$v.profilePicture.fileTypeValidation &&
 				errors.push("File type!");
-
+			return errors;
+		},
+		passwordErrors() {
+			const errors = [];
+			if (!this.$v.password.$dirty) return [];
+			!this.$v.password.required && errors.push("Password is required");
+			!this.$v.password.minLength &&
+				errors.push("Password should be at least 8 characters long");
+			return errors;
+		},
+		repeatPasswordErrors() {
+			const errors = [];
+			if (!this.$v.repeatPassword.$dirty) return [];
+			!this.$v.repeatPassword.sameAsPassword &&
+				errors.push("Passwords do not match");
 			return errors;
 		},
 	},
