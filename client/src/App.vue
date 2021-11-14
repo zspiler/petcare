@@ -1,24 +1,16 @@
 <template>
 	<v-app>
-		<v-app-bar app color="primary" dark>
+		<v-app-bar app color="blue-grey darken-1" dark>
 			<div class="d-flex align-center">
 				<v-img
-					alt="Vuetify Logo"
+					alt="Logo"
 					class="shrink mr-2"
 					contain
-					src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+					src="http://cdn.shopify.com/s/files/1/1061/1924/products/OMG_Cat_Emoji_ios10_grande.png?v=1571606092"
 					transition="scale-transition"
 					width="40"
 				/>
-
-				<v-img
-					alt="Vuetify Name"
-					class="shrink mt-1 hidden-sm-and-down"
-					contain
-					min-width="100"
-					src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-					width="100"
-				/>
+				<h1>PetCare</h1>
 			</div>
 
 			<v-spacer></v-spacer>
