@@ -84,6 +84,8 @@
 				:src="profilePictureUrl"
 			/>
 
+			<!-- TODO: location! -->
+
 			<v-btn class="mr-4" @click="submit"> submit </v-btn>
 		</form>
 	</div>
@@ -97,6 +99,7 @@ import {
 	minLength,
 	sameAs,
 } from "vuelidate/lib/validators";
+import axios from "axios";
 
 function fileSizeValidation(file) {
 	if (!file) {
@@ -140,7 +143,36 @@ export default {
 	}),
 	methods: {
 		submit() {
-			this.$v.$touch(); // preveri se enkrat i guess?
+			// Validate
+			this.$v.$touch();
+
+			if (this.$v.$error) {
+				return;
+			}
+
+			// Create FormData (necessary for file upload)
+			const formData = new FormData();
+			formData.set("profilePicture", this.profilePicture);
+			formData.set("firstName", this.firstName);
+			formData.set("lastName", this.lastName);
+			formData.set("email", this.email);
+			formData.set("password", this.password);
+			formData.set("role", this.role);
+
+			axios
+				.post("http://localhost:5000/api/auth/register", formData, {
+					headers: {
+						"Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
+					},
+				})
+				.then((res) => {
+					console.log("res: ");
+					console.log(res);
+				})
+				.catch((err) => {
+					console.log("Caught error: ");
+					console.log(err.response?.data?.message || err.message);
+				});
 		},
 		onFileChange(file) {
 			this.$v.profilePicture.$touch();
