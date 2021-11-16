@@ -2,10 +2,6 @@ const jwt = require("jsonwebtoken");
 
 module.exports = function (req, res, next) {
 	const token = req.headers["authorization"].replace(/^Bearer\s+/, "");
-
-	console.log("auth middleware... token: ");
-	console.log(token);
-
 	if (!token) {
 		return res.status(401).json({ message: "Unauthorized" });
 	}
