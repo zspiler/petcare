@@ -1,29 +1,24 @@
 import Vue from "vue";
 import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
-import VueRouter from "vue-router";
 import Vuelidate from "vuelidate";
+import axios from "axios";
 
-import Register from "./components/Register";
-import Login from "./components/Login";
+import router from "./router";
+import store from "./store";
+
+// configure axios
+axios.defaults.baseURL = "http://localhost:5000/";
+axios.defaults.headers.common["Authorization"] =
+	"Bearer " + localStorage.getItem("token");
 
 Vue.config.productionTip = false;
 
-Vue.use(VueRouter);
 Vue.use(Vuelidate);
-
-const routes = [
-	{ path: "/register", component: Register },
-	{ path: "/login", component: Login },
-];
-
-const router = new VueRouter({
-	routes,
-	mode: "history", // remove # from url
-});
 
 new Vue({
 	vuetify,
 	router,
+	store,
 	render: (h) => h(App),
 }).$mount("#app");

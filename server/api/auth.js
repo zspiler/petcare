@@ -2,10 +2,14 @@ const express = require("express");
 const { check, validationResult, body } = require("express-validator");
 const multer = require("multer");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const jwt_decode = require("jwt-decode");
 
 const router = express.Router();
 
 const User = require("../models/User");
+
+const auth = require("../middleware/auth");
 
 const upload = multer({
 	storage: multer.diskStorage({
@@ -35,8 +39,8 @@ const upload = multer({
 	},
 }).single("profilePicture");
 
-// POST api/auth/signup
-// Create new user and log them in
+// POST api/auth/register
+// Create new user
 
 router.post(
 	"/register",
@@ -51,7 +55,6 @@ router.post(
 		upload(req, res, async (uploadErr) => {
 			// file upload error
 			if (uploadErr) {
-				// return res.status(422).json({ message: uploadErr.message });
 				return res
 					.status(422)
 					.json({ message: "Error processing file" });
@@ -78,6 +81,7 @@ router.post(
 					.json({ message: "User with this email already exists" });
 			}
 
+			// Save new user
 			const user = new User({
 				firstName,
 				lastName,
@@ -88,16 +92,92 @@ router.post(
 			if (req.file) {
 				user.profilePicture = req.file.filename;
 			}
-
 			await user.save();
+
+			// Log user in
+			const token = jwt.sign(
+				{ email, id: user._id },
+				process.env.JWT_SECRET,
+				{
+					expiresIn: "24h",
+				}
+			);
 			res.json({
-				message: "User created",
-				firstName,
-				lastName,
+				message: "Account created",
+				token,
 				email,
+				id: user._id,
 			});
 		});
 	}
 );
+
+// POST api/auth/login
+// Log user in
+
+router.post(
+	"/login",
+	body("email").isEmail(),
+	body("password").isLength({ min: 8 }),
+	async (req, res) => {
+		const { email, password } = req.body;
+
+		// Validate
+		const validationErrors = validationResult(req.body);
+		if (!validationErrors.isEmpty()) {
+			console.log("validation errors");
+			console.log(validationErrors.array());
+			return res.status(400).json({
+				message: "Invalid parameters",
+				errors: validationErrors.array(),
+			});
+		}
+
+		// Check if user exists
+		const user = await User.findOne({ email });
+		if (!user) {
+			return res
+				.status(409)
+				.json({ message: "User with this email does not exist" });
+		}
+
+		const passwordValid = await bcrypt.compare(password, user.password);
+
+		if (passwordValid) {
+			// Create token
+			const token = jwt.sign(
+				{ email, id: user._id },
+				process.env.JWT_SECRET,
+				{
+					expiresIn: "24h",
+				}
+			);
+			res.json({
+				message: "Successfully logged in",
+				token,
+				email,
+				id: user._id,
+			});
+		} else {
+			return res.status(401).json({ message: "Wrong password" });
+		}
+	}
+);
+
+// POST api/auth/user
+// Get logged-in user's info
+
+router.get("/user", auth, async (req, res) => {
+	const user = await User.findOne({ email: req.email });
+	if (!user) {
+		return res.status(409).json({ message: "Could not find user" });
+	}
+	res.json({
+		message: "Successfully logged in",
+		token: req.token,
+		email: req.email,
+		id: user._id,
+	});
+});
 
 module.exports = router;

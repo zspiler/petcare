@@ -45,17 +45,35 @@ export default {
 	}),
 	methods: {
 		submit() {
-			this.$v.$touch(); // preveri se enkrat i guess?
+			this.$v.$touch();
+
+			if (this.$v.$error) {
+				return;
+			}
+
+			this.$store
+				.dispatch("login", {
+					email: this.email,
+					password: this.password,
+				})
+				.then(() => {
+					this.$router.push("/");
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 		},
 	},
 	computed: {
+		authStatus() {
+			return this.$store.getters.authStatus;
+		},
 		emailErrors() {
 			const errors = [];
 			if (!this.$v.email.$dirty) return [];
 			!this.$v.email.required && errors.push("E-mail is required");
 			return errors;
 		},
-
 		passwordErrors() {
 			const errors = [];
 			if (!this.$v.password.$dirty) return [];

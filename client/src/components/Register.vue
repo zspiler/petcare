@@ -99,7 +99,6 @@ import {
 	minLength,
 	sameAs,
 } from "vuelidate/lib/validators";
-import axios from "axios";
 
 function fileSizeValidation(file) {
 	if (!file) {
@@ -159,19 +158,13 @@ export default {
 			formData.set("password", this.password);
 			formData.set("role", this.role);
 
-			axios
-				.post("http://localhost:5000/api/auth/register", formData, {
-					headers: {
-						"Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
-					},
-				})
-				.then((res) => {
-					console.log("res: ");
-					console.log(res);
+			this.$store
+				.dispatch("register", formData)
+				.then(() => {
+					this.$router.push("/");
 				})
 				.catch((err) => {
-					console.log("Caught error: ");
-					console.log(err.response?.data?.message || err.message);
+					console.log(err);
 				});
 		},
 		onFileChange(file) {
