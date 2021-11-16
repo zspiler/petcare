@@ -7,6 +7,8 @@ import axios from "axios";
 import router from "./router";
 import store from "./store";
 
+import "@/assets/styles.css"; // global styles
+
 // configure axios
 axios.defaults.baseURL = "http://localhost:5000/";
 axios.defaults.headers.common["Authorization"] =

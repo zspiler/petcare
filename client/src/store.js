@@ -46,45 +46,52 @@ export default new Vuex.Store({
 				});
 		},
 		login({ commit }, payload) {
-			commit("authLoading");
-			axios
-				.post("/api/auth/login", {
-					email: payload.email,
-					password: payload.password,
-				})
-				.then((res) => {
-					localStorage.setItem("token", res.data.token);
-					commit("authSuccess", res.data);
-				})
-				.catch((err) => {
-					commit("authError");
-					console.log("Caught error: ");
-					console.log(err.response?.data?.message || err.message);
-					localStorage.removeItem("token");
-				});
+			// returns promise, so that you can catch error at 'dispatch'
+			return new Promise((resolve, reject) => {
+				commit("authLoading");
+				axios
+					.post("/api/auth/login", {
+						email: payload.email,
+						password: payload.password,
+					})
+					.then((res) => {
+						localStorage.setItem("token", res.data.token);
+						commit("authSuccess", res.data);
+						resolve(res);
+					})
+					.catch((err) => {
+						commit("authError");
+						console.log("Caught error: ");
+						console.log(err.response?.data?.message || err.message);
+						reject(err);
+					});
+			});
 		},
 		logout({ commit }) {
 			commit("logout");
 			localStorage.removeItem("token");
 		},
 		register({ commit }, payload) {
-			commit("authLoading");
-			axios
-				.post("/api/auth/register", payload, {
-					headers: {
-						"Content-Type": `multipart/form-data; boundary=${payload._boundary}`,
-					},
-				})
-				.then((res) => {
-					localStorage.setItem("token", res.data.token);
-					commit("authSuccess", res.data);
-				})
-				.catch((err) => {
-					commit("authError");
-					console.log("Caught error: ");
-					console.log(err.response?.data?.message || err.message);
-					localStorage.removeItem("token");
-				});
+			return new Promise((resolve, reject) => {
+				commit("authLoading");
+				axios
+					.post("/api/auth/register", payload, {
+						headers: {
+							"Content-Type": `multipart/form-data; boundary=${payload._boundary}`,
+						},
+					})
+					.then((res) => {
+						localStorage.setItem("token", res.data.token);
+						commit("authSuccess", res.data);
+						resolve(res);
+					})
+					.catch((err) => {
+						commit("authError");
+						console.log("Caught error: ");
+						console.log(err.response?.data?.message || err.message);
+						reject(err);
+					});
+			});
 		},
 	},
 	modules: {},

@@ -88,6 +88,7 @@
 
 			<v-btn class="mr-4" @click="submit"> submit </v-btn>
 		</form>
+		<ScaleLoader class="loader" v-if="authStatus === 'loading'" />
 	</div>
 </template>
 
@@ -99,6 +100,7 @@ import {
 	minLength,
 	sameAs,
 } from "vuelidate/lib/validators";
+import ScaleLoader from "vue-spinner/src/ScaleLoader.vue";
 
 function fileSizeValidation(file) {
 	if (!file) {
@@ -116,6 +118,7 @@ function fileTypeValidation(file) {
 
 export default {
 	name: "register",
+	components: { ScaleLoader },
 	validations: {
 		firstName: { required, maxLength: maxLength(20) },
 		lastName: { required, maxLength: maxLength(20) },
@@ -181,6 +184,10 @@ export default {
 		},
 	},
 	computed: {
+		authStatus() {
+			return this.$store.getters.authStatus;
+		},
+
 		selectErrors() {
 			const errors = [];
 			if (!this.$v.select.$dirty) return [];
@@ -240,7 +247,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .center {
 	position: absolute;
 	top: 25%;
@@ -248,7 +255,7 @@ export default {
 	margin-top: -50px;
 	margin-left: -50px;
 	transform: translate(-30%, -30%);
-	width: 30%;
+	width: 40%;
 	height: 30%;
 }
 </style>
