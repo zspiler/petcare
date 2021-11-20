@@ -4,6 +4,7 @@ const multer = require("multer");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const jwt_decode = require("jwt-decode");
+const parseGooglePlace = require("parse-google-place");
 
 const router = express.Router();
 
@@ -32,8 +33,7 @@ const upload = multer({
 			cb(null, true);
 		} else {
 			cb(null, false);
-			req.fileValidationError =
-				"Submitted file must be in PNG or JPG format";
+			req.fileValidationError = "Submitted file must be in PNG or JPG format";
 			return cb(new Error("Submitted file must be in PNG or JPG format"));
 		}
 	},
@@ -41,6 +41,12 @@ const upload = multer({
 
 // POST api/auth/register
 // Create new user
+var toType = function (obj) {
+	return {}.toString
+		.call(obj)
+		.match(/\s([a-zA-Z]+)/)[1]
+		.toLowerCase();
+};
 
 router.post(
 	"/register",
@@ -51,16 +57,17 @@ router.post(
 	body("email").isEmail(),
 	body("role").notEmpty(),
 	body("password").isLength({ min: 8 }),
+	body("location").notEmpty(),
 	async (req, res) => {
 		upload(req, res, async (uploadErr) => {
 			// file upload error
 			if (uploadErr) {
-				return res
-					.status(422)
-					.json({ message: "Error processing file" });
+				return res.status(422).json({ message: "Error processing file" });
 			}
 
 			const { firstName, lastName, email, password, role } = req.body;
+			// location obj needs to be parsed from string form
+			const location = JSON.parse(req.body.location);
 
 			// Validate
 			const validationErrors = validationResult(req.body);
@@ -73,12 +80,21 @@ router.post(
 				});
 			}
 
+			// Validate and parse location
+			const parsedLocation = parseGooglePlace({ address_components: location });
+			const country = parsedLocation.countryLong;
+			const city = parsedLocation.city;
+
+			if (!country || !city || !["Slovenia"].includes(country)) {
+				return res.status(400).json({
+					message: "Could not parse 'location' field",
+				});
+			}
+
 			// Check if user exists
 			const exists = await User.exists({ email });
 			if (exists) {
-				return res
-					.status(409)
-					.json({ message: "User with this email already exists" });
+				return res.status(409).json({ message: "User with this email already exists" });
 			}
 
 			// Save new user
@@ -87,6 +103,8 @@ router.post(
 				lastName,
 				email,
 				role,
+				country,
+				city,
 				password: await bcrypt.hash(password, await bcrypt.genSalt(10)),
 			});
 			if (req.file) {
@@ -95,13 +113,9 @@ router.post(
 			await user.save();
 
 			// Log user in
-			const token = jwt.sign(
-				{ email, id: user._id },
-				process.env.JWT_SECRET,
-				{
-					expiresIn: "24h",
-				}
-			);
+			const token = jwt.sign({ email, id: user._id }, process.env.JWT_SECRET, {
+				expiresIn: "24h",
+			});
 			res.json({
 				message: "Account created",
 				token,
@@ -136,22 +150,16 @@ router.post(
 		// Check if user exists
 		const user = await User.findOne({ email });
 		if (!user) {
-			return res
-				.status(409)
-				.json({ message: "User with this email does not exist" });
+			return res.status(409).json({ message: "User with this email does not exist" });
 		}
 
 		const passwordValid = await bcrypt.compare(password, user.password);
 
 		if (passwordValid) {
 			// Create token
-			const token = jwt.sign(
-				{ email, id: user._id },
-				process.env.JWT_SECRET,
-				{
-					expiresIn: "24h",
-				}
-			);
+			const token = jwt.sign({ email, id: user._id }, process.env.JWT_SECRET, {
+				expiresIn: "24h",
+			});
 			res.json({
 				message: "Successfully logged in",
 				token,

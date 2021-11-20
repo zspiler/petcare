@@ -77,14 +77,22 @@
 
 			<!-- Profile picture preview -->
 			<v-img
-				v-if="
-					profilePictureUrl.length &&
-					this.$v.profilePicture.fileTypeValidation
-				"
+				v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation"
 				:src="profilePictureUrl"
 			/>
 
-			<!-- TODO: location! -->
+			<!-- Location -->
+			<v-text-field
+				v-model="locationText"
+				label="Location"
+				required
+				id="autocomplete"
+				@change="this.validateLocation"
+				@blur="this.onLocationSearchBlur"
+			/>
+
+			<!-- ce dam kot zgoraj :error-messages breaka input field text -->
+			<p v-if="locationErrors" style="color: red">{{ locationErrors }}</p>
 
 			<v-btn class="mr-4" @click="submit"> submit </v-btn>
 		</form>
@@ -93,13 +101,7 @@
 </template>
 
 <script>
-import {
-	required,
-	maxLength,
-	email,
-	minLength,
-	sameAs,
-} from "vuelidate/lib/validators";
+import { required, maxLength, email, minLength, sameAs } from "vuelidate/lib/validators";
 import ScaleLoader from "vue-spinner/src/ScaleLoader.vue";
 
 function fileSizeValidation(file) {
@@ -130,6 +132,10 @@ export default {
 		},
 		password: { required, minLength: minLength(8) },
 		repeatPassword: { sameAsPassword: sameAs("password") },
+		location: { required },
+	},
+	mounted() {
+		this.initGooglePlacesSearch();
 	},
 	data: () => ({
 		firstName: "",
@@ -142,16 +148,19 @@ export default {
 		profilePicture: null,
 		profilePictureUrl: "",
 		showPasswords: false,
+		location: "",
+		locationChanged: false,
+		locationText: "",
+		locationErrors: "",
 	}),
 	methods: {
 		submit() {
 			// Validate
 			this.$v.$touch();
 
-			if (this.$v.$error) {
+			if (!this.validateLocation() || this.$v.$error) {
 				return;
 			}
-
 			// Create FormData (necessary for file upload)
 			const formData = new FormData();
 			formData.set("profilePicture", this.profilePicture);
@@ -160,6 +169,7 @@ export default {
 			formData.set("email", this.email);
 			formData.set("password", this.password);
 			formData.set("role", this.role);
+			formData.set("location", JSON.stringify(this.location.address_components));
 
 			this.$store
 				.dispatch("register", formData)
@@ -182,12 +192,50 @@ export default {
 				reader.readAsDataURL(file);
 			}
 		},
+
+		initGooglePlacesSearch() {
+			const options = {
+				fields: ["formatted_address", "geometry", "name", "address_component"],
+				types: ["(cities)"],
+				componentRestrictions: { country: ["si"] },
+			};
+			const autocomplete = new window.google.maps.places.Autocomplete(
+				document.getElementById("autocomplete"),
+				options
+			);
+
+			document.getElementById("autocomplete").placeholder = "";
+			autocomplete.addListener("place_changed", () => {
+				const place = autocomplete.getPlace();
+				this.locationChanged = true;
+				if (!place.geometry) {
+					// user presses enter
+					this.location = "";
+				} else {
+					this.location = place;
+				}
+				this.validateLocation();
+			});
+		},
+		validateLocation() {
+			if (this.location === "") {
+				this.locationErrors = "Location is required";
+				return false;
+			}
+			this.locationErrors = "";
+			return true;
+		},
+		onLocationSearchBlur() {
+			this.validateLocation();
+			if (this.location) {
+				this.locationText = this.location.name;
+			}
+		},
 	},
 	computed: {
 		authStatus() {
 			return this.$store.getters.authStatus;
 		},
-
 		selectErrors() {
 			const errors = [];
 			if (!this.$v.select.$dirty) return [];
@@ -199,8 +247,7 @@ export default {
 			if (!this.$v.firstName.$dirty) return [];
 			!this.$v.firstName.maxLength &&
 				errors.push("First name must be at most 20 characters long");
-			!this.$v.firstName.required &&
-				errors.push("First name is required.");
+			!this.$v.firstName.required && errors.push("First name is required.");
 			return errors;
 		},
 		lastNameErrors() {
@@ -221,11 +268,9 @@ export default {
 		profilePictureErrors() {
 			const errors = [];
 			if (!this.$v.profilePicture.$dirty) return [];
-			!this.$v.profilePicture.fileSizeValidation &&
-				errors.push("File size!");
+			!this.$v.profilePicture.fileSizeValidation && errors.push("File size!");
 
-			!this.$v.profilePicture.fileTypeValidation &&
-				errors.push("File type!");
+			!this.$v.profilePicture.fileTypeValidation && errors.push("File type!");
 			return errors;
 		},
 		passwordErrors() {
@@ -239,8 +284,7 @@ export default {
 		repeatPasswordErrors() {
 			const errors = [];
 			if (!this.$v.repeatPassword.$dirty) return [];
-			!this.$v.repeatPassword.sameAsPassword &&
-				errors.push("Passwords do not match");
+			!this.$v.repeatPassword.sameAsPassword && errors.push("Passwords do not match");
 			return errors;
 		},
 	},

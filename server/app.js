@@ -25,6 +25,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/auth", require("./api/auth"));
+app.use("/api/places", require("./api/places"));
 
 // app.use(express.static(__dirname + "/public"));
 
