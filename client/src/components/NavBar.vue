@@ -1,31 +1,50 @@
 <template>
-	<v-app-bar app color="blue-grey darken-1" dark>
+	<v-app-bar app color="white">
 		<router-link to="/" style="text-decoration: none; color: inherit">
 			<div class="d-flex align-center">
 				<v-img
 					alt="Logo"
 					class="shrink mr-2"
 					contain
-					src="http://cdn.shopify.com/s/files/1/1061/1924/products/OMG_Cat_Emoji_ios10_grande.png?v=1571606092"
+					src="../assets/petcareLogo.png"
 					transition="scale-transition"
-					width="40"
+					width="200"
 				/>
-				<h1>PetCare</h1>
 			</div>
 		</router-link>
 		<v-spacer></v-spacer>
-
-		<router-link to="/login" style="text-decoration: none; color: inherit">
-			<v-btn class="mr-5">Login</v-btn>
+		<router-link
+				to="/jobs"
+				style="text-decoration: none; color: inherit"
+			>
+			<v-btn class="mr-5" color="primary" outlined @click="logout">Find Job</v-btn>
 		</router-link>
 		<router-link
-			to="/register"
-			style="text-decoration: none; color: inherit"
-		>
-			<v-btn class="mr-5">Register</v-btn>
+				to="/about"
+				style="text-decoration: none; color: inherit"
+			>
+			<v-btn class="mr-5" color="primary" outlined @click="logout">About us</v-btn>
 		</router-link>
-
+		
+		<v-spacer></v-spacer>
+		<div v-if="!user.token">
+			<router-link to="/login" style="text-decoration: none; color: inherit">
+				<v-btn class="mr-5" color="primary" outlined>Login</v-btn>
+			</router-link>
+			<router-link
+				to="/register"
+				style="text-decoration: none; color: inherit"
+			>
+				<v-btn class="mr-5" color="primary" outlined>Register</v-btn>
+			</router-link>
+		</div>
 		<div v-if="user.token">
+			<router-link
+					to="/postJob"
+					style="text-decoration: none; color: inherit"
+				>
+				<v-btn class="mr-5" color="primary" outlined @click="logout">Post Job</v-btn>
+			</router-link>
 			<div style="display: inline">
 				{{ user.email }}
 			</div>
@@ -60,4 +79,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>
