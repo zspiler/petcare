@@ -2,6 +2,11 @@
 	<v-container fill-height >
 		<v-row justify="center" align="center">
 			<v-col  md="6" lg="4" >
+				<v-img
+					style="margin-left:-30px"
+					width=250
+					src="../assets/petcareLogo2.svg"
+				></v-img>
 				<h1>Log In</h1>
 				<form>
 					<v-text-field
