@@ -1,103 +1,121 @@
 <template>
-	<div class="center">
-		<h1>Create Account</h1>
-		<form>
-			<v-text-field
-				v-model="firstName"
-				:error-messages="firstNameErrors"
-				:counter="20"
-				label="First Name"
-				required
-				@input="$v.firstName.$touch()"
-				@blur="$v.firstName.$touch()"
-			/>
-			<v-text-field
-				v-model="lastName"
-				:error-messages="lastNameErrors"
-				:counter="20"
-				label="Last Name"
-				required
-				@input="$v.lastName.$touch()"
-				@blur="$v.lastName.$touch()"
-			/>
+	<v-container fill-height >
+		<v-row justify="center" align="center">
+			<v-col  md="6" lg="4" >
+				<h1>Create Account</h1>
+				<form>
+					<v-text-field
+						v-model="firstName"
+						:error-messages="firstNameErrors"
+						:counter="20"
+						label="First Name"
+						required
+						@input="$v.firstName.$touch()"
+						@blur="$v.firstName.$touch()"
+					/>
+					<v-text-field
+						v-model="lastName"
+						:error-messages="lastNameErrors"
+						:counter="20"
+						label="Last Name"
+						required
+						@input="$v.lastName.$touch()"
+						@blur="$v.lastName.$touch()"
+					/>
 
-			<v-text-field
-				v-model="email"
-				:error-messages="emailErrors"
-				label="E-mail"
-				required
-				@input="$v.email.$touch()"
-				@blur="$v.email.$touch()"
-			/>
+					<v-text-field
+						v-model="email"
+						:error-messages="emailErrors"
+						label="E-mail"
+						required
+						@input="$v.email.$touch()"
+						@blur="$v.email.$touch()"
+					/>
 
-			<v-text-field
-				v-model="password"
-				:error-messages="passwordErrors"
-				:append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
-				:type="showPasswords ? 'text' : 'password'"
-				name="password"
-				label="Password"
-				hint="Should be at least 8 characters"
-				counter
-				@click:append="showPasswords = !showPasswords"
-				@change="$v.password.$touch()"
-				@blur="$v.password.$touch()"
-			></v-text-field>
+					<v-text-field
+						v-model="password"
+						:error-messages="passwordErrors"
+						:append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
+						:type="showPasswords ? 'text' : 'password'"
+						name="password"
+						label="Password"
+						hint="Should be at least 8 characters"
+						counter
+						@click:append="showPasswords = !showPasswords"
+						@change="$v.password.$touch()"
+						@blur="$v.password.$touch()"
+					></v-text-field>
 
-			<v-text-field
-				v-model="repeatPassword"
-				:error-messages="repeatPasswordErrors"
-				:append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
-				:type="showPasswords ? 'text' : 'password'"
-				name="repeatPassword"
-				label="Confirm password"
-				@click:append="showPasswords = !showPasswords"
-				@change="$v.repeatPassword.$touch()"
-				@blur="$v.repeatPassword.$touch()"
-			></v-text-field>
+					<v-text-field
+						v-model="repeatPassword"
+						:error-messages="repeatPasswordErrors"
+						:append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
+						:type="showPasswords ? 'text' : 'password'"
+						name="repeatPassword"
+						label="Confirm password"
+						@click:append="showPasswords = !showPasswords"
+						@change="$v.repeatPassword.$touch()"
+						@blur="$v.repeatPassword.$touch()"
+					></v-text-field>
 
-			<v-select
-				v-model="select"
-				:items="roles"
-				:error-messages="selectErrors"
-				label="Role"
-				required
-				@change="$v.select.$touch()"
-				@blur="$v.select.$touch()"
-			/>
+					<v-select
+						v-model="select"
+						:items="roles"
+						:error-messages="selectErrors"
+						label="Role"
+						required
+						@change="$v.select.$touch()"
+						@blur="$v.select.$touch()"
+					/>
 
-			<v-file-input
-				v-model="profilePicture"
-				label="Profile picture (optional)"
-				:error-messages="profilePictureErrors"
-				prepend-icon="mdi-camera"
-				@change="onFileChange"
-				accept="image/*"
-			/>
+					<v-file-input
+						v-model="profilePicture"
+						label="Profile picture (optional)"
+						:error-messages="profilePictureErrors"
+						prepend-icon="mdi-camera"
+						@change="onFileChange"
+						accept="image/*"
+					/>
 
-			<!-- Profile picture preview -->
-			<v-img
-				v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation"
-				:src="profilePictureUrl"
-			/>
+					<!-- Profile picture preview -->
+					<v-img
+						v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation"
+						:src="profilePictureUrl"
+					/>
 
-			<!-- Location -->
-			<v-text-field
-				v-model="locationText"
-				label="Location"
-				required
-				id="autocomplete"
-				@change="this.validateLocation"
-				@blur="this.onLocationSearchBlur"
-			/>
+					<!-- Location -->
+					<v-text-field
+						v-model="locationText"
+						label="Location"
+						required
+						id="autocomplete"
+						@change="this.validateLocation"
+						@blur="this.onLocationSearchBlur"
+					/>
 
-			<!-- ce dam kot zgoraj :error-messages breaka input field text -->
-			<p v-if="locationErrors" style="color: red">{{ locationErrors }}</p>
-
-			<v-btn class="mr-4" @click="submit"> submit </v-btn>
-		</form>
+					<!-- ce dam kot zgoraj :error-messages breaka input field text -->
+					<p v-if="locationErrors" style="color: red">{{ locationErrors }}</p>
+					
+					<v-col justify="center" align="center">
+						<v-btn class="mr-4" @click="submit" color="primary"> Registration </v-btn>
+						<p style="margin-top: 20px">Do you alredy have account?</p>
+						<router-link
+							to="/login"
+							style="text-decoration: none; color: inherit"
+						>
+							<v-btn class="mr-4" color="primary" outlined> Login </v-btn>
+						</router-link>
+					</v-col>
+				</form>
+			</v-col>
+			<v-col md="6" lg="8" >
+				<v-img
+					src="../assets/loginDogs.png"
+				></v-img>
+			</v-col>
+		</v-row>
 		<ScaleLoader class="loader" v-if="authStatus === 'loading'" />
-	</div>
+	</v-container>
 </template>
 
 <script>

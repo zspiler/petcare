@@ -1,35 +1,54 @@
 <template>
-	<div>
-		<div class="center screen-height">
-			<h1>Log In</h1>
-			<form>
-				<v-text-field
-					v-model="email"
-					:error-messages="emailErrors"
-					label="E-mail"
-					required
-					@input="$v.email.$touch()"
-					@blur="$v.email.$touch()"
-				/>
+	<v-container fill-height >
+		<v-row justify="center" align="center">
+			<v-col  md="6" lg="4" >
+				<v-img
+					style="margin-left:-30px"
+					width=250
+					src="../assets/petcareLogo2.svg"
+				></v-img>
+				<h1>Log In</h1>
+				<form>
+					<v-text-field
+						v-model="email"
+						:error-messages="emailErrors"
+						label="E-mail"
+						required
+						@input="$v.email.$touch()"
+						@blur="$v.email.$touch()"
+					/>
 
-				<v-text-field
-					v-model="password"
-					:error-messages="passwordErrors"
-					:append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
-					:type="showPasswords ? 'text' : 'password'"
-					name="password"
-					label="Password"
-					counter
-					@click:append="showPasswords = !showPasswords"
-					@change="$v.password.$touch()"
-					@blur="$v.password.$touch()"
-				></v-text-field>
+					<v-text-field
+						v-model="password"
+						:error-messages="passwordErrors"
+						:append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
+						:type="showPasswords ? 'text' : 'password'"
+						name="password"
+						label="Password"
+						counter
+						@click:append="showPasswords = !showPasswords"
+						@change="$v.password.$touch()"
+						@blur="$v.password.$touch()"
+					></v-text-field>
 
-				<v-btn class="mr-4" @click="submit"> submit </v-btn>
-			</form>
-		</div>
+					<v-btn class="mr-4" @click="submit" color="primary"> Login </v-btn>
+					<router-link
+						to="/register"
+						style="text-decoration: none; color: inherit"
+					>
+						<v-btn class="mr-4" color="primary" outlined> Register </v-btn>
+					</router-link>
+				</form>
+				
+			</v-col>
+			<v-col md="6" lg="8" >
+				<v-img
+					src="../assets/loginDogs.png"
+				></v-img>
+			</v-col>
+		</v-row>
 		<ScaleLoader class="loader" v-if="authStatus === 'loading'" />
-	</div>
+	</v-container>
 </template>
 
 <script>
