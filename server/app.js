@@ -12,7 +12,7 @@ app.use(express.json());
 // Connect to database
 (async function () {
 	try {
-		await mongoose.connect("mongodb://database:27017");
+		await mongoose.connect(process.env.DB_URL);
 		console.log("connected to database");
 	} catch (err) {
 		console.error(err.message);
