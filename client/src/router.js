@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 import ProtectedExample from "./components/ProtectedExample";
 import About from "./components/About";
+import UserPage from "./components/UserPage";
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,7 @@ const routes = [
 	{ path: "/register", component: Register },
 	{ path: "/login", component: Login },
 	{ path: "/about", component: About },
+	{ path: "/user", component: UserPage },
 	// exaple of route that requires authentication
 	{
 		path: "/protected-example",

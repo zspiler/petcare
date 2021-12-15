@@ -14,13 +14,14 @@ const auth = require("../middleware/auth");
 
 const upload = multer({
 	storage: multer.diskStorage({
-		destination: function (_, _, cb) {
-			cb(null, `${__dirname}/../public/profile_pictures`);
-		},
-		filename: function (_, file, cb) {
-			cb(null, file.fieldname + "-" + Date.now());
-		},
-	}),
+        destination: function (_, _, cb) {
+            cb(null, `${__dirname}/../public/profile_pictures`);
+        },
+        filename: function (_, file, cb) {
+            let ext = file.mimetype.split("/");
+            cb(null, `${file.fieldname}-${Date.now()}.${ext[ext.length - 1]}`);
+        },
+    }),
 	limits: {
 		fileSize: 10000000, // 10 MB limit
 	},
@@ -163,8 +164,7 @@ router.post(
 			res.json({
 				message: "Successfully logged in",
 				token,
-				email,
-				id: user._id,
+				user: user,
 			});
 		} else {
 			return res.status(401).json({ message: "Wrong password" });
@@ -183,8 +183,7 @@ router.get("/user", auth, async (req, res) => {
 	res.json({
 		message: "Successfully logged in",
 		token: req.token,
-		email: req.email,
-		id: user._id,
+		user: user,
 	});
 });
 

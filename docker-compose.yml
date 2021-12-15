@@ -14,11 +14,11 @@ services:
             - ./client/src:/usr/src/app/src
         environment: 
             - CHOKIDAR_USEPOLLING=true
-    database:
-        image: "mongo:4.2"
-        ports:
-            - "27017:27017"
-        volumes:
-            - mongo_data:/data/db
+    # database:
+    #     image: "mongo:4.2"
+    #     ports:
+    #         - "27017:27017"
+    #     volumes:
+    #         - mongo_data:/data/db
 volumes:
     mongo_data:

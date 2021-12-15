@@ -12,7 +12,7 @@ app.use(express.json());
 // Connect to database
 (async function () {
 	try {
-		await mongoose.connect("mongodb://database:27017");
+		await mongoose.connect(process.env.DB_URL);
 		console.log("connected to database");
 	} catch (err) {
 		console.error(err.message);
@@ -27,7 +27,7 @@ app.use(cors());
 app.use("/api/auth", require("./api/auth"));
 app.use("/api/places", require("./api/places"));
 
-// app.use(express.static(__dirname + "/public"));
+app.use("/img", express.static(__dirname + "/public/profile_pictures"));
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server listening on port ${port}`));
