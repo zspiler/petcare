@@ -1,14 +1,12 @@
 <template>
-    <p>user page</p>
+  <p>Not implemented...</p>
 </template>
-
 
 <script>
 export default {
-    name: "UserPage"
+    name: "AboutForm",
 }
 </script>
-
 
 <style>
 

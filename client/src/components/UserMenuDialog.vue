@@ -7,9 +7,8 @@
         <!-- activator -->
         <template v-slot:activator="{ on }">
             <v-img
-                class="img-circle, img-animated" 
+                class="img-circle img-animated" 
                 v-on="on"
-                lazy-src="../assets/profile_default.png"
                 alt="profilka.."
                 max-height="50"
                 max-width="50"
@@ -43,26 +42,25 @@
             
 
             <v-card-actions>
-			<v-container class="mycontainer" style="margin-bottom:0px;padding-bottom:0px">
-                 <v-row class="justify-center mb-3 mt-2">
-                    <v-btn  @click="myProfile">My Profile</v-btn>
-                </v-row>
-                <v-row class="justify-center mb-3 mt-10">
-                    <v-btn  @click="logout">Logout</v-btn>
-                </v-row>
-                <v-row class="mb-2 mt-10" justify="end">
-                    <v-btn
-                        color="primary"
-                        text
-                        @click="dialog = false"
-                    >
-                        Close
-                    </v-btn>
-                </v-row>
-            </v-container>
+                <v-container class="mycontainer" style="margin-bottom:0px;padding-bottom:0px">
+                    <v-row class="justify-center mb-3 mt-2">
+                        <v-btn  @click="myProfile">My Profile</v-btn>
+                    </v-row>
+                    <v-row class="justify-center mb-3 mt-10">
+                        <v-btn  @click="logout">Logout</v-btn>
+                    </v-row>
+                    <v-row class="mb-2 mt-10" justify="end">
+                        <v-btn
+                            color="primary"
+                            text
+                            @click="dialog = false"
+                        >
+                            Close
+                        </v-btn>
+                    </v-row>
+                </v-container>
 
-
-            <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -75,7 +73,6 @@ export default {
     data: () => ({
 		dialog: "",
         on: "",
-        animImgClasses: ["img-circle"] //classes for image animation
 	}),
     computed: {
 		user() {
@@ -132,7 +129,8 @@ export default {
     transition: all .15s ease-in-out;
 }
 .img-animated:hover {
-    transform: scale(1.1); 
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #ccc;
 }
 /*
 .img-animated:hover {
