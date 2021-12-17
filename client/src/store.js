@@ -8,6 +8,7 @@ export default new Vuex.Store({
 	state: {
 		user: {},
 		status: null,
+		serverBaseUrl: "http://localhost:5000/"
 	},
 	mutations: {
 		authLoading(state) {
@@ -15,11 +16,16 @@ export default new Vuex.Store({
 		},
 		authSuccess(state, data) {
 			state.status = "success";
-			state.user = {
-				token: data.token,
-				email: data.email,
-				id: data.id,
-			};
+			console.log("authSuccess", data);
+			state.user = { ...data.user, token: data.token }
+			console.log("constructed user: ", { ...data.user, token: data.token });
+			// state.user.token = data.token; 
+			// {
+			// 	token: data.token,
+			// 	email: data.email,
+			// 	id: data.id,
+			// };
+			console.log("user state: ", state.user);
 		},
 		authError(state) {
 			state.status = "error";

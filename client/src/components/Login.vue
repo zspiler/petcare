@@ -63,8 +63,8 @@ export default {
 		password: { required },
 	},
 	data: () => ({
-		email: "",
-		password: "",
+		email: "janvrbinc@gmail.com",
+		password: "janvrbinc",
 		showPasswords: false,
 	}),
 	methods: {
