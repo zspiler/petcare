@@ -20,7 +20,7 @@
 			<v-btn class="mr-5" color="primary" outlined>Find Job</v-btn>
 		</router-link>
 		<router-link v-if="user.token"
-			to="/postJob"
+			to="/postJob1"
 			style="text-decoration: none; color: inherit"
 		>
 			<v-btn class="mr-5" color="primary" outlined >Post Job</v-btn>

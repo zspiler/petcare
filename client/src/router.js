@@ -10,6 +10,9 @@ import NotFound from "./components/NotFound";
 import ProtectedExample from "./components/ProtectedExample";
 import About from "./components/About";
 import UserPage from "./components/userPage/UserPage";
+import PostJob1 from "./components/postJob/postJob1";
+import PostJob2 from "./components/postJob/postJob2";
+import PostJob3 from "./components/postJob/postJob3";
 
 Vue.use(VueRouter);
 
@@ -24,6 +27,27 @@ const routes = [
 		meta: {
 			protected: true,
 		} 
+	},
+	{ 
+		path: "/postJob1", 
+		component: PostJob1,
+		meta:{
+			protected: true
+		}
+	},
+	{ 
+		path: "/postJob2", 
+		component: PostJob2,
+		meta:{
+			protected: true
+		}
+	},
+	{ 
+		path: "/postJob3", 
+		component: PostJob3,
+		meta:{
+			protected: true
+		}
 	},
 	// exaple of route that requires authentication
 	{
