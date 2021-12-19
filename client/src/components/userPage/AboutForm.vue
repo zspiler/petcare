@@ -35,32 +35,6 @@
                             @blur="$v.email.$touch()"
                         />
 
-                        <!-- <v-text-field
-                            v-model="password"
-                            :error-messages="passwordErrors"
-                            :append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
-                            :type="showPasswords ? 'text' : 'password'"
-                            name="password"
-                            label="Password"
-                            hint="Should be at least 8 characters"
-                            counter
-                            @click:append="showPasswords = !showPasswords"
-                            @change="$v.password.$touch()"
-                            @blur="$v.password.$touch()"
-                        ></v-text-field>
-
-                        <v-text-field
-                            v-model="repeatPassword"
-                            :error-messages="repeatPasswordErrors"
-                            :append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
-                            :type="showPasswords ? 'text' : 'password'"
-                            name="repeatPassword"
-                            label="Confirm password"
-                            @click:append="showPasswords = !showPasswords"
-                            @change="$v.repeatPassword.$touch()"
-                            @blur="$v.repeatPassword.$touch()"
-                        ></v-text-field> -->
-
                     </v-col>
                     <v-col cols="12" md="6" lg="4">
                         <v-select
@@ -95,11 +69,12 @@
                     <v-col cols="12" md="12" lg="2" justify="center" align="center" 
                         v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation">
                         <!-- Profile picture preview -->
-                        <v-row justify="center" align="center" style="height:100%"> 
-
-                        <v-img
-                            max-height="100%"
-                            max-width="100%"
+                        <v-row justify="center" align="center" style="height:100%">
+                        
+						<v-img
+							max-width="200px"
+                            width="100%"
+							height="auto"
                             v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation"
                             :src="profilePictureUrl"
                         />
@@ -156,23 +131,28 @@ export default {
 	},
 	mounted() {
 		this.initGooglePlacesSearch();
-        
-        document.onreadystatechange = () => { 
-            if (document.readyState == "complete") { 
-                //init form values
-                console.log("loadedUser: ", this.user);
-                if(this.user)
-                {
-                    var u = this.user;
+	},
+	created() {
+		//init form values
+		console.log("createdEvent User: ", this.user);
+		if(this.user)
+		{
+			var u = { ...this.user };
 
-                    this.firstName = u.firstName;
-                    this.lastName = u.lastName;
-                    this.email = u.email;
-                    this.select = u.role;
-                    // this.location = u.location; 
-                }
-            } 
-        }
+			this.firstName = u.firstName;
+			this.lastName = u.lastName;
+			this.email = u.email;
+			this.select = u.role;
+			this.locationText = u.city + ', ' + u.country
+			this.location = {
+				name: u.city,
+				address_components: {
+					city: u.city,
+					country: u.country
+				}
+			}
+			// this.location = u.location; 
+		}
 	},
 	data: () => ({
 		firstName: "",
