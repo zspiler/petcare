@@ -19,12 +19,13 @@
                                     alt="Animal's image"
                                     height="100"
                                     max-width="100"
-                                    src="../../assets/mucekPupa.png"
+                                    :src="item.avatar"
                                 />
+                                <b>{{item.title}}</b>
                             </v-col>
                             <v-col md="8">
                                 <v-textarea
-                                    v-model="item.title"
+                                    v-model="item.description"
                                     height=100
                                 />
                             </v-col>
@@ -38,6 +39,11 @@
                     <form>
                         <v-row>
                             <v-col>
+                                <p style="marginTop:20px; marginBottom:-30px;">Check if your data is correct.</p>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
                                 <v-text-field
                                     label="Name"
                                     required
@@ -48,6 +54,11 @@
                                     label="Surname"
                                     required
                                 />
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <p style="marginTop:20px; marginBottom:-30px;">Residence information will only be visible once you have confirmed your service person.</p>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -130,12 +141,10 @@
                                     label="Price per day"
                                     required
                                 />
-                            </v-col>
-                            <v-col>
-                                <p><b>150</b></p>
+                                
                             </v-col>
                         </v-row>
-                        
+                        <p>Total: <b>150 €</b></p>
                          <v-btn class="mr-4" color="primary" outlined>Post job</v-btn>
                     </form>
             </v-col>
@@ -159,28 +168,23 @@
       items: [
         {
           avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          title: 'Brunch this weekend?',
-          subtitle: `<span class="text--primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
+          title: 'Mucek pupa',
+          description: `Spucaj kletko, nalij vodo`,
         },
-        {
+         {
           avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-          subtitle: `<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`,
+          title: 'Mucek pupa',
+          description: `Spucaj kletko, nalij vodo`,
         },
         {
           avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          title: 'Oui oui',
-          subtitle: '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
+          title: 'Mucek pupa',
+          description: `Spucaj kletko, nalij vodo`,
         },
         {
           avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-          title: 'Birthday gift',
-          subtitle: '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
-        },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Recipe to try',
-          subtitle: '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
+          title: 'Mucek pupa',
+          description: `Spucaj kletko, nalij vodo`,
         },
       ],
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
