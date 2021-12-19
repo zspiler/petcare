@@ -9,11 +9,11 @@
 		<v-row justify="space-around" style="height:70%" class="pt-10">
 			<v-col  cols="6" md="2" align="center">
                  <v-img
-                    style="margin-top:-200px; margin-bottom:55px"
+                    style="margin-top:-200px; margin-bottom:72px"
                     class="img-circle" 
                     alt="profilka.."
-                    max-height="150"
-                    max-width="150"
+                    max-height="130"
+                    max-width="130"
                     :src="getProfilePicUrl()"
                 ></v-img>
 				<v-container class="border-container">

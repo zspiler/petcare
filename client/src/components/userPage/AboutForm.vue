@@ -25,7 +25,6 @@
 							@input="$v.lastName.$touch()"
 							@blur="$v.lastName.$touch()"
 						/>
-
 						<v-text-field
 							v-model="email"
 							:error-messages="emailErrors"
@@ -45,7 +44,7 @@
 							@change="$v.selectedRole.$touch()"
 							@blur="$v.selectedRole.$touch()"
 						/>
-
+           
 						<!-- Location -->
 						<v-text-field
 							v-model="locationText"
@@ -97,6 +96,8 @@
 				</v-row>
 				<v-row justify="center">
 					<!-- ce dam kot zgoraj :error-messages breaka input field text -->
+          
+          
 					<p v-if="locationErrors" style="color: red">{{ locationErrors }}</p>
 				</v-row>
 				<v-row>
