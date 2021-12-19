@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import store from "./store";
+// import store from "./store";
 
 import Home from "./components/Home";
 import Register from "./components/Register";
@@ -28,7 +28,7 @@ const routes = [
 		component: UserPage,
 		meta: {
 			protected: true,
-		} 
+		},
 	},
 	{ 
 		path: "/postJob1", 
@@ -70,10 +70,16 @@ const router = new VueRouter({
 // Protected routes
 router.beforeEach((to, from, next) => {
 	if (to.matched.some((record) => record.meta.protected)) {
-		if (store.getters.user.token) {
+		// TODO: non-stupid fix?
+		if (localStorage.getItem("token") !== null) {
 			next();
 			return;
 		}
+		// if (store.getters.user.token) {
+		// 	console.log("next");
+		// 	next();
+		// 	return;
+		// }
 		next("/login");
 	} else {
 		next();

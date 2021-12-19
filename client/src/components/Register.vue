@@ -1,7 +1,7 @@
 <template>
-	<v-container fill-height >
+	<v-container fill-height>
 		<v-row justify="center" align="center">
-			<v-col  md="6" lg="4" >
+			<v-col md="6" lg="4">
 				<h1>Create Account</h1>
 				<form>
 					<v-text-field
@@ -59,13 +59,13 @@
 					></v-text-field>
 
 					<v-select
-						v-model="select"
+						v-model="selectedRole"
 						:items="roles"
-						:error-messages="selectErrors"
+						:error-messages="selectedRoleErrors"
 						label="Role"
 						required
-						@change="$v.select.$touch()"
-						@blur="$v.select.$touch()"
+						@change="$v.selectedRole.$touch()"
+						@blur="$v.selectedRole.$touch()"
 					/>
 
 					<v-file-input
@@ -95,23 +95,18 @@
 
 					<!-- ce dam kot zgoraj :error-messages breaka input field text -->
 					<p v-if="locationErrors" style="color: red">{{ locationErrors }}</p>
-					
+
 					<v-col justify="center" align="center">
-						<v-btn class="mr-4" @click="submit" color="primary"> Registration </v-btn>
+						<v-btn class="mr-4" @click="submit" color="primary"> Register </v-btn>
 						<p style="margin-top: 20px">Do you alredy have account?</p>
-						<router-link
-							to="/login"
-							style="text-decoration: none; color: inherit"
-						>
+						<router-link to="/login" style="text-decoration: none; color: inherit">
 							<v-btn class="mr-4" color="primary" outlined> Login </v-btn>
 						</router-link>
 					</v-col>
 				</form>
 			</v-col>
-			<v-col md="6" lg="8" >
-				<v-img
-					src="../assets/loginDogs.png"
-				></v-img>
+			<v-col md="6" lg="8">
+				<v-img src="../assets/loginDogs.png"></v-img>
 			</v-col>
 		</v-row>
 		<ScaleLoader class="loader" v-if="authStatus === 'loading'" />
@@ -143,7 +138,7 @@ export default {
 		firstName: { required, maxLength: maxLength(20) },
 		lastName: { required, maxLength: maxLength(20) },
 		email: { required, email },
-		select: { required },
+		selectedRole: { required },
 		profilePicture: {
 			fileSizeValidation,
 			fileTypeValidation,
@@ -161,7 +156,7 @@ export default {
 		email: "",
 		password: "",
 		repeatPassword: "",
-		select: null,
+		selectedRole: null,
 		roles: ["Pet sitter", "Owner"],
 		profilePicture: null,
 		profilePictureUrl: "",
@@ -186,7 +181,7 @@ export default {
 			formData.set("lastName", this.lastName);
 			formData.set("email", this.email);
 			formData.set("password", this.password);
-			formData.set("role", this.role);
+			formData.set("role", this.selectedRole);
 			formData.set("location", JSON.stringify(this.location.address_components));
 
 			this.$store
@@ -254,10 +249,10 @@ export default {
 		authStatus() {
 			return this.$store.getters.authStatus;
 		},
-		selectErrors() {
+		selectedRoleErrors() {
 			const errors = [];
-			if (!this.$v.select.$dirty) return [];
-			!this.$v.select.required && errors.push("Please select a role");
+			if (!this.$v.selectedRole.$dirty) return [];
+			!this.$v.selectedRole.required && errors.push("Please select a role");
 			return errors;
 		},
 		firstNameErrors() {

@@ -1,103 +1,119 @@
 <template>
-    <v-container fluid>
-        <v-row justify="center" align="center">
-            <h1>Edit Account</h1>
-        </v-row>
-        <v-row justify="space-around">
-            <form style="width:90%; margin-top:40px" >
-                <v-row justify="space-around">
-                    <v-col cols="12" md="6" lg="4">
-                        <v-text-field
-                            v-model="firstName"
-                            :error-messages="firstNameErrors"
-                            :counter="20"
-                            label="First Name"
-                            required
-                            @input="$v.firstName.$touch()"
-                            @blur="$v.firstName.$touch()"
-                        />
-                        <v-text-field
-                            v-model="lastName"
-                            :error-messages="lastNameErrors"
-                            :counter="20"
-                            label="Last Name"
-                            required
-                            @input="$v.lastName.$touch()"
-                            @blur="$v.lastName.$touch()"
-                        />
+	<v-container fluid>
+		<v-row justify="center" align="center">
+			<h1>Edit Account</h1>
+		</v-row>
+		<v-row justify="space-around">
+			<form style="width: 90%; margin-top: 40px">
+				<v-row justify="space-around">
+					<v-col cols="12" md="6" lg="4">
+						<v-text-field
+							v-model="firstName"
+							:error-messages="firstNameErrors"
+							:counter="20"
+							label="First Name"
+							required
+							@input="$v.firstName.$touch()"
+							@blur="$v.firstName.$touch()"
+						/>
+						<v-text-field
+							v-model="lastName"
+							:error-messages="lastNameErrors"
+							:counter="20"
+							label="Last Name"
+							required
+							@input="$v.lastName.$touch()"
+							@blur="$v.lastName.$touch()"
+						/>
+						<v-text-field
+							v-model="email"
+							:error-messages="emailErrors"
+							label="E-mail"
+							required
+							@input="$v.email.$touch()"
+							@blur="$v.email.$touch()"
+						/>
+					</v-col>
+					<v-col cols="12" md="6" lg="4">
+						<v-select
+							v-model="selectedRole"
+							:items="roles"
+							:error-messages="selectedRoleErrors"
+							label="Role"
+							required
+							@change="$v.selectedRole.$touch()"
+							@blur="$v.selectedRole.$touch()"
+						/>
+           
+						<!-- Location -->
+						<v-text-field
+							v-model="locationText"
+							label="Location"
+							required
+							id="autocomplete"
+							@change="this.validateLocation"
+							@blur="this.onLocationSearchBlur"
+						/>
 
-                        <v-text-field
-                            v-model="email"
-                            :error-messages="emailErrors"
-                            label="E-mail"
-                            required
-                            @input="$v.email.$touch()"
-                            @blur="$v.email.$touch()"
-                        />
-
-                    </v-col>
-                    <v-col cols="12" md="6" lg="4">
-                        <v-select
-                            v-model="select"
-                            :items="roles"
-                            :error-messages="selectErrors"
-                            label="Role"
-                            required
-                            @change="$v.select.$touch()"
-                            @blur="$v.select.$touch()"
-                        />
-
-                         <!-- Location -->
-                        <v-text-field
-                            v-model="locationText"
-                            label="Location"
-                            required
-                            id="autocomplete"
-                            @change="this.validateLocation"
-                            @blur="this.onLocationSearchBlur"
-                        />
-
-                        <v-file-input
-                            v-model="profilePicture"
-                            label="Profile picture (optional)"
-                            :error-messages="profilePictureErrors"
-                            prepend-icon="mdi-camera"
-                            @change="onFileChange"
-                            accept="image/*"
-                        />
-                    </v-col>
-                    <v-col cols="12" md="12" lg="2" justify="center" align="center" 
-                        v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation">
-                        <!-- Profile picture preview -->
-                        <v-row justify="center" align="center" style="height:100%">
-                        
-						<v-img
-							max-width="200px"
-                            width="100%"
-							height="auto"
-                            v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation"
-                            :src="profilePictureUrl"
-                        />
-                        </v-row>
-                    </v-col>
-                </v-row>
-                <v-row justify="center">
-                    <!-- ce dam kot zgoraj :error-messages breaka input field text -->
+						<v-file-input
+							v-model="profilePicture"
+							label="Profile picture (optional)"
+							:error-messages="profilePictureErrors"
+							prepend-icon="mdi-camera"
+							@change="onFileChange"
+							accept="image/*"
+						/>
+					</v-col>
+					<v-col
+						cols="12"
+						md="12"
+						lg="2"
+						justify="center"
+						align="center"
+						v-if="
+							profilePictureUrl &&
+							profilePictureUrl.length &&
+							this.$v.profilePicture.fileTypeValidation
+						"
+					>
+						<!-- Profile picture preview -->
+						<v-row justify="center" align="center" style="height: 100%">
+							<v-img
+								max-height="100%"
+								max-width="100%"
+								v-if="
+									profilePictureUrl.length &&
+									this.$v.profilePicture.fileTypeValidation
+								"
+								:src="
+									(profilePictureUrl.startsWith('profilePic')
+										? `${this.$store.getters.serverBaseUrl}img/`
+										: ``) + profilePictureUrl
+								"
+							/>
+						</v-row>
+					</v-col>
+				</v-row>
+				<v-row justify="center">
+					<!-- ce dam kot zgoraj :error-messages breaka input field text -->
+          
+          
 					<p v-if="locationErrors" style="color: red">{{ locationErrors }}</p>
-                </v-row>
-                <v-row>
+				</v-row>
+				<v-row>
 					<v-col justify="center" align="center">
 						<v-btn class="mb-2" @click="submit" color="primary"> Save changes </v-btn>
 					</v-col>
-                </v-row>  
-            </form>
+				</v-row>
+			</form>
 		</v-row>
-    </v-container>
-
+	</v-container>
 </template>
 
 <script>
-import { required, maxLength, email, minLength, sameAs } from "vuelidate/lib/validators";
+import { required, maxLength, email } from "vuelidate/lib/validators";
+
+import axios from "axios";
 
 function fileSizeValidation(file) {
 	if (!file) {
@@ -115,62 +131,53 @@ function fileTypeValidation(file) {
 
 export default {
 	name: "AboutForm",
-	components: {  },
+	components: {},
 	validations: {
 		firstName: { required, maxLength: maxLength(20) },
 		lastName: { required, maxLength: maxLength(20) },
 		email: { required, email },
-		select: { required },
+		selectedRole: { required },
 		profilePicture: {
 			fileSizeValidation,
 			fileTypeValidation,
 		},
-		password: { required, minLength: minLength(8) },
-		repeatPassword: { sameAsPassword: sameAs("password") },
 		location: { required },
-	},
-	mounted() {
-		this.initGooglePlacesSearch();
-	},
-	created() {
-		//init form values
-		console.log("createdEvent User: ", this.user);
-		if(this.user)
-		{
-			var u = { ...this.user };
-
-			this.firstName = u.firstName;
-			this.lastName = u.lastName;
-			this.email = u.email;
-			this.select = u.role;
-			this.locationText = u.city + ', ' + u.country
-			this.location = {
-				name: u.city,
-				address_components: {
-					city: u.city,
-					country: u.country
-				}
-			}
-			// this.location = u.location; 
-		}
 	},
 	data: () => ({
 		firstName: "",
 		lastName: "",
 		email: "",
-		password: "",
-		repeatPassword: "",
-		select: null,
+		selectedRole: null,
 		roles: ["Pet sitter", "Owner"],
 		profilePicture: null,
 		profilePictureUrl: "",
-		showPasswords: false,
 		location: "",
 		locationChanged: false,
 		locationText: "",
 		locationErrors: "",
 	}),
+	mounted() {
+		if (this.$store.getters.user.email) {
+			this.fillUserData();
+			this.initGooglePlacesSearch();
+		}
+	},
+	watch: {
+		user() {
+			// Wait for user to be loaded
+			this.fillUserData();
+			this.initGooglePlacesSearch();
+		},
+	},
 	methods: {
+		fillUserData() {
+			this.firstName = this.user.firstName;
+			this.lastName = this.user.lastName;
+			this.email = this.user.email;
+			this.selectedRole = this.user.role;
+			this.locationText = this.user.city + ", " + this.user.country;
+			this.profilePictureUrl = this.user.profilePicture;
+		},
 		submit() {
 			// Validate
 			this.$v.$touch();
@@ -178,28 +185,35 @@ export default {
 			if (!this.validateLocation() || this.$v.$error) {
 				return;
 			}
-			// Create FormData (necessary for file upload)
+
+			const data = this.createFormData();
+			axios
+				.put("/api/auth/user", data, {
+					headers: {
+						"Content-Type": `multipart/form-data; boundary=${data._boundary}`,
+					},
+				})
+				.then(() => {
+					// ponovno nalozi userja
+					this.$store.dispatch("getUser");
+					this.$router.push("/");
+				})
+				.catch((err) => {
+					console.log("Caught error: ");
+					console.log(err.response?.data?.message || err.message);
+				});
+		},
+		createFormData() {
 			const formData = new FormData();
-            if(this.profilePictureUrl.length)
-            {
-                formData.set("profilePicture", this.profilePicture);
-            }
-            formData.set("firstName", this.firstName);
+			if (this.profilePictureUrl.length) {
+				formData.set("profilePicture", this.profilePicture);
+			}
+			formData.set("firstName", this.firstName);
 			formData.set("lastName", this.lastName);
 			formData.set("email", this.email);
-			// formData.set("password", this.password);
-			formData.set("role", this.role);
+			formData.set("role", this.selectedRole);
 			formData.set("location", JSON.stringify(this.location.address_components));
-
-            //TODO: updateUser namesto register
-			// this.$store
-			// 	.dispatch("register", formData)
-			// 	.then(() => {
-			// 		this.$router.push("/");
-			// 	})
-			// 	.catch((err) => {
-			// 		console.log(err);
-			// 	});
+			return formData;
 		},
 		onFileChange(file) {
 			this.$v.profilePicture.$touch();
@@ -226,6 +240,15 @@ export default {
 			);
 
 			document.getElementById("autocomplete").placeholder = "";
+
+			// Initialize with user's Location (manually search)
+			const geocoder = new window.google.maps.Geocoder();
+
+			geocoder.geocode({ address: this.locationText }, (places) => {
+				this.location = places[0];
+				this.location.name = this.locationText;
+			});
+
 			autocomplete.addListener("place_changed", () => {
 				const place = autocomplete.getPlace();
 				this.locationChanged = true;
@@ -234,13 +257,15 @@ export default {
 					this.location = "";
 				} else {
 					this.location = place;
+					this.loactionText = place.name;
 				}
 				this.validateLocation();
 			});
 		},
 		validateLocation() {
-			if (this.location === "") {
+			if (this.locationChanged && this.location === "") {
 				this.locationErrors = "Location is required";
+				console.log("location BAD");
 				return false;
 			}
 			this.locationErrors = "";
@@ -254,16 +279,16 @@ export default {
 		},
 	},
 	computed: {
-        user() {
+		user() {
 			return this.$store.getters.user;
-        },
+		},
 		authStatus() {
 			return this.$store.getters.authStatus;
 		},
-		selectErrors() {
+		selectedRoleErrors() {
 			const errors = [];
-			if (!this.$v.select.$dirty) return [];
-			!this.$v.select.required && errors.push("Please select a role");
+			if (!this.$v.selectedRole.$dirty) return [];
+			!this.$v.selectedRole.required && errors.push("Please select a role");
 			return errors;
 		},
 		firstNameErrors() {
@@ -293,22 +318,7 @@ export default {
 			const errors = [];
 			if (!this.$v.profilePicture.$dirty) return [];
 			!this.$v.profilePicture.fileSizeValidation && errors.push("File size!");
-
 			!this.$v.profilePicture.fileTypeValidation && errors.push("File type!");
-			return errors;
-		},
-		passwordErrors() {
-			const errors = [];
-			if (!this.$v.password.$dirty) return [];
-			!this.$v.password.required && errors.push("Password is required");
-			!this.$v.password.minLength &&
-				errors.push("Password should be at least 8 characters long");
-			return errors;
-		},
-		repeatPasswordErrors() {
-			const errors = [];
-			if (!this.$v.repeatPassword.$dirty) return [];
-			!this.$v.repeatPassword.sameAsPassword && errors.push("Passwords do not match");
 			return errors;
 		},
 	},
@@ -316,7 +326,6 @@ export default {
 </script>
 
 <style scoped>
-
 .center {
 	position: absolute;
 	top: 25%;
