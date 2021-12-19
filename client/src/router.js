@@ -10,6 +10,7 @@ import NotFound from "./components/NotFound";
 import ProtectedExample from "./components/ProtectedExample";
 import About from "./components/About";
 import UserPage from "./components/userPage/UserPage";
+import AdType from "./components/AdType";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,7 @@ const routes = [
 	{ path: "/register", component: Register },
 	{ path: "/login", component: Login },
 	{ path: "/about", component: About },
+	{ path: "/type", component: AdType },
 	{ 
 		path: "/user", 
 		component: UserPage,
