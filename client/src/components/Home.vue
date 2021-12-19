@@ -1,69 +1,70 @@
 <template>
 		<v-container fluid >
-        <v-img
-            height=400
-            src="../assets/home.png"
-        ></v-img> 
-		<v-row justify="center">
-			<v-col  md="2" align="center">
-			</v-col>
-            <v-col  md="2" align="center">
-			</v-col>
-            <v-col  md="2" align="center">
-			</v-col>
-			<v-col md="2" align="center">
-			</v-col>
-            <v-col md="2" align="center">
-				<div id="Home">
-					Iščem
-						<ToggleButton />
-					Nudim
-				</div>
-			</v-col>
-		</v-row>
+			<v-img
+				height=400
+				src="../assets/home.png"
+			></v-img> 
+			<v-row justify="center">
+				<v-col  md="2" align="center">
+				</v-col>
+				<v-col  md="2" align="center">
+				</v-col>
+				<v-col  md="2" align="center">
+				</v-col>
+				<v-col md="2" align="center">
+				</v-col>
+				<v-col md="2" align="center">
+					<div id="Home">
+						<span style="margin: 10px 10px 0px 0px">Iščem</span>
+						<span><ToggleButton /></span>
+						<span style="margin: 10px 0px 0px 10px">Nudim</span>
+					</div>
+				</v-col>
+			</v-row>
+			
+			<v-row justify="center" class="headerRow">	
+				<v-col  md="2" align="center">
+				</v-col>
+				<v-col  md="2" align="center">
+					<b><p>Ime Iskalca</p></b>
+				</v-col>
+				<v-col  md="2" align="center">
+					<b><p>Žival</p></b>
+				</v-col>
+				<v-col  md="2" align="center">
+					<b><p>Od/Do</p></b>
+				</v-col>
+				<v-col md="2" align="center">
+					<b><p>Ponudba</p></b>
+				</v-col>
+			</v-row>
 
-		<v-row justify="center" class="headerRow">	
-			<v-col  md="2" align="center">
-			</v-col>
-			<v-col  md="2" align="center">
-				<b><p>Ime Iskalca</p></b>
-			</v-col>
-            <v-col  md="2" align="center">
-				<b><p>Žival</p></b>
-			</v-col>
-            <v-col  md="2" align="center">
-				<b><p>Od/Do</p></b>
-			</v-col>
-			<v-col md="2" align="center">
-				<b><p>Ponudba</p></b>
-			</v-col>
-		</v-row>
+			<v-row justify="center" class="userRow">
 
-		<v-row justify="center" class="userRow">
-
-			<v-col  md="2" align="center">
-				<v-img
-					src="../assets/profile_default.png"
-					width=80
-				>
-				</v-img>
-			</v-col>
-			<v-col  md="2" align="center" class="top">
-				<b><p>Ime Iskalca</p></b>
-			</v-col>
-			<v-col  md="2" align="center" class="top">
-				<b><p>Ime Iskalca</p></b>
-			</v-col>
-			<v-col  md="2" align="center" class="top">
-				<b><p>Žival</p></b>
-			</v-col>
-			<v-col  md="2" align="center" class="top">
-				<b><p>Od/Do</p></b>
-			</v-col>
-		</v-row>
-		<center>
-			<v-btn class="mr-5" color="primary" style="margin-top: 80px;" outlined>Prikaži vse</v-btn>
-		</center>
+				<v-col  md="2" align="center">
+					<v-img
+						src="../assets/profile_default.png"
+						width=80
+					>
+					</v-img>
+				</v-col>
+				<v-col  md="2" align="center" class="top">
+					<b><p>Ime Iskalca</p></b>
+				</v-col>
+				<v-col  md="2" align="center" class="top">
+					<b><p>Ime Iskalca</p></b>
+				</v-col>
+				<v-col  md="2" align="center" class="top">
+					<b><p>Žival</p></b>
+				</v-col>
+				<v-col  md="2" align="center" class="top">
+					<b><p>Od/Do</p></b>
+				</v-col>
+			</v-row>
+			<center>
+				<v-btn class="mr-5" color="primary" style="margin-top: 80px;" outlined>Prikaži vse</v-btn>
+			</center>
+			
 	</v-container>
 </template>
 
