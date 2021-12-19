@@ -1,9 +1,101 @@
 <template>
-	<div><h1>Home page</h1></div>
+		<v-container fluid >
+        <v-img
+            height=400
+            src="../assets/home.png"
+        ></v-img> 
+		<v-row justify="center">
+			<v-col  md="2" align="center">
+			</v-col>
+            <v-col  md="2" align="center">
+			</v-col>
+            <v-col  md="2" align="center">
+			</v-col>
+			<v-col md="2" align="center">
+			</v-col>
+            <v-col md="2" align="center">
+				<div id="Home">
+					Iščem
+						<ToggleButton />
+					Nudim
+				</div>
+			</v-col>
+		</v-row>
+
+		<v-row justify="center" class="headerRow">	
+			<v-col  md="2" align="center">
+			</v-col>
+			<v-col  md="2" align="center">
+				<b><p>Ime Iskalca</p></b>
+			</v-col>
+            <v-col  md="2" align="center">
+				<b><p>Žival</p></b>
+			</v-col>
+            <v-col  md="2" align="center">
+				<b><p>Od/Do</p></b>
+			</v-col>
+			<v-col md="2" align="center">
+				<b><p>Ponudba</p></b>
+			</v-col>
+		</v-row>
+
+		<v-row justify="center" class="userRow">
+
+			<v-col  md="2" align="center">
+				<v-img
+					src="../assets/profile_default.png"
+					width=80
+				>
+				</v-img>
+			</v-col>
+			<v-col  md="2" align="center" class="top">
+				<b><p>Ime Iskalca</p></b>
+			</v-col>
+			<v-col  md="2" align="center" class="top">
+				<b><p>Ime Iskalca</p></b>
+			</v-col>
+			<v-col  md="2" align="center" class="top">
+				<b><p>Žival</p></b>
+			</v-col>
+			<v-col  md="2" align="center" class="top">
+				<b><p>Od/Do</p></b>
+			</v-col>
+		</v-row>
+		<center>
+			<v-btn class="mr-5" color="primary" style="margin-top: 80px;" outlined>Prikaži vse</v-btn>
+		</center>
+	</v-container>
 </template>
 
 <script>
-export default {};
+
+ import ToggleButton from './ToggleButton.vue'
+
+	export default {
+		name: 'Home',
+
+		components: {
+			ToggleButton
+		}
+	}
+	
 </script>
 
-<style></style>
+<style>
+	.userRow{
+		height: 100px;
+		background-color: #F0F2EF;
+		border-radius: 10px;
+		margin: 0% 15% 0% 15%;
+		box-shadow: 2px 2px #dedede;
+	}
+	.top{
+		padding-top: 40px;
+	}
+	.headerRow{
+		margin-top: 80px;
+		margin-right: 15%;
+		margin-left: 15%;
+	}
+
+</style>
