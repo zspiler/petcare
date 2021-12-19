@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import store from "./store";
+// import store from "./store";
 
 import Home from "./components/Home";
 import Register from "./components/Register";
@@ -18,12 +18,12 @@ const routes = [
 	{ path: "/register", component: Register },
 	{ path: "/login", component: Login },
 	{ path: "/about", component: About },
-	{ 
-		path: "/user", 
+	{
+		path: "/user",
 		component: UserPage,
 		meta: {
 			protected: true,
-		} 
+		},
 	},
 	// exaple of route that requires authentication
 	{
@@ -44,10 +44,20 @@ const router = new VueRouter({
 // Protected routes
 router.beforeEach((to, from, next) => {
 	if (to.matched.some((record) => record.meta.protected)) {
-		if (store.getters.user.token) {
+		console.log("Accessing Protected ");
+
+		// TODO: non-stupid fix?
+		if (localStorage.getItem("token") !== null) {
+			console.log("next");
 			next();
 			return;
 		}
+		// if (store.getters.user.token) {
+		// 	console.log("next");
+		// 	next();
+		// 	return;
+		// }
+		console.log("Redirect to login");
 		next("/login");
 	} else {
 		next();

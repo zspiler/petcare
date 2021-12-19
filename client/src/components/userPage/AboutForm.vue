@@ -37,13 +37,13 @@
 					</v-col>
 					<v-col cols="12" md="6" lg="4">
 						<v-select
-							v-model="select"
+							v-model="selectedRole"
 							:items="roles"
-							:error-messages="selectErrors"
+							:error-messages="selectedRoleErrors"
 							label="Role"
 							required
-							@change="$v.select.$touch()"
-							@blur="$v.select.$touch()"
+							@change="$v.selectedRole.$touch()"
+							@blur="$v.selectedRole.$touch()"
 						/>
 
 						<!-- Location -->
@@ -71,7 +71,11 @@
 						lg="2"
 						justify="center"
 						align="center"
-						v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation"
+						v-if="
+							profilePictureUrl &&
+							profilePictureUrl.length &&
+							this.$v.profilePicture.fileTypeValidation
+						"
 					>
 						<!-- Profile picture preview -->
 						<v-row justify="center" align="center" style="height: 100%">
@@ -82,7 +86,11 @@
 									profilePictureUrl.length &&
 									this.$v.profilePicture.fileTypeValidation
 								"
-								:src="profilePictureUrl"
+								:src="
+									(profilePictureUrl.startsWith('profilePic')
+										? `${this.$store.getters.serverBaseUrl}img/`
+										: ``) + profilePictureUrl
+								"
 							/>
 						</v-row>
 					</v-col>
@@ -125,7 +133,7 @@ export default {
 		firstName: { required, maxLength: maxLength(20) },
 		lastName: { required, maxLength: maxLength(20) },
 		email: { required, email },
-		select: { required },
+		selectedRole: { required },
 		profilePicture: {
 			fileSizeValidation,
 			fileTypeValidation,
@@ -134,15 +142,16 @@ export default {
 		repeatPassword: { sameAsPassword: sameAs("password") },
 		location: { required },
 	},
-	mounted() {
-		this.initGooglePlacesSearch();
-
-		// Fill inputs with user's data
-		this.firstName = this.user.firstName;
-		this.lastName = this.user.lastName;
-		this.email = this.user.email;
-		this.select = this.user.role;
-		// this.select = this.user.location;
+	created() {
+		// Wait for user to be loaded
+		let unsubscribe = this.$store.subscribe(({ type }) => {
+			if (type === "authSuccess") {
+				// acces to user object
+				this.fillUserData();
+				this.initGooglePlacesSearch();
+				unsubscribe();
+			}
+		});
 	},
 	data: () => ({
 		firstName: "",
@@ -150,7 +159,7 @@ export default {
 		email: "",
 		password: "",
 		repeatPassword: "",
-		select: null,
+		selectedRole: null,
 		roles: ["Pet sitter", "Owner"],
 		profilePicture: null,
 		profilePictureUrl: "",
@@ -161,6 +170,14 @@ export default {
 		locationErrors: "",
 	}),
 	methods: {
+		fillUserData() {
+			this.firstName = this.user.firstName;
+			this.lastName = this.user.lastName;
+			this.email = this.user.email;
+			this.selectedRole = this.user.role;
+			this.locationText = this.user.city + ", " + this.user.country;
+			this.profilePictureUrl = this.user.profilePicture;
+		},
 		submit() {
 			// Validate
 			this.$v.$touch();
@@ -168,6 +185,7 @@ export default {
 			if (!this.validateLocation() || this.$v.$error) {
 				return;
 			}
+
 			// Create FormData (necessary for file upload)
 			const formData = new FormData();
 			if (this.profilePictureUrl.length) {
@@ -176,7 +194,6 @@ export default {
 			formData.set("firstName", this.firstName);
 			formData.set("lastName", this.lastName);
 			formData.set("email", this.email);
-			// formData.set("password", this.password);
 			formData.set("role", this.role);
 			formData.set("location", JSON.stringify(this.location.address_components));
 
@@ -215,6 +232,15 @@ export default {
 			);
 
 			document.getElementById("autocomplete").placeholder = "";
+
+			// Initialize with user's Location (manually search)
+			const geocoder = new window.google.maps.Geocoder();
+
+			geocoder.geocode({ address: this.locationText }, (places) => {
+				this.location = places[0];
+				this.location.name = this.locationText;
+			});
+
 			autocomplete.addListener("place_changed", () => {
 				const place = autocomplete.getPlace();
 				this.locationChanged = true;
@@ -223,12 +249,13 @@ export default {
 					this.location = "";
 				} else {
 					this.location = place;
+					this.loactionText = place.name;
 				}
 				this.validateLocation();
 			});
 		},
 		validateLocation() {
-			if (this.location === "") {
+			if (this.locationChanged && this.location === "") {
 				this.locationErrors = "Location is required";
 				return false;
 			}
@@ -242,6 +269,16 @@ export default {
 			}
 		},
 	},
+
+	// Alternative to 'created'
+
+	// watch: {
+	// 	user() {
+	// 		// Wait for user to be loaded
+	// 		this.initGooglePlacesSearch();
+	//         this.fillUserData();
+	// 	},
+	// },
 	computed: {
 		user() {
 			return this.$store.getters.user;
@@ -249,10 +286,10 @@ export default {
 		authStatus() {
 			return this.$store.getters.authStatus;
 		},
-		selectErrors() {
+		selectedRoleErrors() {
 			const errors = [];
-			if (!this.$v.select.$dirty) return [];
-			!this.$v.select.required && errors.push("Please select a role");
+			if (!this.$v.selectedRole.$dirty) return [];
+			!this.$v.selectedRole.required && errors.push("Please select a role");
 			return errors;
 		},
 		firstNameErrors() {
