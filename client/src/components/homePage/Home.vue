@@ -2,7 +2,7 @@
 		<v-container id="Home" fluid >
 			<v-img
 				height=400
-				src="../assets/home.png"
+				src="../../assets/home.png"
 			></v-img> 
 			<v-row justify="center">
 				<v-col  md="2" align="center">
@@ -64,11 +64,10 @@
 	
 </script>
 
-<style>
+<style scoped>
 	.headerRow{
-		margin-top: 80px;
+		margin-top: 50px;
 		margin-right: 15%;
 		margin-left: 15%;
 	}
-
 </style>
