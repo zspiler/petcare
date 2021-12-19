@@ -3,9 +3,12 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import Vuelidate from "vuelidate";
 import axios from "axios";
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 import router from "./router";
 import store from "./store";
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import "@/assets/styles.css"; // global styles
 
@@ -17,6 +20,8 @@ axios.defaults.headers.common["Authorization"] =
 Vue.config.productionTip = false;
 
 Vue.use(Vuelidate);
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
 
 new Vue({
 	vuetify,
