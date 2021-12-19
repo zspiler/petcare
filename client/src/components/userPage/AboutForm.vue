@@ -110,7 +110,9 @@
 </template>
 
 <script>
-import { required, maxLength, email, minLength, sameAs } from "vuelidate/lib/validators";
+import { required, maxLength, email } from "vuelidate/lib/validators";
+
+import axios from "axios";
 
 function fileSizeValidation(file) {
 	if (!file) {
@@ -138,37 +140,34 @@ export default {
 			fileSizeValidation,
 			fileTypeValidation,
 		},
-		password: { required, minLength: minLength(8) },
-		repeatPassword: { sameAsPassword: sameAs("password") },
 		location: { required },
-	},
-	created() {
-		// Wait for user to be loaded
-		let unsubscribe = this.$store.subscribe(({ type }) => {
-			if (type === "authSuccess") {
-				// acces to user object
-				this.fillUserData();
-				this.initGooglePlacesSearch();
-				unsubscribe();
-			}
-		});
 	},
 	data: () => ({
 		firstName: "",
 		lastName: "",
 		email: "",
-		password: "",
-		repeatPassword: "",
 		selectedRole: null,
 		roles: ["Pet sitter", "Owner"],
 		profilePicture: null,
 		profilePictureUrl: "",
-		showPasswords: false,
 		location: "",
 		locationChanged: false,
 		locationText: "",
 		locationErrors: "",
 	}),
+	mounted() {
+		if (this.$store.getters.user.email) {
+			this.fillUserData();
+			this.initGooglePlacesSearch();
+		}
+	},
+	watch: {
+		user() {
+			// Wait for user to be loaded
+			this.fillUserData();
+			this.initGooglePlacesSearch();
+		},
+	},
 	methods: {
 		fillUserData() {
 			this.firstName = this.user.firstName;
@@ -186,7 +185,24 @@ export default {
 				return;
 			}
 
-			// Create FormData (necessary for file upload)
+			const data = this.createFormData();
+			axios
+				.put("/api/auth/user", data, {
+					headers: {
+						"Content-Type": `multipart/form-data; boundary=${data._boundary}`,
+					},
+				})
+				.then(() => {
+					// ponovno nalozi userja
+					this.$store.dispatch("getUser");
+					this.$router.push("/");
+				})
+				.catch((err) => {
+					console.log("Caught error: ");
+					console.log(err.response?.data?.message || err.message);
+				});
+		},
+		createFormData() {
 			const formData = new FormData();
 			if (this.profilePictureUrl.length) {
 				formData.set("profilePicture", this.profilePicture);
@@ -194,18 +210,9 @@ export default {
 			formData.set("firstName", this.firstName);
 			formData.set("lastName", this.lastName);
 			formData.set("email", this.email);
-			formData.set("role", this.role);
+			formData.set("role", this.selectedRole);
 			formData.set("location", JSON.stringify(this.location.address_components));
-
-			//TODO: updateUser namesto register
-			// this.$store
-			// 	.dispatch("register", formData)
-			// 	.then(() => {
-			// 		this.$router.push("/");
-			// 	})
-			// 	.catch((err) => {
-			// 		console.log(err);
-			// 	});
+			return formData;
 		},
 		onFileChange(file) {
 			this.$v.profilePicture.$touch();
@@ -257,6 +264,7 @@ export default {
 		validateLocation() {
 			if (this.locationChanged && this.location === "") {
 				this.locationErrors = "Location is required";
+				console.log("location BAD");
 				return false;
 			}
 			this.locationErrors = "";
@@ -269,16 +277,6 @@ export default {
 			}
 		},
 	},
-
-	// Alternative to 'created'
-
-	// watch: {
-	// 	user() {
-	// 		// Wait for user to be loaded
-	// 		this.initGooglePlacesSearch();
-	//         this.fillUserData();
-	// 	},
-	// },
 	computed: {
 		user() {
 			return this.$store.getters.user;
@@ -319,22 +317,7 @@ export default {
 			const errors = [];
 			if (!this.$v.profilePicture.$dirty) return [];
 			!this.$v.profilePicture.fileSizeValidation && errors.push("File size!");
-
 			!this.$v.profilePicture.fileTypeValidation && errors.push("File type!");
-			return errors;
-		},
-		passwordErrors() {
-			const errors = [];
-			if (!this.$v.password.$dirty) return [];
-			!this.$v.password.required && errors.push("Password is required");
-			!this.$v.password.minLength &&
-				errors.push("Password should be at least 8 characters long");
-			return errors;
-		},
-		repeatPasswordErrors() {
-			const errors = [];
-			if (!this.$v.repeatPassword.$dirty) return [];
-			!this.$v.repeatPassword.sameAsPassword && errors.push("Passwords do not match");
 			return errors;
 		},
 	},

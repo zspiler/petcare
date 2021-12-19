@@ -17,7 +17,6 @@ export default new Vuex.Store({
 		authSuccess(state, data) {
 			state.status = "success";
 			state.user = { ...data.user, token: data.token };
-			console.log("vuex updated state.user");
 		},
 		authError(state) {
 			state.status = "error";
@@ -33,7 +32,6 @@ export default new Vuex.Store({
 				.get("/api/auth/user")
 				.then((res) => {
 					// get renewed token
-					console.log("committing: success");
 					commit("authSuccess", res.data);
 				})
 				.catch((err) => {

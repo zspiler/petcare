@@ -42,12 +42,6 @@ const upload = multer({
 
 // POST api/auth/register
 // Create new user
-var toType = function (obj) {
-	return {}.toString
-		.call(obj)
-		.match(/\s([a-zA-Z]+)/)[1]
-		.toLowerCase();
-};
 
 router.post(
 	"/register",
@@ -140,8 +134,6 @@ router.post(
 		// Validate
 		const validationErrors = validationResult(req.body);
 		if (!validationErrors.isEmpty()) {
-			console.log("validation errors");
-			console.log(validationErrors.array());
 			return res.status(400).json({
 				message: "Invalid parameters",
 				errors: validationErrors.array(),
@@ -172,7 +164,7 @@ router.post(
 	}
 );
 
-// POST api/auth/user
+// GET api/auth/user
 // Get logged-in user's info
 
 router.get("/user", auth, async (req, res) => {
@@ -186,5 +178,75 @@ router.get("/user", auth, async (req, res) => {
 		user: user,
 	});
 });
+
+// PUT api/auth/user
+// Update user's info
+router.put(
+	"/user",
+	auth,
+	body("firstName").notEmpty(),
+	body("firstName").isLength({ max: 20 }),
+	body("lastName").notEmpty(),
+	body("lastName").isLength({ max: 20 }),
+	body("email").isEmail(),
+	body("role").notEmpty(),
+	body("location").notEmpty(),
+	async (req, res) => {
+		upload(req, res, async (uploadErr) => {
+			/*
+                req.email is email encoded in JWT (set in middleware function)
+            */
+			const user = await User.findOne({ email: req.email });
+			if (!user) {
+				return res.status(409).json({ message: "Could not find user" });
+			}
+
+			// file upload error
+			if (uploadErr) {
+				console.log("uploadErr");
+				return res.status(422).json({ message: "Error processing file" });
+			}
+			const { firstName, lastName, email, role } = req.body;
+
+			const location = JSON.parse(req.body.location);
+
+			// Validate
+			const validationErrors = validationResult(req.body);
+			if (!validationErrors.isEmpty()) {
+				return res.status(400).json({
+					message: "Invalid parameters",
+					errors: validationErrors.array(),
+				});
+			}
+			// Validate and parse location
+			const parsedLocation = parseGooglePlace({ address_components: location });
+			const country = parsedLocation.countryLong;
+			const city = parsedLocation.city;
+			if (!country || !city || !["Slovenia"].includes(country)) {
+				return res.status(400).json({
+					message: "Could not parse 'location' field",
+				});
+			}
+
+			// Modify user
+			user.firstName = firstName;
+			user.lastName = lastName;
+			user.email = email;
+			user.role = role;
+			user.country = country;
+			user.city = city;
+
+			if (req.file) {
+				user.profilePicture = req.file.filename;
+			}
+
+			await user.save();
+
+			res.json({
+				message: "User data updated",
+			});
+		});
+	}
+);
 
 module.exports = router;

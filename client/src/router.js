@@ -44,11 +44,8 @@ const router = new VueRouter({
 // Protected routes
 router.beforeEach((to, from, next) => {
 	if (to.matched.some((record) => record.meta.protected)) {
-		console.log("Accessing Protected ");
-
 		// TODO: non-stupid fix?
 		if (localStorage.getItem("token") !== null) {
-			console.log("next");
 			next();
 			return;
 		}
@@ -57,7 +54,6 @@ router.beforeEach((to, from, next) => {
 		// 	next();
 		// 	return;
 		// }
-		console.log("Redirect to login");
 		next("/login");
 	} else {
 		next();
