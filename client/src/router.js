@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 
 // import store from "./store";
 
-import Home from "./components/Home";
+import Home from "./components/homePage/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";

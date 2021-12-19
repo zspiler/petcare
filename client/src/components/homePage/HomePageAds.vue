@@ -3,7 +3,7 @@
 
 		<v-col  md="2" align="center">
 			<v-img
-				src="../assets/profile_default.png"
+				src="../../assets/profile_default.png"
 				width=80
 			>
 			</v-img>

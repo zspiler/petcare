@@ -1,16 +1,12 @@
 <template>
 	<v-container fluid >
         <h1>Izberite tip oglasa</h1>
-
-        <v-row
-            :class="n === 1 ? 'mb-6' : ''"
-            no-gutters
-            style="row"
-        >
-            <v-col>
+        <b-row class="row">
+            <b-col md="1"></b-col>
+            <b-col>
                 <router-link to="/postJob1" style="text-decoration: none; color: inherit">
                     <div class="column">
-                        <b-card no-body class="overflow-hidden card"  style="max-width: 650px; padding: 0px 10px 10px 15px;">
+                        <b-card no-body class="overflow-hidden card"  style="max-width: 650px; padding: 10px 10px 10px 15px;">
                             <b-row>
                                 <b-col md="6">
                                     <v-img
@@ -31,10 +27,10 @@
                     </div>
                 </router-link>
             
-            </v-col>
-            <v-col>
-                <div class="column2">
-                    <b-card no-body class="overflow-hidden card"  style="max-width: 650px; padding: 0px 10px 10px 15px;">
+            </b-col>
+            <b-col>
+                <div class="column">
+                    <b-card no-body class="overflow-hidden card"  style="max-width: 650px; padding: 10px 10px 10px 15px;">
                         <b-row>
                             <b-col md="6">
                                 <b-card-body class="cardTitle" style="word-break: break-word" title="Nudite storitve?">
@@ -55,8 +51,8 @@
                     </b-card>
                 </div>
 
-            </v-col>
-        </v-row>
+            </b-col>
+        </b-row>
 
     </v-container>
 
@@ -66,18 +62,19 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
 
  h1{
      text-align: center;
      margin-top: 5% !important;
      font-weight: 400;
      font-size: 40px;
-     margin-bottom: 2%;
+     margin-bottom: 1%;
  }
  .row{
      text-align: center;
  }
+
  .card{
      border-radius: 50px !important;
      border: none !important;
@@ -85,11 +82,6 @@ export default {};
  }
 .column{
      margin-top: 10%;
-     margin-right: 20px;
- }
-.column2{
-     margin-top: 10%;
-     margin-left: 20px;
  }
  .text{
      margin-top: 30%;
@@ -103,7 +95,7 @@ export default {};
     border-radius: 50px;
 }
 .card-title{
-    font-size: 40px;
+    font-size: 26px;
 }
 
 </style>
