@@ -8,26 +8,28 @@
             style="row"
         >
             <v-col>
-                <div class="column">
-                    <b-card no-body class="overflow-hidden card"  style="max-width: 650px; padding: 0px 10px 10px 15px;">
-                        <b-row>
-                            <b-col md="6">
-                                <v-img
-                                    class="image"
-                                    width="500"
-                                    src="../assets/typedog.png"
-                                ></v-img> 		
-                            </b-col>
-                            <b-col md="6">
-                                <b-card-body class="cardTitle" title="Potrebujete varstvo?">
-                                <b-card-text class="text">
-                                    Potrebujete nekoga, ki bo skrbel za vašega ljubljenčka, medtem ko boste odsotni.
-                                </b-card-text>
-                                </b-card-body>
-                            </b-col>
-                        </b-row>
-                    </b-card>
-                </div>
+                <router-link to="/postJob1" style="text-decoration: none; color: inherit">
+                    <div class="column">
+                        <b-card no-body class="overflow-hidden card"  style="max-width: 650px; padding: 0px 10px 10px 15px;">
+                            <b-row>
+                                <b-col md="6">
+                                    <v-img
+                                        class="image"
+                                        width="500"
+                                        src="../assets/typedog.png"
+                                    ></v-img> 		
+                                </b-col>
+                                <b-col md="6">
+                                    <b-card-body class="cardTitle" title="Potrebujete varstvo?">
+                                    <b-card-text class="text">
+                                        Potrebujete nekoga, ki bo skrbel za vašega ljubljenčka, medtem ko boste odsotni.
+                                    </b-card-text>
+                                    </b-card-body>
+                                </b-col>
+                            </b-row>
+                        </b-card>
+                    </div>
+                </router-link>
             
             </v-col>
             <v-col>
