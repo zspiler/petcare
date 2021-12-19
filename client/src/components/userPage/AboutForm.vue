@@ -1,124 +1,104 @@
 <template>
-    <v-container fluid>
-        <v-row justify="center" align="center">
-            <h1>Edit Account</h1>
-        </v-row>
-        <v-row justify="space-around">
-            <form style="width:90%; margin-top:40px" >
-                <v-row justify="space-around">
-                    <v-col cols="12" md="6" lg="4">
-                        <v-text-field
-                            v-model="firstName"
-                            :error-messages="firstNameErrors"
-                            :counter="20"
-                            label="First Name"
-                            required
-                            @input="$v.firstName.$touch()"
-                            @blur="$v.firstName.$touch()"
-                        />
-                        <v-text-field
-                            v-model="lastName"
-                            :error-messages="lastNameErrors"
-                            :counter="20"
-                            label="Last Name"
-                            required
-                            @input="$v.lastName.$touch()"
-                            @blur="$v.lastName.$touch()"
-                        />
+	<v-container fluid>
+		<v-row justify="center" align="center">
+			<h1>Edit Account</h1>
+		</v-row>
+		<v-row justify="space-around">
+			<form style="width: 90%; margin-top: 40px">
+				<v-row justify="space-around">
+					<v-col cols="12" md="6" lg="4">
+						<v-text-field
+							v-model="firstName"
+							:error-messages="firstNameErrors"
+							:counter="20"
+							label="First Name"
+							required
+							@input="$v.firstName.$touch()"
+							@blur="$v.firstName.$touch()"
+						/>
+						<v-text-field
+							v-model="lastName"
+							:error-messages="lastNameErrors"
+							:counter="20"
+							label="Last Name"
+							required
+							@input="$v.lastName.$touch()"
+							@blur="$v.lastName.$touch()"
+						/>
 
-                        <v-text-field
-                            v-model="email"
-                            :error-messages="emailErrors"
-                            label="E-mail"
-                            required
-                            @input="$v.email.$touch()"
-                            @blur="$v.email.$touch()"
-                        />
+						<v-text-field
+							v-model="email"
+							:error-messages="emailErrors"
+							label="E-mail"
+							required
+							@input="$v.email.$touch()"
+							@blur="$v.email.$touch()"
+						/>
+					</v-col>
+					<v-col cols="12" md="6" lg="4">
+						<v-select
+							v-model="select"
+							:items="roles"
+							:error-messages="selectErrors"
+							label="Role"
+							required
+							@change="$v.select.$touch()"
+							@blur="$v.select.$touch()"
+						/>
 
-                        <!-- <v-text-field
-                            v-model="password"
-                            :error-messages="passwordErrors"
-                            :append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
-                            :type="showPasswords ? 'text' : 'password'"
-                            name="password"
-                            label="Password"
-                            hint="Should be at least 8 characters"
-                            counter
-                            @click:append="showPasswords = !showPasswords"
-                            @change="$v.password.$touch()"
-                            @blur="$v.password.$touch()"
-                        ></v-text-field>
+						<!-- Location -->
+						<v-text-field
+							v-model="locationText"
+							label="Location"
+							required
+							id="autocomplete"
+							@change="this.validateLocation"
+							@blur="this.onLocationSearchBlur"
+						/>
 
-                        <v-text-field
-                            v-model="repeatPassword"
-                            :error-messages="repeatPasswordErrors"
-                            :append-icon="showPasswords ? 'mdi-eye' : 'mdi-eye-off'"
-                            :type="showPasswords ? 'text' : 'password'"
-                            name="repeatPassword"
-                            label="Confirm password"
-                            @click:append="showPasswords = !showPasswords"
-                            @change="$v.repeatPassword.$touch()"
-                            @blur="$v.repeatPassword.$touch()"
-                        ></v-text-field> -->
-
-                    </v-col>
-                    <v-col cols="12" md="6" lg="4">
-                        <v-select
-                            v-model="select"
-                            :items="roles"
-                            :error-messages="selectErrors"
-                            label="Role"
-                            required
-                            @change="$v.select.$touch()"
-                            @blur="$v.select.$touch()"
-                        />
-
-                         <!-- Location -->
-                        <v-text-field
-                            v-model="locationText"
-                            label="Location"
-                            required
-                            id="autocomplete"
-                            @change="this.validateLocation"
-                            @blur="this.onLocationSearchBlur"
-                        />
-
-                        <v-file-input
-                            v-model="profilePicture"
-                            label="Profile picture (optional)"
-                            :error-messages="profilePictureErrors"
-                            prepend-icon="mdi-camera"
-                            @change="onFileChange"
-                            accept="image/*"
-                        />
-                    </v-col>
-                    <v-col cols="12" md="12" lg="2" justify="center" align="center" 
-                        v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation">
-                        <!-- Profile picture preview -->
-                        <v-row justify="center" align="center" style="height:100%"> 
-
-                        <v-img
-                            max-height="100%"
-                            max-width="100%"
-                            v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation"
-                            :src="profilePictureUrl"
-                        />
-                        </v-row>
-                    </v-col>
-                </v-row>
-                <v-row justify="center">
-                    <!-- ce dam kot zgoraj :error-messages breaka input field text -->
+						<v-file-input
+							v-model="profilePicture"
+							label="Profile picture (optional)"
+							:error-messages="profilePictureErrors"
+							prepend-icon="mdi-camera"
+							@change="onFileChange"
+							accept="image/*"
+						/>
+					</v-col>
+					<v-col
+						cols="12"
+						md="12"
+						lg="2"
+						justify="center"
+						align="center"
+						v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation"
+					>
+						<!-- Profile picture preview -->
+						<v-row justify="center" align="center" style="height: 100%">
+							<v-img
+								max-height="100%"
+								max-width="100%"
+								v-if="
+									profilePictureUrl.length &&
+									this.$v.profilePicture.fileTypeValidation
+								"
+								:src="profilePictureUrl"
+							/>
+						</v-row>
+					</v-col>
+				</v-row>
+				<v-row justify="center">
+					<!-- ce dam kot zgoraj :error-messages breaka input field text -->
 					<p v-if="locationErrors" style="color: red">{{ locationErrors }}</p>
-                </v-row>
-                <v-row>
+				</v-row>
+				<v-row>
 					<v-col justify="center" align="center">
 						<v-btn class="mb-2" @click="submit" color="primary"> Save changes </v-btn>
 					</v-col>
-                </v-row>  
-            </form>
+				</v-row>
+			</form>
 		</v-row>
-    </v-container>
-
+	</v-container>
 </template>
 
 <script>
@@ -140,7 +120,7 @@ function fileTypeValidation(file) {
 
 export default {
 	name: "AboutForm",
-	components: {  },
+	components: {},
 	validations: {
 		firstName: { required, maxLength: maxLength(20) },
 		lastName: { required, maxLength: maxLength(20) },
@@ -156,23 +136,13 @@ export default {
 	},
 	mounted() {
 		this.initGooglePlacesSearch();
-        
-        document.onreadystatechange = () => { 
-            if (document.readyState == "complete") { 
-                //init form values
-                console.log("loadedUser: ", this.user);
-                if(this.user)
-                {
-                    var u = this.user;
 
-                    this.firstName = u.firstName;
-                    this.lastName = u.lastName;
-                    this.email = u.email;
-                    this.select = u.role;
-                    // this.location = u.location; 
-                }
-            } 
-        }
+		// Fill inputs with user's data
+		this.firstName = this.user.firstName;
+		this.lastName = this.user.lastName;
+		this.email = this.user.email;
+		this.select = this.user.role;
+		// this.select = this.user.location;
 	},
 	data: () => ({
 		firstName: "",
@@ -200,18 +170,17 @@ export default {
 			}
 			// Create FormData (necessary for file upload)
 			const formData = new FormData();
-            if(this.profilePictureUrl.length)
-            {
-                formData.set("profilePicture", this.profilePicture);
-            }
-            formData.set("firstName", this.firstName);
+			if (this.profilePictureUrl.length) {
+				formData.set("profilePicture", this.profilePicture);
+			}
+			formData.set("firstName", this.firstName);
 			formData.set("lastName", this.lastName);
 			formData.set("email", this.email);
 			// formData.set("password", this.password);
 			formData.set("role", this.role);
 			formData.set("location", JSON.stringify(this.location.address_components));
 
-            //TODO: updateUser namesto register
+			//TODO: updateUser namesto register
 			// this.$store
 			// 	.dispatch("register", formData)
 			// 	.then(() => {
@@ -274,9 +243,9 @@ export default {
 		},
 	},
 	computed: {
-        user() {
+		user() {
 			return this.$store.getters.user;
-        },
+		},
 		authStatus() {
 			return this.$store.getters.authStatus;
 		},
@@ -336,7 +305,6 @@ export default {
 </script>
 
 <style scoped>
-
 .center {
 	position: absolute;
 	top: 25%;

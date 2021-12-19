@@ -14,14 +14,14 @@ const auth = require("../middleware/auth");
 
 const upload = multer({
 	storage: multer.diskStorage({
-        destination: function (_, _, cb) {
-            cb(null, `${__dirname}/../public/profile_pictures`);
-        },
-        filename: function (_, file, cb) {
-            let ext = file.mimetype.split("/");
-            cb(null, `${file.fieldname}-${Date.now()}.${ext[ext.length - 1]}`);
-        },
-    }),
+		destination: function (_, _, cb) {
+			cb(null, `${__dirname}/../public/profile_pictures`);
+		},
+		filename: function (_, file, cb) {
+			let ext = file.mimetype.split("/");
+			cb(null, `${file.fieldname}-${Date.now()}.${ext[ext.length - 1]}`);
+		},
+	}),
 	limits: {
 		fileSize: 10000000, // 10 MB limit
 	},
