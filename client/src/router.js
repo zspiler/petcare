@@ -46,21 +46,21 @@ const routes = [
 		},
 	},
 	{ 
-		path: "/postJob/sitter", 
+		path: "/postJob/animal", 
 		component: PostJob1,
 		meta:{
 			protected: true
 		}
 	},
 	{ 
-		path: "/postJob/sitter/details", 
+		path: "/postJob/animal/details", 
 		component: PostJob2,
 		meta:{
 			protected: true
 		}
 	},
 	{ 
-		path: "/postJob/complete", 
+		path: "/postJob/animal/complete", 
 		component: PostJob3,
 		meta:{
 			protected: true

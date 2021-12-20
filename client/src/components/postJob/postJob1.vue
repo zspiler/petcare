@@ -93,7 +93,7 @@
         <v-row>
             <v-col  md="1" offset-md="11">
                 <router-link
-                    to="/postJob/sitter/details"
+                    to="/postJob/animal/details"
                     style="text-decoration: none; color: inherit"
                 >
                     <v-btn class="mr-4" color="primary">Next</v-btn>
