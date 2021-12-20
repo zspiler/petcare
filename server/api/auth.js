@@ -114,8 +114,7 @@ router.post(
 			res.json({
 				message: "Account created",
 				token,
-				email,
-				id: user._id,
+				user: user,
 			});
 		});
 	}

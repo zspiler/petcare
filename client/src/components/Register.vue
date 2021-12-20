@@ -77,11 +77,14 @@
 						accept="image/*"
 					/>
 
-					<!-- Profile picture preview -->
-					<v-img
-						v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation"
-						:src="profilePictureUrl"
-					/>
+					<v-row justify=center align=center style="width:100%">
+						<!-- Profile picture preview -->
+						<v-img
+							max-width=50%
+							v-if="profilePictureUrl.length && this.$v.profilePicture.fileTypeValidation"
+							:src="profilePictureUrl"
+						/>
+					</v-row>
 
 					<!-- Location -->
 					<v-text-field
