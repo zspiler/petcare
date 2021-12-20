@@ -11,7 +11,7 @@ import ProtectedExample from "./components/ProtectedExample";
 import About from "./components/About";
 import UserPage from "./components/userPage/UserPage";
 
-import AdType from "./components/postJob/AdType";
+import postJob from "./components/postJob/AdType";
 import PostJob1 from "./components/postJob/postJob1";
 import PostJob2 from "./components/postJob/postJob2";
 import PostJob3 from "./components/postJob/postJob3";
@@ -24,7 +24,13 @@ const routes = [
 	{ path: "/register", component: Register },
 	{ path: "/login", component: Login },
 	{ path: "/about", component: About },
-	{ path: "/type", component: AdType },
+	{ 
+		path: "/postJob", 
+		component: postJob,
+		meta: {
+			protected: true,
+		},
+	},
 	{ 
 		path: "/postJob/service", 
 		component: postJobService,
@@ -40,21 +46,21 @@ const routes = [
 		},
 	},
 	{ 
-		path: "/postJob1", 
+		path: "/postJob/animal", 
 		component: PostJob1,
 		meta:{
 			protected: true
 		}
 	},
 	{ 
-		path: "/postJob2", 
+		path: "/postJob/animal/details", 
 		component: PostJob2,
 		meta:{
 			protected: true
 		}
 	},
 	{ 
-		path: "/postJob3", 
+		path: "/postJob/animal/complete", 
 		component: PostJob3,
 		meta:{
 			protected: true

@@ -42,7 +42,7 @@
 			<span><HomePageAds /></span>
 			
 			<center>
-				<v-btn class="mr-5" color="primary" style="margin-top: 80px;" outlined>Prikaži vse</v-btn>
+				<v-btn class="mr-5" color="primary" style="margin-top: 80px;" outlined>Show more</v-btn>
 			</center>
 			
 	</v-container>
