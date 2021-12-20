@@ -149,7 +149,7 @@
                                 
                             </v-col>
                         </v-row>
-                        <p>Total: <b>150 €</b></p>
+                        <p>Total: <b>{{this.calculatedPrice}} €</b></p>
                          <v-btn class="mr-4" color="primary" @click="postService()" outlined>Post job</v-btn>
                     </form>
             </v-col>
@@ -179,6 +179,7 @@
         city: '',
         cityNumber: '',
         price: 0,
+        calculatedPrice: 0,
         animals: [],
         dateFrom: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         dateTo: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
@@ -187,6 +188,23 @@
     }),
     async created() {
         this.animals = await JSON.parse(this.$route.params.animals)
+    },
+    watch:{
+        'dateFrom':{
+            handler: function() {
+                this.calculatedPrice = this.price * this.dateDiff()
+            },
+        },
+        'dateTo':{
+            handler: function() {
+                this.calculatedPrice = this.price * this.dateDiff()
+            },
+        },
+        'price':{
+            handler: function() {
+                this.calculatedPrice = this.price * this.dateDiff()
+            },
+        }
     },
     methods:{
         async postService() {
@@ -205,7 +223,12 @@
             } catch (err) {
                 console.error(err)
             }
-		}
+		},
+        dateDiff(){
+            var Difference_In_Time = new Date(this.dateTo).getTime() - new Date(this.dateFrom).getTime();
+            var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+            return Difference_In_Days
+        }
     }
   }
 </script>
