@@ -44,10 +44,20 @@
             <v-card-actions>
                 <v-container class="mycontainer" style="margin-bottom:0px;padding-bottom:0px">
                     <v-row class="justify-center mb-3 mt-2">
-                        <v-btn  @click="myProfile">My Profile</v-btn>
+                        <v-btn color="primary" outlined @click="myProfile">
+                            <v-icon left>
+                                mdi-account
+                            </v-icon>
+                            My Profile
+                        </v-btn>
                     </v-row>
                     <v-row class="justify-center mb-3 mt-10">
-                        <v-btn  @click="logout">Logout</v-btn>
+                        <v-btn color="primary" outlined @click="logout">
+                            <v-icon left>
+                                mdi-logout-variant
+                            </v-icon>
+                            Logout
+                        </v-btn>
                     </v-row>
                     <v-row class="mb-2 mt-10" justify="end">
                         <v-btn

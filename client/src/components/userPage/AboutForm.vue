@@ -1,10 +1,14 @@
 <template>
 	<v-container fluid>
-		<v-row justify="center" align="center">
-			<h1>Edit Account</h1>
+		<v-row justify="space-around" style="width: 90%; padding-left:0px" align="left">
+			<v-col style="padding-left:0px" cols="12" md="6" lg="4" justify="left" align="left">
+				<h2 style="padding-left:0px">Edit Account</h2>
+			</v-col>
+			<v-col cols="12" md="6" lg="4" justify="left" align="left">
+			</v-col>
 		</v-row>
 		<v-row justify="space-around">
-			<form style="width: 90%; margin-top: 40px">
+			<form style="width: 90%; margin-top: 30px">
 				<v-row justify="space-around">
 					<v-col cols="12" md="6" lg="4">
 						<v-text-field
@@ -30,6 +34,7 @@
 							:error-messages="emailErrors"
 							label="E-mail"
 							required
+							disabled
 							@input="$v.email.$touch()"
 							@blur="$v.email.$touch()"
 						/>
@@ -57,7 +62,7 @@
 
 						<v-file-input
 							v-model="profilePicture"
-							label="Profile picture (optional)"
+							label="New profile picture"
 							:error-messages="profilePictureErrors"
 							prepend-icon="mdi-camera"
 							@change="onFileChange"
@@ -79,8 +84,9 @@
 						<!-- Profile picture preview -->
 						<v-row justify="center" align="center" style="height: 100%">
 							<v-img
-								max-height="100%"
-								max-width="100%"
+								max-width="200px"
+								width="100%"
+								height="auto"
 								v-if="
 									profilePictureUrl.length &&
 									this.$v.profilePicture.fileTypeValidation
@@ -96,13 +102,24 @@
 				</v-row>
 				<v-row justify="center">
 					<!-- ce dam kot zgoraj :error-messages breaka input field text -->
-          
-          
 					<p v-if="locationErrors" style="color: red">{{ locationErrors }}</p>
 				</v-row>
-				<v-row>
+				<v-row justify="center">
+					<p v-if="formSubmitErrors !== ''" style="color: red">The following error ocurred while updating user data: '{{ formSubmitErrors }}'</p>
+				</v-row>
+				<v-row style="margin-top: 30px">
 					<v-col justify="center" align="center">
-						<v-btn class="mb-2" @click="submit" color="primary"> Save changes </v-btn>
+						<v-btn 
+							class="mb-2"
+							color="primary" 
+							:loading="formLoading"
+							:disabled="formLoading"
+							@click="submit"> 
+								Save changes
+								<v-icon right>
+									mdi-content-save
+								</v-icon>
+						</v-btn>
 					</v-col>
 				</v-row>
 			</form>
@@ -154,7 +171,10 @@ export default {
 		location: "",
 		locationChanged: false,
 		locationText: "",
+
 		locationErrors: "",
+		formSubmitErrors: "",
+		formLoading: false,
 	}),
 	mounted() {
 		if (this.$store.getters.user.email) {
@@ -176,13 +196,17 @@ export default {
 			this.email = this.user.email;
 			this.selectedRole = this.user.role;
 			this.locationText = this.user.city + ", " + this.user.country;
-			this.profilePictureUrl = this.user.profilePicture;
 		},
-		submit() {
+		async submit() {
+			//trigger the submit button loading animation
+			this.formLoading = true;
+			await new Promise(r => setTimeout(r, 500));	//wait for half a sec to ensure animation is seen >:)
+
 			// Validate
 			this.$v.$touch();
 
 			if (!this.validateLocation() || this.$v.$error) {
+				this.formLoading = false;
 				return;
 			}
 
@@ -196,12 +220,16 @@ export default {
 				.then(() => {
 					// ponovno nalozi userja
 					this.$store.dispatch("getUser");
-					this.$router.push("/");
+					this.formSubmitErrors = '';
 				})
 				.catch((err) => {
-					console.log("Caught error: ");
-					console.log(err.response?.data?.message || err.message);
+					console.log("Caught error: ", err.response?.data?.message || err.message);
+					//poskrbimo za izpis napake
+					this.formSubmitErrors =  err.response?.data?.message || err.message;
+					// console.log(this.formSubmitErrors);
 				});
+
+			this.formLoading = false;
 		},
 		createFormData() {
 			const formData = new FormData();
@@ -265,7 +293,7 @@ export default {
 		validateLocation() {
 			if (this.locationChanged && this.location === "") {
 				this.locationErrors = "Location is required";
-				console.log("location BAD");
+				// console.log("location BAD");
 				return false;
 			}
 			this.locationErrors = "";
@@ -336,4 +364,5 @@ export default {
 	width: 40%;
 	height: 30%;
 }
+
 </style>
