@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
 
-// enum AnimalType {
-//     Cat,Dog,Hamster,Turtle,Fish,
-//     Bird,Reptile,Rabbit,Other
-// }
-
 const AnimalSchema = new mongoose.Schema({
     name: {
         type: String,
