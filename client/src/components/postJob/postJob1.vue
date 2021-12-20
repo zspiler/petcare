@@ -48,7 +48,7 @@
                     <v-col></v-col>
                     <v-col><b>Type</b></v-col>
                     <v-col><b>Name</b></v-col>
-                    <v-col><b>Oldness</b></v-col>
+                    <v-col><b>Age</b></v-col>
                     <v-col><b>Weight</b></v-col>
                     <v-col></v-col>
                 </v-row>
@@ -93,7 +93,7 @@
         <v-row>
             <v-col  md="1" offset-md="11">
                 <router-link
-                    to="/postJob2"
+                    to="/postJob/sitter/details"
                     style="text-decoration: none; color: inherit"
                 >
                     <v-btn class="mr-4" color="primary">Next</v-btn>

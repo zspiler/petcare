@@ -6,7 +6,7 @@
             <b-col>
                 <div class="column">
                     <b-card no-body class="overflow-hidden card"  style="max-width: 650px; padding: 10px 10px 10px 15px;">
-                        <router-link to="/postJob1" style="text-decoration: none; color: inherit">
+                        <router-link to="/postJob/sitter" style="text-decoration: none; color: inherit">
                             <b-row>
                                 <b-col md="6">
                                     <v-img
