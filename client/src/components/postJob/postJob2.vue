@@ -188,6 +188,9 @@
     }),
     async created() {
         this.animals = await JSON.parse(this.$route.params.animals)
+        this.name = this.$store.getters.user.firstName
+        this.surname = this.$store.getters.user.lastName
+        this.city = this.$store.getters.user.city
     },
     watch:{
         'dateFrom':{
@@ -209,7 +212,6 @@
     methods:{
         async postService() {
             try {
-                console.log(this.name,this.surname,this.city,this.cityNumber,this.address,this.price)
                 const data = {
                     userId: this.$store.getters.user._id,
                     dateFrom: this.dateFrom,
@@ -217,9 +219,8 @@
                     pricePerDay: Number(this.pricePerDay),
                     animalsString: JSON.stringify(this.animals)
                 }
-                const response = await axios.post(`${this.url}service`,data)
-                console.log(response)
-                
+                await axios.post(`${this.url}service`,data)
+            
             } catch (err) {
                 console.error(err)
             }
