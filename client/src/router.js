@@ -10,10 +10,12 @@ import NotFound from "./components/NotFound";
 import ProtectedExample from "./components/ProtectedExample";
 import About from "./components/About";
 import UserPage from "./components/userPage/UserPage";
-import AdType from "./components/AdType";
+
+import AdType from "./components/postJob/AdType";
 import PostJob1 from "./components/postJob/postJob1";
 import PostJob2 from "./components/postJob/postJob2";
 import PostJob3 from "./components/postJob/postJob3";
+import postJobService from "./components/postJob/postJobService";
 
 Vue.use(VueRouter);
 
@@ -23,6 +25,13 @@ const routes = [
 	{ path: "/login", component: Login },
 	{ path: "/about", component: About },
 	{ path: "/type", component: AdType },
+	{ 
+		path: "/postJob/service", 
+		component: postJobService,
+		meta: {
+			protected: true,
+		},
+	},
 	{ 
 		path: "/user", 
 		component: UserPage,
