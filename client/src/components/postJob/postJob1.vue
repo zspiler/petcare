@@ -21,24 +21,29 @@
                         <v-text-field
                             label="Name"
                             required
+                            v-model="name"
                         />
                         <v-text-field
                             label="Animal type"
                             required
+                            v-model="type"
                         />
                         <v-text-field
                             label="Oldnes"
                             required
+                            v-model="oldness"
                         />
                         <v-text-field
                             label="Weight"
                             required
+                            v-model="weight"
                         />
                         <v-textarea
                             label="Short description"
                             required
+                            v-model="description"
                         />
-                         <v-btn class="mr-4" color="primary" outlined> Add animal</v-btn>
+                         <v-btn class="mr-4" color="primary" outlined @click="addAnimal()"> Add animal</v-btn>
                     </form>
                 </v-row>
 
@@ -93,7 +98,7 @@
         <v-row>
             <v-col  md="1" offset-md="11">
                 <router-link
-                    to="/postJob/animal/details"
+                    :to="{ name:'PostJob2', params: {animals: JSON.stringify(this.animals)}}"
                     style="text-decoration: none; color: inherit"
                 >
                     <v-btn class="mr-4" color="primary">Next</v-btn>
@@ -105,7 +110,32 @@
 
 <script>
     export default {
-        
+        data: () => ({
+            animals: [],
+            name: "",
+            type: "",
+            oldness: "",
+            weight: "",
+            description: "",
+        }),
+        methods:{
+            async addAnimal() {
+                try {
+                    console.log(this.$store.getters.user._id)
+                    const animal = {
+                        owner: this.$store.getters.user._id,
+                        name: this.name,
+                        type: this.type,
+                        oldness: this.oldness,
+                        weight: this.oldness,
+                        description: this.description,
+                    }
+                    this.animals.push(animal)
+                } catch (err) {
+                    console.error(err)
+                }
+            }
+        }
     };
 </script>
 

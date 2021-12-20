@@ -54,6 +54,7 @@ const routes = [
 	},
 	{ 
 		path: "/postJob/animal/details", 
+		name: "PostJob2",
 		component: PostJob2,
 		meta:{
 			protected: true

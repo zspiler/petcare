@@ -5,7 +5,6 @@
 
                 <h1>Animal needs</h1>
                 <v-virtual-scroll
-                    :bench="benched"
                     height="480"
                     item-height="150"
                     :items="items"
@@ -86,7 +85,7 @@
                         <v-row>
                             <v-col>
                                 <v-menu
-                                    v-model="menu1"
+                                    v-model="dateInputFrom"
                                     :close-on-content-click="false"
                                     :nudge-right="40"
                                     transition="scale-transition"
@@ -95,7 +94,7 @@
                                 >
                                     <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                        v-model="date"
+                                        v-model="dateFrom"
                                         label="Date from"
                                         prepend-icon="mdi-calendar"
                                         readonly
@@ -104,14 +103,14 @@
                                     ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                    v-model="date"
-                                    @input="menu1 = false"
+                                    v-model="dateFrom"
+                                    @input="dateInputFrom = false"
                                     ></v-date-picker>
                                 </v-menu>
                             </v-col>
                             <v-col>
                                 <v-menu
-                                        v-model="menu2"
+                                        v-model="dateInputTo"
                                         :close-on-content-click="false"
                                         :nudge-right="40"
                                         transition="scale-transition"
@@ -120,7 +119,7 @@
                                     >
                                         <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
-                                            v-model="date"
+                                            v-model="dateTo"
                                             label="Date to"
                                             prepend-icon="mdi-calendar"
                                             readonly
@@ -129,8 +128,8 @@
                                         ></v-text-field>
                                         </template>
                                         <v-date-picker
-                                        v-model="date"
-                                        @input="menu2 = false"
+                                        v-model="dateTo"
+                                        @input="dateInputTo = false"
                                         ></v-date-picker>
                                     </v-menu>
                             </v-col>
@@ -145,7 +144,7 @@
                             </v-col>
                         </v-row>
                         <p>Total: <b>150 €</b></p>
-                         <v-btn class="mr-4" color="primary" outlined>Post job</v-btn>
+                         <v-btn class="mr-4" color="primary" @click="testMethod()" outlined>Post job</v-btn>
                     </form>
             </v-col>
         </v-row>
@@ -163,8 +162,12 @@
 </template>
 
 <script>
+  import axios from "axios";
   export default {
+    name: "PostJob2",
     data: () => ({
+      url: 'http://localhost:5000/api/',
+      aniamls: [],
       items: [
         {
           avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
@@ -187,10 +190,32 @@
           description: `Spucaj kletko, nalij vodo`,
         },
       ],
-      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-      menu1: false,
-      menu2: false,
+      dateFrom: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      dateTo: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      dateInputFrom: false,
+      dateInputTo: false,
     }),
+    created() {
+        this.animals = this.$route.params.animals
+    },
+    methods:{
+        async testMethod() {
+            try {
+                const data = {
+                    userId: this.$store.getters.user._id,
+                    dateFrom: new Date(),
+                    dateTo: new Date(),
+                    pricePerDay: 50,
+                    animalsString: this.animals
+                }
+                const response = await axios.post(`${this.url}service`,data)
+                console.log(response)
+                
+            } catch (err) {
+                console.error(err)
+            }
+		}
+    }
   }
 </script>
 

@@ -26,6 +26,7 @@ app.use(cors());
 
 app.use("/api/auth", require("./api/auth"));
 app.use("/api/places", require("./api/places"));
+app.use("/api/service", require("./api/service"))
 
 app.use("/img", express.static(__dirname + "/public/profile_pictures"));
 
