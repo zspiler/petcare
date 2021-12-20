@@ -120,6 +120,7 @@
                         oldness: this.oldness,
                         weight: this.oldness,
                         description: this.description,
+                        serviceDescription: ''
                     }
                     this.animals.push(animal)
                 } catch (err) {
