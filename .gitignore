@@ -1,3 +1,5 @@
 .DS_Store
 client/.env.example
 server/.env.example
+client/package-lock.json
+package-lock.json
