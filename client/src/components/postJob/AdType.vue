@@ -1,6 +1,6 @@
 <template>
 	<v-container fluid >
-        <h1>Izberite tip oglasa</h1>
+        <h1>Choose post type</h1>
         <b-row class="row">
             <b-col md="1"></b-col>
             <b-col>
@@ -16,9 +16,9 @@
                                     ></v-img> 		
                                 </b-col>
                                 <b-col md="6">
-                                    <b-card-body class="cardTitle" title="Potrebujete varstvo?">
+                                    <b-card-body class="cardTitle" title="In need of sitter?">
                                         <b-card-text class="text">
-                                            Potrebujete nekoga, ki bo skrbel za vašega ljubljenčka, medtem ko boste odsotni.
+                                            You need someone, who will take care of your home pet when you are away.
                                         </b-card-text>
                                     </b-card-body>
                                 </b-col>                           
@@ -35,9 +35,9 @@
                         <router-link to="/postJob/service" style="text-decoration: none; color: inherit">
                             <b-row>
                                 <b-col md="6">
-                                    <b-card-body class="cardTitle" style="word-break: break-word" title="Nudite storitve?">
+                                    <b-card-body class="cardTitle" style="word-break: break-word" title="Offering services?">
                                     <b-card-text class="text">
-                                        Ste radi v stiku z živalmi, in vam ni težko očistiti akvarij, ter bi s tem tudi kaj zaslužili.
+                                        Do you like animals and you don't mind cleaning up after them? Would you like to make some money?
                                     </b-card-text>
                                     </b-card-body>
                                     

@@ -15,9 +15,9 @@
 				</v-col>
 				<v-col md="2" align="center">
 					<div>
-						<span style="margin: 10px 10px 0px 0px">Iščem</span>
+						<span style="margin: 10px 10px 0px 0px">Searching</span>
 						<span><ToggleButton /></span>
-						<span style="margin: 10px 0px 0px 10px">Nudim</span>
+						<span style="margin: 10px 0px 0px 10px">Offering</span>
 					</div>
 				</v-col>
 			</v-row>
@@ -26,16 +26,16 @@
 				<v-col  md="2" align="center">
 				</v-col>
 				<v-col  md="2" align="center">
-					<b><p>Ime Iskalca</p></b>
+					<b><p>Name</p></b>
 				</v-col>
 				<v-col  md="2" align="center">
-					<b><p>Žival</p></b>
+					<b><p>Animal</p></b>
 				</v-col>
 				<v-col  md="2" align="center">
-					<b><p>Od/Do</p></b>
+					<b><p>From/To</p></b>
 				</v-col>
 				<v-col md="2" align="center">
-					<b><p>Ponudba</p></b>
+					<b><p>Offer</p></b>
 				</v-col>
 			</v-row>
 
