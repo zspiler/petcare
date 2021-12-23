@@ -1,31 +1,70 @@
 <template>
-    <v-row justify="center" class="userRow">
+	<div :services="services">
+		<v-row v-for="service in services" :key="service.id" justify="center" class="userRow">
 
-		<v-col  md="2" align="center">
-			<v-img
-				src="../../assets/profile_default.png"
-				width=80
-			>
-			</v-img>
-		</v-col>
-		<v-col  md="2" align="center" class="top">
-			<b><p>Ime Iskalca</p></b>
-		</v-col>
-		<v-col  md="2" align="center" class="top">
-			<b><p>Ime Iskalca</p></b>
-		</v-col>
-		<v-col  md="2" align="center" class="top">
-			<b><p>Žival</p></b>
-		</v-col>
-		<v-col  md="2" align="center" class="top">
-			<b><p>Od/Do</p></b>
-		</v-col>
-	</v-row>
+			<v-col  md="2" align="center">
+				<v-img
+					:src="service.userProfilePicture"
+					width=80
+				>
+				</v-img>
+			</v-col>
+			<v-col  md="2" align="center" class="top">
+				<b><p>{{service.userFirstName}} {{service.userLastName}}</p></b>
+			</v-col>
+			<v-col  md="2" align="center" class="top">
+				<b><p>{{service.animal}}</p></b>
+			</v-col>
+			<v-col  md="2" align="center" class="top">
+				<b><p>{{service.dateFrom}}<br>{{service.dateTo}}</p></b>
+			</v-col>
+			<v-col  md="2" align="center" class="top">
+				<b><p>{{service.pricePerDay}} €</p></b>
+			</v-col>
+		</v-row>
+	</div>
 </template>
 <script>
+import axios from "axios";
 export default {
+	name: "HomePageAds",
 
+	data:() => ({
+		services: []
+	}),
+
+	methods:{
+
+		async getServices(){
+			try {
+				const response = await axios.get("http://localhost:5000/api/service", "")
+						
+					for (const service of response.data.services){
+
+						const s = {
+							id : service.id,
+							userFirstName: service.user.firstName,
+							userLastName: service.user.lastName,
+							userProfilePicture: this.$store.state.serverBaseUrl + 'img/' + service.user.profilePicture,
+							animal: service.animals[0].name,
+							dateFrom: new Date(service.dateFrom).toLocaleDateString(),
+							dateTo: new Date(service.dateTo).toLocaleDateString(),
+							pricePerDay: service.pricePerDay,
+						}
+						this.services.push(s)
+					}
+
+			} catch(err){
+				console.log(err)
+			}
+		}
+	},
+
+	created: function(){
+		this.getServices()
+	},
 }
+
 </script>
 <style scoped>
 	.userRow{
