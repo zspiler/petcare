@@ -15,7 +15,7 @@
 			<v-col  md="2" align="center" class="top">
 				<b><p>{{service.animal}}</p></b>
 			</v-col>
-			<v-col  md="2" align="center" class="top">
+			<v-col  md="2" align="center" class="date">
 				<b><p>{{service.dateFrom}}<br>{{service.dateTo}}</p></b>
 			</v-col>
 			<v-col  md="2" align="center" class="top">
@@ -57,6 +57,7 @@ export default {
 			} catch(err){
 				console.log(err)
 			}
+			return Promise.resolve("Dummy response to keep the console quiet");
 		}
 	},
 
@@ -71,10 +72,13 @@ export default {
 		height: 100px;
 		background-color: #F0F2EF;
 		border-radius: 10px;
-		margin: 0% 15% 0% 15%;
+		margin: 0% 15% 1% 15%;
 		box-shadow: 2px 2px #dedede;
 	}
 	.top{
 		padding-top: 40px;
+	}
+	.date{
+		padding-top: 30px;
 	}
 </style>
