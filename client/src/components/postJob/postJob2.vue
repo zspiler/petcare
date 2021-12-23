@@ -216,7 +216,7 @@
                     userId: this.$store.getters.user._id,
                     dateFrom: this.dateFrom,
                     dateTo: this.dateTo,
-                    pricePerDay: Number(this.pricePerDay),
+                    pricePerDay: Number(this.price),
                     animalsString: JSON.stringify(this.animals)
                 }
                 await axios.post(`${this.url}service`,data)
