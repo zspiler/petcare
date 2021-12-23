@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 const ServiceSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: true
     },
     sitter: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
     },
     dateFrom: {
         type: Date,
@@ -30,6 +30,6 @@ const ServiceSchema = new mongoose.Schema({
 
 });
 
-Service = mongoose.model("Service", ServiceSchema);
+Service = mongoose.model("Service", ServiceSchema, "services");
 module.exports = Service;
 
