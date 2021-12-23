@@ -12,6 +12,7 @@ router.get("/", getServices)
 router.post("/", postService)
 
 async function getServices(request, response){
+
     console.log(`GET ${path}/`);
 
     const services = await Service.find({ }).populate("animals user")
@@ -20,7 +21,6 @@ async function getServices(request, response){
         services: services
     });
 
-    response.status(200).send()
 }
 
 async function postService(request, response){
