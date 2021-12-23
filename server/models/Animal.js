@@ -25,7 +25,10 @@ const AnimalSchema = new mongoose.Schema({
     },
     serviceDescription: {
         type: String,
-    }
+    },
+    picture: {
+		type: String,
+	},
 });
 
 Animal = mongoose.model("Animal", AnimalSchema);

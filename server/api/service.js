@@ -28,7 +28,7 @@ async function postService(request, response){
     let animalsObj = []
 
     for (const animal of animals) {
-        const { owner, name, type, oldness, weight, description,serviceDescription} = animal
+        const { owner, name, type, oldness, weight, description,serviceDescription,picture,pictureUrl} = animal
         const newAnimal = await new Animal({
             name:name,
             user:owner,
@@ -36,7 +36,8 @@ async function postService(request, response){
             oldness:oldness,
             weight:weight,
             description:description,
-            serviceDescription:serviceDescription
+            serviceDescription:serviceDescription,
+            picture:pictureUrl
         }).save();
         
         animalsObj.push(newAnimal)

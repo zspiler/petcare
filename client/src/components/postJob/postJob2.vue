@@ -18,7 +18,7 @@
                                         alt="Animal's image"
                                         height="100"
                                         max-width="100"
-                                        src="https://cdn.vuetifyjs.com/images/lists/2.jpg"
+                                        :src="(item.pictureUrl)? item.pictureUrl : require('../../assets/catSilhuete.jpg')"
                                     />
                                     <b>{{item.name}}</b>
                                 </v-col>
@@ -59,32 +59,16 @@
                         </v-row>
                         <v-row>
                             <v-col>
-                                <p style="marginTop:20px; marginBottom:-30px;">Residence information will only be visible once you have confirmed your service person.</p>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col>
-                                <v-text-field
-                                    label="Address"
-                                    required
-                                    v-model="address"
-                                />
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col>
                                 <v-text-field
                                     label="City"
                                     required
                                     v-model="city"
                                 />
                             </v-col>
+                        </v-row>
+                         <v-row>
                             <v-col>
-                                <v-text-field
-                                    label="Post number"
-                                    required
-                                    v-model="cityNumber"
-                                />
+                                <p style="marginTop:10px; marginBottom:40px;">Residence information will only be visible once you have confirmed your service person.</p>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -154,16 +138,6 @@
                     </form>
             </v-col>
         </v-row>
-        <v-row justify="center" align="center">
-            <v-col  md="1" offset-md="11">
-                <router-link
-                    to="/postJob/animal/complete"
-                    style="text-decoration: none; color: inherit"
-                >
-                    <v-btn class="mr-4" color="primary">Next</v-btn>
-                </router-link>
-            </v-col>
-        </v-row>
     </v-container>
 </template>
 
@@ -216,10 +190,13 @@
                     userId: this.$store.getters.user._id,
                     dateFrom: this.dateFrom,
                     dateTo: this.dateTo,
-                    pricePerDay: Number(this.pricePerDay),
+                    pricePerDay: Number(this.price),
                     animalsString: JSON.stringify(this.animals)
                 }
-                await axios.post(`${this.url}service`,data)
+                const response = await axios.post(`${this.url}service`,data)
+                if (response.status === 200 || response.status === 203){
+                    this.$router.push('/postJob/animal/complete')
+                }
             
             } catch (err) {
                 console.error(err)

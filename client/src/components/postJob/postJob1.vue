@@ -1,23 +1,31 @@
 <template>
 	<v-container fill-height >
         <v-row justify="center" >
-            <v-col  md="5" lg="5">
+            <v-col  md="3" lg="3">
 
                 <h1>Add animal</h1>
 
                 <v-row align="center" style="margin-top: 10px">
                     <v-img
-                            class="img-circle img-animated" 
-                            alt="Animal's image"
-                            height="120"
-                            max-width="120"
-                            src="../../assets/mucekPupa.png"
-                        />
-                    <v-btn class="mr-4" color="primary" outlined> Add image</v-btn>
+                        class="img-circle img-animated" 
+                        alt="Animal's image"
+                        height="120"
+                        max-width="120"
+                        :src="(animalPictureUrl)? animalPictureUrl : require('../../assets/catSilhuete.jpg')"
+                    />
+
+
+                    <v-file-input
+						v-model="animalPicture"
+						label="Pet's picture"
+						prepend-icon="mdi-camera"
+						@change="onFileChange"
+						accept="image/*"
+					/>
                 </v-row>
 
-                <v-row>
-                    <form>
+                <v-row >
+                    <form style="width:100%">
                         <v-text-field
                             label="Name"
                             required
@@ -48,7 +56,7 @@
                 </v-row>
 
             </v-col>
-            <v-col  md="7" lg="7">
+            <v-col  md="8" lg="8">
                 <v-row align="center">
                     <v-col></v-col>
                     <v-col><b>Type</b></v-col>
@@ -71,7 +79,7 @@
                                         alt="Animal's image"
                                         max-height="60"
                                         max-width="60"
-                                        src="../../assets/mucekPupa.png"
+                                        :src="(item.pictureUrl)? item.pictureUrl : require('../../assets/catSilhuete.jpg')"
                                     />
                                 </v-col>
                                 <v-col>{{item.type}}</v-col>
@@ -109,6 +117,8 @@
             oldness: "",
             weight: "",
             description: "",
+            animalPicture: null,
+            animalPictureUrl:"",
         }),
         methods:{
             async addAnimal() {
@@ -120,7 +130,9 @@
                         oldness: this.oldness,
                         weight: this.oldness,
                         description: this.description,
-                        serviceDescription: ''
+                        serviceDescription: '',
+                        picture: this.animalPicture,
+                        pictureUrl: this.animalPictureUrl,
                     }
                     this.animals.push(animal)
                 } catch (err) {
@@ -137,7 +149,18 @@
                 } catch (err){
                     console.log(err)
                 }
-            }
+            },
+            onFileChange(file) {
+                if (!file) {
+                    this.animalPictureUrl = "";
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.animalPictureUrl = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+		},
         }
     };
 </script>
