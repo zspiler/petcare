@@ -10,6 +10,7 @@ const path = '/api/service';
 
 router.get("/", getServices)
 router.post("/", postService)
+router.post("/offer", postServiceOffer)
 
 async function getServices(request, response){
     console.log(`GET ${path}/`);
@@ -55,6 +56,26 @@ async function postService(request, response){
 
     response.status(200).send()
 
+}
+
+async function postServiceOffer(request, response){
+    const { userId, dateFrom, dateTo, pricePerDay, type,animalsType,aboutMe,experience} = request.body;
+
+    const job = new Service({
+        user: userId, 
+        sitter: null,
+        dateFrom: dateFrom, 
+        dateTo: dateTo, 
+        pricePerDay: pricePerDay,
+        type: type,
+        animalsType: animalsType,
+        aboutMe: aboutMe,
+        experience: experience
+    })
+    
+    await job.save()
+
+    response.status(200).send()
 }
 
 module.exports = router;
