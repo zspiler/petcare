@@ -14,7 +14,7 @@ const AnimalSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    oldness: {
+    age: {
         type: Number,
     },
     weight: {
@@ -25,7 +25,10 @@ const AnimalSchema = new mongoose.Schema({
     },
     serviceDescription: {
         type: String,
-    }
+    },
+    picture: {
+		type: String,
+	},
 });
 
 Animal = mongoose.model("Animal", AnimalSchema);

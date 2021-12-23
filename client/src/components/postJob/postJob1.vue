@@ -1,23 +1,31 @@
 <template>
 	<v-container fill-height >
         <v-row justify="center" >
-            <v-col  md="5" lg="5">
+            <v-col  md="3" lg="3">
 
                 <h1>Add animal</h1>
 
                 <v-row align="center" style="margin-top: 10px">
                     <v-img
-                            class="img-circle img-animated" 
-                            alt="Animal's image"
-                            height="120"
-                            max-width="120"
-                            src="../../assets/mucekPupa.png"
-                        />
-                    <v-btn class="mr-4" color="primary" outlined> Add image</v-btn>
+                        class="img-circle img-animated" 
+                        alt="Animal's image"
+                        height="120"
+                        max-width="120"
+                        :src="(animalPictureUrl)? animalPictureUrl : require('../../assets/catSilhuete.jpg')"
+                    />
+
+
+                    <v-file-input
+						v-model="animalPicture"
+						label="Pet's picture"
+						prepend-icon="mdi-camera"
+						@change="onFileChange"
+						accept="image/*"
+					/>
                 </v-row>
 
-                <v-row>
-                    <form>
+                <v-row >
+                    <form style="width:100%">
                         <v-text-field
                             label="Name"
                             required
@@ -29,9 +37,9 @@
                             v-model="type"
                         />
                         <v-text-field
-                            label="Oldnes"
+                            label="Age"
                             required
-                            v-model="oldness"
+                            v-model="age"
                         />
                         <v-text-field
                             label="Weight"
@@ -48,7 +56,7 @@
                 </v-row>
 
             </v-col>
-            <v-col  md="7" lg="7">
+            <v-col  md="8" lg="8">
                 <v-row align="center">
                     <v-col></v-col>
                     <v-col><b>Type</b></v-col>
@@ -71,12 +79,12 @@
                                         alt="Animal's image"
                                         max-height="60"
                                         max-width="60"
-                                        src="../../assets/mucekPupa.png"
+                                        :src="(item.pictureUrl)? item.pictureUrl : require('../../assets/catSilhuete.jpg')"
                                     />
                                 </v-col>
                                 <v-col>{{item.type}}</v-col>
                                 <v-col>{{item.name}}</v-col>
-                                <v-col>{{item.oldness}} years</v-col>
+                                <v-col>{{item.age}} years</v-col>
                                 <v-col>{{item.weight}} kg</v-col>
                                 <v-col>
                                     <v-btn color="error" @click="removeAnimal(item)">X</v-btn>
@@ -106,9 +114,11 @@
             animals: [],
             name: "",
             type: "",
-            oldness: "",
+            age: "",
             weight: "",
             description: "",
+            animalPicture: null,
+            animalPictureUrl:"",
         }),
         methods:{
             async addAnimal() {
@@ -117,10 +127,12 @@
                         owner: this.$store.getters.user._id,
                         name: this.name,
                         type: this.type,
-                        oldness: this.oldness,
-                        weight: this.oldness,
+                        age: this.age,
+                        weight: this.age,
                         description: this.description,
-                        serviceDescription: ''
+                        serviceDescription: '',
+                        picture: this.animalPicture,
+                        pictureUrl: this.animalPictureUrl,
                     }
                     this.animals.push(animal)
                 } catch (err) {
@@ -137,7 +149,18 @@
                 } catch (err){
                     console.log(err)
                 }
-            }
+            },
+            onFileChange(file) {
+                if (!file) {
+                    this.animalPictureUrl = "";
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.animalPictureUrl = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+		},
         }
     };
 </script>
