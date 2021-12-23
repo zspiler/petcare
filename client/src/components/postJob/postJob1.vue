@@ -37,9 +37,9 @@
                             v-model="type"
                         />
                         <v-text-field
-                            label="Oldnes"
+                            label="Age"
                             required
-                            v-model="oldness"
+                            v-model="age"
                         />
                         <v-text-field
                             label="Weight"
@@ -84,7 +84,7 @@
                                 </v-col>
                                 <v-col>{{item.type}}</v-col>
                                 <v-col>{{item.name}}</v-col>
-                                <v-col>{{item.oldness}} years</v-col>
+                                <v-col>{{item.age}} years</v-col>
                                 <v-col>{{item.weight}} kg</v-col>
                                 <v-col>
                                     <v-btn color="error" @click="removeAnimal(item)">X</v-btn>
@@ -114,7 +114,7 @@
             animals: [],
             name: "",
             type: "",
-            oldness: "",
+            age: "",
             weight: "",
             description: "",
             animalPicture: null,
@@ -127,8 +127,8 @@
                         owner: this.$store.getters.user._id,
                         name: this.name,
                         type: this.type,
-                        oldness: this.oldness,
-                        weight: this.oldness,
+                        age: this.age,
+                        weight: this.age,
                         description: this.description,
                         serviceDescription: '',
                         picture: this.animalPicture,

@@ -14,7 +14,7 @@ const AnimalSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    oldness: {
+    age: {
         type: Number,
     },
     weight: {
