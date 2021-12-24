@@ -106,8 +106,13 @@ async function postSearchService(request,response){
     const services = await Service.find(query)
         .sort(sort)
         .populate("animals user",null,cityQuery)
-    
-    response.json(services)
+
+    //Remove services where user is null
+    const filtered = services.filter(function (service) {
+        return service.user !== null;
+    });
+
+    response.json(filtered)
 }
 
 module.exports = router;

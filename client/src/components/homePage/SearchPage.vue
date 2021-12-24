@@ -5,12 +5,12 @@
 				src="../../assets/home.png"
 			></v-img> 
 			<v-row justify="center" style="margin-top:20px">
-				<v-col md="2" align="center">
+				<!-- <v-col md="2" align="center">
                     <v-text-field
                         label="Search"
                         outlined
                     > </v-text-field>
-				</v-col>
+				</v-col> -->
 				<v-col  md="2" align="center">
                     <v-row align="center" justify="center">
                         <span style="margin: 10px 10px -20px 0px">Searching</span>
@@ -51,12 +51,7 @@
 						v-model="animalType"
 					></v-select>
 				</v-col>
-				<v-col  md="2" align="center">
-					<v-select
-						label="Date"
-						outlined
-					></v-select>
-				</v-col>   
+ 
             </v-row>
 			
 			<v-row justify="center" class="headerRow">	
@@ -76,26 +71,41 @@
 				</v-col>
 			</v-row>
 
-			<span><HomePageAds /></span>
-			<v-btn @click="getData()"> test</v-btn>
-			<center>
-				<v-btn class="mr-5" color="primary" style="margin-top: 80px;" outlined>Show more</v-btn>
-			</center>
-			
+			<div :services="services">
+				<v-row v-for="service in services" :key="service.id" justify="center" class="userRow">
+
+					<v-col  md="2" align="center">
+						<v-img
+							:src="service.userProfilePicture"
+							width=80
+						>
+						</v-img>
+					</v-col>
+					<v-col  md="2" align="center" class="top">
+						<b><p>{{service.userFirstName}} {{service.userLastName}}</p></b>
+					</v-col>
+					<v-col  md="2" align="center" class="top">
+						<b><p>{{service.animal}}</p></b>
+					</v-col>
+					<v-col  md="2" align="center" class="date">
+						<b><p>{{service.dateFrom}}<br>{{service.dateTo}}</p></b>
+					</v-col>
+					<v-col  md="2" align="center" class="top">
+						<b><p>{{service.pricePerDay}} €</p></b>
+					</v-col>
+				</v-row>
+			</div>			
 	</v-container>
 </template>
 
 <script>
 
-	import HomePageAds from './HomePageAds.vue'
 	import axios from "axios";
 	export default {
 		name: 'Search',
-
-		components: {
-			HomePageAds,
+		created: function(){
+			this.getData()
 		},
-
 		data: () => ({
 			url: 'http://localhost:5000/api/',
 			regions: ['Ljubljana','Maribor','Celje','Kranj','Koper','Velenje','Novo mesto','Ptuj','Krško'],
@@ -105,6 +115,7 @@
 			region:'',
 			animalType:'',
 			sortByValue:'',
+			services: [],
 		}),
 		methods: {
 			async getData(){
@@ -115,15 +126,46 @@
 						animalType: this.animalType,
 						sortBy: this.sortByValue,
 					}
-					console.log(data)
+					
 					const response = await axios.post(`${this.url}service/search`,data)
-					console.log(response.data)
+					this.services=[]
+					for (const service of response.data){
+						const s = {
+							id : service.id,
+							userFirstName: service.user.firstName,
+							userLastName: service.user.lastName,
+							userProfilePicture: this.$store.state.serverBaseUrl + 'img/' + service.user.profilePicture,
+							animal: service.animals[0].name,
+							dateFrom: new Date(service.dateFrom).toLocaleDateString(),
+							dateTo: new Date(service.dateTo).toLocaleDateString(),
+							pricePerDay: service.pricePerDay,
+						}
+						this.services.push(s)
+					}
 
 				
 				} catch (err) {
 					console.error(err)
 				}
 			}
+		},
+		watch : {
+			offering: function(val){
+				this.offering = val
+				this.getData();
+			},
+			region: function(val){
+				this.region = val
+				this.getData();
+			},
+			animalType:  function(val){
+				this.animalType = val
+				this.getData();
+			},
+			sortByValue: function(val){
+				this.sortByValue = val
+				this.getData();
+			}, 
 		}
 	}
 	
