@@ -12,12 +12,15 @@ router.get("/", getServices)
 router.post("/", postService)
 
 async function getServices(request, response){
+
     console.log(`GET ${path}/`);
 
-    //const user = await User.findOne({ email: request.email });
-    console.log(request)
+    const services = await Service.find({ }).populate("animals user")
 
-    response.status(200).send()
+    response.json({
+        services: services
+    });
+
 }
 
 async function postService(request, response){

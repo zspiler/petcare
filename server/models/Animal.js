@@ -31,5 +31,5 @@ const AnimalSchema = new mongoose.Schema({
 	},
 });
 
-Animal = mongoose.model("Animal", AnimalSchema);
+Animal = mongoose.model("Animal", AnimalSchema, "animals");
 module.exports = Animal;
