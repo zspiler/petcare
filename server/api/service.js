@@ -10,6 +10,8 @@ const path = '/api/service';
 
 router.get("/", getServices)
 router.post("/", postService)
+router.post("/offer", postServiceOffer)
+router.post("/search", postSearchService)
 
 async function getServices(request, response){
 
@@ -28,6 +30,7 @@ async function postService(request, response){
 
     const { userId, dateFrom, dateTo, pricePerDay, animalsString} = request.body;
     const animals = JSON.parse(animalsString)
+    const animalsType = []
     let animalsObj = []
 
     for (const animal of animals) {
@@ -42,7 +45,7 @@ async function postService(request, response){
             serviceDescription:serviceDescription,
             picture:pictureUrl
         }).save();
-        
+        animalsType.push(type)
         animalsObj.push(newAnimal)
     }
        
@@ -52,12 +55,67 @@ async function postService(request, response){
         dateFrom: dateFrom, 
         dateTo: dateTo, 
         pricePerDay: pricePerDay,
-        animals: animalsObj
+        animals: animalsObj,
+        animalsType: animalsType
     })
     await job.save()
 
     response.status(200).send()
 
+}
+
+async function postServiceOffer(request, response){
+    const { userId, dateFrom, dateTo, pricePerDay, type,animalsType,aboutMe,experience} = request.body;
+
+    const job = new Service({
+        user: userId, 
+        sitter: null,
+        dateFrom: dateFrom, 
+        dateTo: dateTo, 
+        pricePerDay: pricePerDay,
+        type: type,
+        animalsType: animalsType,
+        aboutMe: aboutMe,
+        experience: experience
+    })
+    
+    await job.save()
+
+    response.status(200).send()
+}
+
+async function postSearchService(request,response){
+    console.log(`post ${path}/search`);
+
+    const { offering,region,animalType,sortBy} = request.body;
+    
+    let query = {
+        type: offering ? 'serviceOffering' : 'petSitting',
+    }
+    if(animalType !== '') query.animalsType = {$in: animalType}
+    
+    let cityQuery = {}
+    if(region !== '') cityQuery.city=region
+
+    let sort = {}
+    let sortType = sortBy.includes('ascending') ? 'ascending' : 'descending' 
+    if(sortBy.includes('Date')) {
+        sort.dateFrom=sortType
+    }
+    if(sortBy.includes('Price')) {
+        sort.pricePerDay=sortType
+    }
+
+    const services = await Service.find(query)
+        .sort(sort)
+        .populate("animals user",null,cityQuery)
+
+    //Remove services where user is null
+    const filtered = services.filter(function (service) {
+        return service.user !== null;
+    });
+
+    response.json(filtered)
 }
 
 module.exports = router;

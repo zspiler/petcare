@@ -27,7 +27,19 @@ const ServiceSchema = new mongoose.Schema({
         ref: 'Animal',
         required: true
     }],
-
+    type: {
+        type: String,
+        default: 'petSitting',
+    },
+    animalsType:[{
+        type: String,
+    }],
+    aboutMe: {
+        type: String,
+    },
+    experience:{
+        type:String,
+    },
 });
 
 Service = mongoose.model("Service", ServiceSchema, "services");

@@ -7,6 +7,7 @@
                     <v-row>
                         <v-col>
                             <v-textarea class="inputField"
+                                        v-model="aboutMe"
                             />
                         </v-col>
                     </v-row>
@@ -14,6 +15,7 @@
                     <v-row>
                         <v-col>
                             <v-textarea class="inputField"
+                                        v-model="experience"
                             />
                         </v-col>
                     </v-row>
@@ -29,7 +31,7 @@
                                 <v-text-field
                                     required
                                     class="inputFieldSmall"      
-                                    :value="[[user.firstName]]"                    
+                                    v-model="name"                   
                                     />
                                 </span>
                             </v-col>
@@ -37,21 +39,32 @@
                                 <v-text-field
                                     required
                                     class="inputFieldSmall"
-                                    :value="[[user.lastName]]"
+                                    v-model="surname"
+                                />
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-text-field
+                                    label="City"
+                                    required
+                                    v-model="city"
                                 />
                             </v-col>
                         </v-row>
                         <p>Animals that I am willing to sit:</p>
-                        <div class="animals" :items="items">
-                            <v-row v-for="i in 3" v-bind:key="i">
-                                <v-col v-for="j in 4" v-bind:key="j">
-                                    <label for="checkbox">
-                                        <input type="checkbox" id="checkbox" />
-                                        {{items[0].animal}}
-                                    </label>
-                                </v-col>
-                            </v-row>
-                        </div>
+                        <v-row  justify="center">
+                            <v-col md="10">
+                                <v-combobox
+                                    v-model="select"
+                                    :items="items"
+                                    label="Type of animals"
+                                    multiple
+                                    outlined
+                                    dense
+                                ></v-combobox>
+                            </v-col>
+                        </v-row>
                         <v-row style="margin-bottom: -30px;">
                             <v-col style="text-align:left; margin-left: 5px; font-size: 14px;">
                                 I offer service
@@ -72,7 +85,7 @@
                                 >
                                     <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                        v-model="date"
+                                        v-model="dateFrom"
                                         label="Date from"
                                         prepend-icon="mdi-calendar"
                                         readonly
@@ -81,8 +94,8 @@
                                     ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                    v-model="date"
-                                    @input="menu1 = false"
+                                        v-model="dateFrom"
+                                        @input="dateInputFrom = false"
                                     ></v-date-picker>
                                 </v-menu>
                             </v-col>
@@ -97,7 +110,7 @@
                                     >
                                         <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
-                                            v-model="date"
+                                            v-model="dateTo"
                                             label="Date to"
                                             prepend-icon="mdi-calendar"
                                             readonly
@@ -106,8 +119,8 @@
                                         ></v-text-field>
                                         </template>
                                         <v-date-picker
-                                        v-model="date"
-                                        @input="menu2 = false"
+                                            v-model="dateTo"
+                                            @input="dateInputTo = false"
                                         ></v-date-picker>
                                     </v-menu>
                             </v-col>
@@ -115,13 +128,14 @@
                                 <v-text-field
                                     required
                                     class="inputFieldSmall"
+                                    v-model="price"
                                 />
                             </v-col>
                         </v-row>
                         <v-row>
                         </v-row>
-                        <p>Total: <b>150 €</b></p>
-                         <v-btn class="mr-4" color="primary" outlined>Post job</v-btn>
+                        <p>Total: <b>{{this.calculatedPrice}} €</b></p>
+                         <v-btn class="mr-4" color="primary" outlined @click="postService()">Post job</v-btn>
                     </form>
             </v-col>
         </v-row>
@@ -129,29 +143,90 @@
 </template>
 
 <script>
+  import axios from "axios";
   export default {
     computed: {
 		user() {
 			return this.$store.getters.user;
         }
     },
-    data: () => ({
-      items: [
-        {animal: 'Cat'},
-        {animal: 'Dog'},
-        {animal: 'Hamster'},
-        {animal: 'Turtle'},
-        {animal: 'Fish'},
-        {animal: 'Parrot'},
-        {animal: 'Reptile'},
-        {animal: 'Rabbit'},
-        {animal: 'Dinosaur'},
-        {animal: 'Other mammal'},
-        {animal: 'Other bird'},
-        {animal: 'Other'},
-      ],
-      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+   data: () => ({
+        url: 'http://localhost:5000/api/',
+        name: '',
+        surname: '',
+        city: '',
+        aboutMe: '',
+        experience:'',
+        price: 0,
+        calculatedPrice: 0,
+        animals: [],
+        dateFrom: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        dateTo: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        dateInputFrom: false,
+        dateInputTo: false,
+        selected:[],
+        items: [
+            'Cat',
+            'Dog',
+            'Hamster',
+            'Turtle',
+            'Fish',
+            'Parrot',
+            'Reptile',
+            'Rabbit',
+            'Dinosaur',
+            'Other mammal',
+            'Other bird',
+            'Other',
+        ],
     }),
+    async created() {
+        this.name = this.$store.getters.user.firstName
+        this.surname = this.$store.getters.user.lastName
+        this.city = this.$store.getters.user.city
+    },
+    watch:{
+        'dateFrom':{
+            handler: function() {
+                this.calculatedPrice = this.price * this.dateDiff()
+            },
+        },
+        'dateTo':{
+            handler: function() {
+                this.calculatedPrice = this.price * this.dateDiff()
+            },
+        },
+        'price':{
+            handler: function() {
+                this.calculatedPrice = this.price * this.dateDiff()
+            },
+        }
+    },
+    methods:{
+        async postService() {
+            try {
+                const data = {
+                    userId: this.$store.getters.user._id,
+                    dateFrom: this.dateFrom,
+                    dateTo: this.dateTo,
+                    pricePerDay: Number(this.price),
+                    type: 'serviceOffering',
+                    animalsType: this.selected,
+                    aboutMe: this.aboutMe,
+                    experience: this.experience
+                }
+                await axios.post(`${this.url}service/offer`,data)
+            
+            } catch (err) {
+                console.error(err)
+            }
+		},
+        dateDiff(){
+            var Difference_In_Time = new Date(this.dateTo).getTime() - new Date(this.dateFrom).getTime();
+            var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+            return Difference_In_Days
+        }
+    },
   }
 </script>
 

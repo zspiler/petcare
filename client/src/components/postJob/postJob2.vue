@@ -191,7 +191,7 @@
                     dateFrom: this.dateFrom,
                     dateTo: this.dateTo,
                     pricePerDay: Number(this.price),
-                    animalsString: JSON.stringify(this.animals)
+                    animalsString: JSON.stringify(this.animals),
                 }
                 const response = await axios.post(`${this.url}service`,data)
                 if (response.status === 200 || response.status === 203){

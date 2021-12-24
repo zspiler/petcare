@@ -16,6 +16,7 @@ import PostJob1 from "./components/postJob/postJob1";
 import PostJob2 from "./components/postJob/postJob2";
 import PostJob3 from "./components/postJob/postJob3";
 import postJobService from "./components/postJob/postJobService";
+import Search from "./components/homePage/SearchPage.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,7 @@ const routes = [
 	{ path: "/register", component: Register },
 	{ path: "/login", component: Login },
 	{ path: "/about", component: About },
+	{ path: "/search", component: Search },
 	{ 
 		path: "/postJob", 
 		component: postJob,

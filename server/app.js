@@ -6,8 +6,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+
 
 // Connect to database
 (async function () {
@@ -20,8 +19,9 @@ app.use(express.json());
 	}
 })();
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({limit: '200mb', extended: true}));
+app.use(express.json({limit: '200mb'}));
+app.use(express.text({ limit: '200mb' }));
 app.use(cors());
 
 app.use("/api/auth", require("./api/auth"));
