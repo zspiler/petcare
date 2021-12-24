@@ -11,6 +11,7 @@ const path = '/api/service';
 router.get("/", getServices)
 router.post("/", postService)
 router.post("/offer", postServiceOffer)
+router.post("/search", postSearchService)
 
 async function getServices(request, response){
     console.log(`GET ${path}/`);
@@ -26,6 +27,7 @@ async function postService(request, response){
 
     const { userId, dateFrom, dateTo, pricePerDay, animalsString} = request.body;
     const animals = JSON.parse(animalsString)
+    const animalsType = []
     let animalsObj = []
 
     for (const animal of animals) {
@@ -40,7 +42,7 @@ async function postService(request, response){
             serviceDescription:serviceDescription,
             picture:pictureUrl
         }).save();
-        
+        animalsType.push(type)
         animalsObj.push(newAnimal)
     }
        
@@ -50,7 +52,8 @@ async function postService(request, response){
         dateFrom: dateFrom, 
         dateTo: dateTo, 
         pricePerDay: pricePerDay,
-        animals: animalsObj
+        animals: animalsObj,
+        animalsType: animalsType
     })
     await job.save()
 
@@ -76,6 +79,35 @@ async function postServiceOffer(request, response){
     await job.save()
 
     response.status(200).send()
+}
+
+async function postSearchService(request,response){
+    console.log(`post ${path}/search`);
+
+    const { offering,region,animalType,sortBy} = request.body;
+    
+    let query = {
+        type: offering ? 'serviceOffering' : 'petSitting',
+    }
+    if(animalType !== '') query.animalsType = {$in: animalType}
+    
+    let cityQuery = {}
+    if(region !== '') cityQuery.city=region
+
+    let sort = {}
+    let sortType = sortBy.includes('ascending') ? 'ascending' : 'descending' 
+    if(sortBy.includes('Date')) {
+        sort.dateFrom=sortType
+    }
+    if(sortBy.includes('Price')) {
+        sort.pricePerDay=sortType
+    }
+
+    const services = await Service.find(query)
+        .sort(sort)
+        .populate("animals user",null,cityQuery)
+    
+    response.json(services)
 }
 
 module.exports = router;

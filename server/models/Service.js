@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 const ServiceSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: true
     },
     sitter: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
     },
     dateFrom: {
         type: Date,

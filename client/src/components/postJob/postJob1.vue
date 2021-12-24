@@ -31,11 +31,12 @@
                             required
                             v-model="name"
                         />
-                        <v-text-field
-                            label="Animal type"
-                            required
-                            v-model="type"
-                        />
+                        <v-select 
+                            label="Animal type" 
+                            required 
+                            :items="animalTypes" 
+                            v-model="type" 
+                        ></v-select>
                         <v-text-field
                             label="Age"
                             required
@@ -111,6 +112,7 @@
 <script>
     export default {
         data: () => ({
+            animalTypes: ['Cat','Dog','Hamster','Turtle','Fish','Parrot','Reptile','Rabbit','Dinosaur','Other mammal','Other bird','Other'],
             animals: [],
             name: "",
             type: "",
@@ -120,6 +122,9 @@
             animalPicture: null,
             animalPictureUrl:"",
         }),
+        async created() {
+            this.animalTypes
+        },
         methods:{
             async addAnimal() {
                 try {
@@ -128,7 +133,7 @@
                         name: this.name,
                         type: this.type,
                         age: this.age,
-                        weight: this.age,
+                        weight: this.weight,
                         description: this.description,
                         serviceDescription: '',
                         picture: this.animalPicture,

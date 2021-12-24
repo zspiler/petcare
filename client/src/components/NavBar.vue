@@ -14,7 +14,7 @@
 		</router-link>
 		<v-spacer></v-spacer>
 		<router-link
-				to="/jobs"
+				to="/search"
 				style="text-decoration: none; color: inherit"
 			>
 			<v-btn class="mr-5" color="primary" outlined>Find Job</v-btn>
