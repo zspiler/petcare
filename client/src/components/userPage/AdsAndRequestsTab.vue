@@ -1,10 +1,10 @@
 <template>
-  <p>Not implemented...</p>
+    <p>Not implemented...</p>
 </template>
 
 <script>
 export default {
-    name: "AboutForm",
+    name: "AdsAndRequestsForm",
 }
 </script>
 

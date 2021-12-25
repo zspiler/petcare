@@ -1,10 +1,10 @@
 <template>
 	<v-container fluid>
-		<v-row justify="space-around" style="width: 90%; padding-left:0px" align="left">
-			<v-col style="padding-left:0px" cols="12" md="6" lg="4" justify="left" align="left">
+		<v-row justify="space-around" style="width: 90%; padding-left:0px" align="start">
+			<v-col style="padding-left:0px" cols="12" md="6" lg="4" justify="left">
 				<h2 style="padding-left:0px">Edit Account</h2>
 			</v-col>
-			<v-col cols="12" md="6" lg="4" justify="left" align="left">
+			<v-col cols="12" md="6" lg="4" justify="left" >
 			</v-col>
 		</v-row>
 		<v-row justify="space-around">
@@ -74,7 +74,6 @@
 						md="12"
 						lg="2"
 						justify="center"
-						align="center"
 						v-if="
 							profilePictureUrl &&
 							profilePictureUrl.length &&
@@ -107,10 +106,10 @@
 				<v-row justify="center">
 					<p v-if="formSubmitErrors !== ''" style="color: red">The following error ocurred while updating user data: '{{ formSubmitErrors }}'</p>
 				</v-row>
-				<v-row style="margin-top: 30px">
+				<v-row style="margin-top: 10px">
 					<v-col justify="center" align="center">
 						<v-btn 
-							class="mb-2"
+							class="mb-1"
 							color="primary" 
 							:loading="formLoading"
 							:disabled="formLoading"
@@ -147,7 +146,7 @@ function fileTypeValidation(file) {
 }
 
 export default {
-	name: "AboutForm",
+	name: "AboutTab",
 	components: {},
 	validations: {
 		firstName: { required, maxLength: maxLength(20) },

@@ -122,7 +122,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .mycontainer {
    margin-bottom: 0px;
    padding-bottom: 0px;

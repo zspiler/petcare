@@ -6,7 +6,7 @@
             src="../../assets/userPageBackground.png"
         ></v-img>
            
-		<v-row justify="space-around" style="height:70%" class="pt-10">
+		<v-row justify="space-around" style="height:70%;" class="pt-10">
 			<v-col  cols="6" md="2" align="center">
                  <v-img
                     style="margin-top:-200px; margin-bottom:72px"
@@ -21,7 +21,7 @@
                         <v-btn color="primary" class="menu-btn" :outlined="menuTab != 'about'" @click="menuButtonClick('about')" >About you</v-btn>
                     </v-row>
                     <v-row align="center" class=" menu-row" >
-                        <v-btn color="primary" class="menu-btn" :outlined="menuTab != 'pets'"  @click="menuButtonClick('pets')">Your pets</v-btn>
+                        <v-btn color="primary" class="menu-btn" :outlined="menuTab != 'gallery'"  @click="menuButtonClick('gallery')">Gallery</v-btn>
                     </v-row>
                     <v-row align="center" class=" menu-row" >
                         <v-btn color="primary" class="menu-btn" :outlined="menuTab != 'adsAndRequests'" @click="menuButtonClick('adsAndRequests')">{{ adsAndRequestsButtonTxt }}</v-btn>
@@ -35,10 +35,13 @@
 
                 </v-container>
 			</v-col>
-            <v-col  cols="10" md="8"  align="center" style="width:80%">
+            <v-col  cols="10" md="8" style="width:80%">
 				<v-container class="border-container">
-                    <AboutForm v-if="menuTab === 'about'"/>
-                    <PetsForm v-if="menuTab !== 'about'"/>
+                    <AboutTab v-if="menuTab === 'about'"/>
+                    <GalleryTab v-if="menuTab === 'gallery'"/>
+                    <AdsAndRequestsTab v-if="menuTab === 'adsAndRequests'"/>
+                    <HistoryTab v-if="menuTab === 'history'"/>
+                    <SettingsTab v-if="menuTab === 'settings'"/>
                 </v-container>
 			</v-col>
             
@@ -52,8 +55,11 @@
 
 <script>
 
-import AboutForm from "./AboutForm"
-import PetsForm from "./PetsForm"
+import AboutTab from "./AboutTab"
+import GalleryTab from "./GalleryTab"
+import AdsAndRequestsTab from "./AdsAndRequestsTab"
+import HistoryTab from "./HistoryTab"
+import SettingsTab from "./SettingsTab"
 
 export default {
     name: "UserPage",
@@ -87,8 +93,11 @@ export default {
         }
 	},
 	components: { 
-        AboutForm,
-        PetsForm,
+        AboutTab,
+        GalleryTab,
+        AdsAndRequestsTab,
+        HistoryTab,
+        SettingsTab,
     },
 }
 </script>
@@ -102,7 +111,7 @@ export default {
     border-color:  #448aff;
     border-radius: 5px;
     /* padding-block: 30px; */
-    padding-top: 20px;
+    /* padding-top: 20px; */
 }
 .menu-btn {
     width: 80%;
