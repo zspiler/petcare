@@ -14,10 +14,11 @@ router.post("/offer", postServiceOffer)
 router.post("/search", postSearchService)
 
 async function getServices(request, response){
-
     console.log(`GET ${path}/`);
 
-    const services = await Service.find({ }).populate("animals user")
+    const services = await Service.find({ 
+        type: 'petSitting'
+    }).populate("animals user")
 
     response.json({
         services: services
