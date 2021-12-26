@@ -69,6 +69,11 @@ export default new Vuex.Store({
 		},
 		register({ commit }, payload) {
 			return new Promise((resolve, reject) => {
+				console.log("REGISTER FORMDATA: ");
+				for (var pair of payload.entries()) {
+					console.log(pair[0] + ", " + pair[1]);
+				}
+
 				commit("authLoading");
 				axios
 					.post("/api/auth/register", payload, {

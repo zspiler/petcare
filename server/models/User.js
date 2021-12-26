@@ -35,6 +35,18 @@ const UserSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	gallery: [
+		{
+			name: {
+				type: String,
+				required: true,
+			},
+			url: {
+				type: String,
+				required: true,
+			},
+		},
+	],
 });
 
 User = mongoose.model("user", UserSchema);
