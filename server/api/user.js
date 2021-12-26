@@ -41,7 +41,7 @@ const upload = multer({
 
 router.post("/gallery", body("title").notEmpty(), auth, async (req, res) => {
 	// Validate
-	const validationErrors = validationResult(req.body);
+	const validationErrors = validationResult(req);
 	if (!validationErrors.isEmpty()) {
 		console.log("validation errors");
 		console.log(validationErrors.array());
@@ -108,17 +108,6 @@ router.get("/gallery", auth, async (req, res) => {
 	if (!user) {
 		return res.status(409).json({ message: "Could not find user" });
 	}
-
-	// const gallery = user.gallery.map(function (pic) {
-	// 	pic["nig"] = 42;
-	// 	pic["id"] = pic["_id"];
-	// 	delete pic["_id"];
-	// 	return pic;
-	// });
-
-	// console.log("modified gallery: ");
-	// console.log(gallery);
-
 	res.json({
 		gallery: user.gallery,
 	});
@@ -133,21 +122,14 @@ router.delete("/gallery/:pictureId", param("pictureId").notEmpty(), auth, async 
 		return res.status(409).json({ message: "Could not find user" });
 	}
 
-	console.log("req params: " + JSON.stringify(req.params));
-
 	await User.findOneAndUpdate(
-		{
-			_id: user._id,
-		},
+		{ _id: user._id },
 		{
 			$pull: {
 				gallery: {
 					_id: req.params.pictureId,
 				},
 			},
-		},
-		{
-			returnDocument: "after",
 		}
 	);
 
@@ -155,5 +137,46 @@ router.delete("/gallery/:pictureId", param("pictureId").notEmpty(), auth, async 
 		message: "Picture deleted successfully",
 	});
 });
+
+// PUT api/user/gallery/:pictureId
+// Edit a picture in user's gallery
+
+router.put(
+	"/gallery/:pictureId",
+	param("pictureId").notEmpty(),
+	body("name").notEmpty(),
+	auth,
+	async (req, res) => {
+		// Validate
+		const validationErrors = validationResult(req);
+		if (!validationErrors.isEmpty()) {
+			console.log("validation errors");
+			console.log(validationErrors.array());
+			return res.status(400).json({
+				message: "Invalid parameters",
+				errors: validationErrors.array(),
+			});
+		}
+
+		const user = await User.findOne({ email: req.email });
+		if (!user) {
+			return res.status(409).json({ message: "Could not find user" });
+		}
+
+		await User.findOneAndUpdate(
+			{ _id: user._id },
+			{ $set: { "gallery.$[el].name": req.body.name } },
+			{
+				arrayFilters: [{ "el._id": req.params.pictureId }],
+				new: true,
+				returnDocument: "after",
+			}
+		);
+
+		res.json({
+			message: "Picture edited successfully",
+		});
+	}
+);
 
 module.exports = router;

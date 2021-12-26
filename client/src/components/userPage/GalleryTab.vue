@@ -219,8 +219,6 @@ export default {
 				.then((res) => {
 					this.loading = false;
 					this.pictures = res.data.gallery;
-
-					console.log(this.pictures);
 				})
 				.catch((err) => {
 					this.loading = false;
@@ -229,10 +227,9 @@ export default {
 				});
 		},
 		getProfilePicUrl() {
-			var a =
-				this.$store.state.serverBaseUrl + "img/" + this.$store.getters.user.profilePicture;
-			// console.log("profilePicPath", a);
-			return a;
+			return (
+				this.$store.state.serverBaseUrl + "img/" + this.$store.getters.user.profilePicture
+			);
 		},
 		menuButtonClick(name) {
 			if (name) this.menuTab = name;
@@ -240,17 +237,30 @@ export default {
 		editImage(pic) {
 			this.editPic = { ...pic };
 			this.editPicDialog = true;
-			console.log(pic);
 		},
 		saveEditPic() {
 			this.editPicDialog = false;
-			this.pictures.find((pic) => pic._id == this.editPic._id).name = this.editPic.name;
 
-			// TODO: edit API call
+			this.loading = true;
+			axios
+				.put(`/api/user/gallery/${this.editPic._id}`, {
+					name: this.editPic.name,
+				})
+				.then(() => {
+					this.loading = false;
+					this.pictures.find((pic) => pic._id == this.editPic._id).name =
+						this.editPic.name;
+				})
+				.catch((err) => {
+					this.loading = false;
+					console.log("Caught error: ", err.response?.data?.message || err.message);
+					this.formSubmitErrors = err.response?.data?.message || err.message;
+				});
 		},
 		deleteEditPic() {
 			this.editPicDialog = false;
 
+			this.loading = true;
 			axios
 				.delete(`/api/user/gallery/${this.editPic._id}`)
 				.then(() => {
@@ -304,16 +314,6 @@ export default {
 				};
 				reader.readAsDataURL(file);
 			}
-
-			// //check validation and update button enabled status
-			// if(this.$v.newPicture.fileSizeValidation && this.$v.newPicture.fileTypeValidation) {
-			//     this.addPic.isInError = false;
-			//     console.log("OnFileChange: not in error");
-			// }
-			// else if (this.addPic.url === '')
-			//     this.addPic.isInError = false;
-			// else
-			//     this.addPic.isInError = true;
 		},
 	},
 };
