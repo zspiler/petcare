@@ -1,10 +1,10 @@
 <template>
-	<v-container fill-height >
+	<v-container fill-height>
 		<v-row justify="center" align="center">
-			<v-col  md="6" lg="4" >
+			<v-col md="6" lg="4">
 				<v-img
-					style="margin-left:-30px"
-					width=250
+					style="margin-left: -30px"
+					width="250"
 					src="../assets/petcareLogo2.svg"
 				></v-img>
 				<h1>Log In</h1>
@@ -32,19 +32,13 @@
 					></v-text-field>
 
 					<v-btn class="mr-4" @click="submit" color="primary"> Login </v-btn>
-					<router-link
-						to="/register"
-						style="text-decoration: none; color: inherit"
-					>
+					<router-link to="/register" style="text-decoration: none; color: inherit">
 						<v-btn class="mr-4" color="primary" outlined> Register </v-btn>
 					</router-link>
 				</form>
-				
 			</v-col>
-			<v-col md="6" lg="8" >
-				<v-img
-					src="../assets/loginDogs.png"
-				></v-img>
+			<v-col md="6" lg="8">
+				<v-img src="../assets/loginDogs.png"></v-img>
 			</v-col>
 		</v-row>
 		<ScaleLoader class="loader" v-if="authStatus === 'loading'" />
@@ -63,8 +57,8 @@ export default {
 		password: { required },
 	},
 	data: () => ({
-		email: "janvrbinc@gmail.com",
-		password: "janvrbinc",
+		email: "",
+		password: "",
 		showPasswords: false,
 	}),
 	methods: {
