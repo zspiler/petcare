@@ -56,7 +56,7 @@
                         <v-row  justify="center">
                             <v-col md="10">
                                 <v-combobox
-                                    v-model="select"
+                                    v-model="selected"
                                     :items="items"
                                     label="Type of animals"
                                     multiple
