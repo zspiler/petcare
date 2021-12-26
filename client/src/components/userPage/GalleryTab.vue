@@ -16,7 +16,7 @@
 										style="margin-inline: 20px"
 										maxWidth="100%"
 										height="100px"
-										:src="pic.url"
+										:src="$store.state.serverBaseUrl + 'gallery/' + pic.url"
 									></v-img>
 
 									<v-card-title
@@ -128,11 +128,13 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
+		<ScaleLoader class="loader" v-if="loading" />
 	</v-card>
 </template>
 
 <script>
 import axios from "axios";
+import ScaleLoader from "vue-spinner/src/ScaleLoader.vue";
 
 function fileSizeValidation(file) {
 	if (!file) {
@@ -150,6 +152,9 @@ function fileTypeValidation(file) {
 
 export default {
 	name: "GalleryTab",
+	components: {
+		ScaleLoader,
+	},
 	data: () => ({
 		pictures: [
 			// {
@@ -168,6 +173,7 @@ export default {
 			//     name: "kuza"
 			// },
 		],
+		loading: false,
 		slikca: "../../assets/userPageBackground.png",
 		overlay: false,
 
@@ -262,6 +268,7 @@ export default {
 			formData.set("picture", this.newPicture);
 			formData.set("title", this.addPic.name);
 
+			this.loading = true;
 			axios
 				.post("/api/user/gallery", formData, {
 					headers: {
@@ -269,11 +276,12 @@ export default {
 					},
 				})
 				.then((res) => {
-					// TODO:
-					console.log("RES: ");
-					console.log(res);
+					this.loading = false;
+
+					this.pictures.push(res.data.picture);
 				})
 				.catch((err) => {
+					this.loading = false;
 					console.log("Caught error: ", err.response?.data?.message || err.message);
 					this.formSubmitErrors = err.response?.data?.message || err.message;
 				});
@@ -301,7 +309,6 @@ export default {
 			//     this.addPic.isInError = true;
 		},
 	},
-	components: {},
 };
 </script>
 

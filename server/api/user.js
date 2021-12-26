@@ -70,18 +70,28 @@ router.post("/gallery", body("title").notEmpty(), auth, async (req, res) => {
 
 		const destination = req.file.destination.split("/");
 		const picture = {
-			title: req.body.title,
+			name: req.body.title,
 			url: `${destination[destination.length - 1]}/${req.file.filename}`,
 		};
 
-		await User.findOneAndUpdate(
-			{ _id: user._id },
-			{
-				$push: {
-					gallery: picture,
+		// Insert into db
+		const updatedGallery = (
+			await User.findOneAndUpdate(
+				{
+					_id: user._id,
 				},
-			}
-		);
+				{
+					$push: {
+						gallery: picture,
+					},
+				},
+				{
+					returnDocument: "after",
+				}
+			)
+		).gallery;
+
+		picture.id = updatedGallery[updatedGallery.length - 1]._id.toString();
 
 		res.json({
 			message: "Successfully uploaded picture to gallery",
