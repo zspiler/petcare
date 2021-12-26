@@ -156,23 +156,7 @@ export default {
 		ScaleLoader,
 	},
 	data: () => ({
-		pictures: [
-			// {
-			//     id: 1,
-			//     url: require('../../assets/mucekPupa.png'),
-			//     name: "mucek Pupa"
-			// },
-			// {
-			//     id: 2,
-			//     url: require('../../assets/typedog.png'),
-			//     name: "kuza"
-			// },
-			// {
-			//     id: 3,
-			//     url: require('../../assets/typedog.png'),
-			//     name: "kuza"
-			// },
-		],
+		pictures: [],
 		loading: false,
 		slikca: "../../assets/userPageBackground.png",
 		overlay: false,
@@ -189,6 +173,10 @@ export default {
 		addPic: {},
 		newPicture: {},
 	}),
+	mounted() {
+		this.loading = true;
+		this.loadPictures();
+	},
 	validations: {
 		newPicture: {
 			fileSizeValidation,
@@ -225,6 +213,21 @@ export default {
 		},
 	},
 	methods: {
+		loadPictures() {
+			axios
+				.get("/api/user/gallery")
+				.then((res) => {
+					this.loading = false;
+					this.pictures = res.data.gallery;
+
+					console.log(this.pictures);
+				})
+				.catch((err) => {
+					this.loading = false;
+					console.log("Caught error: ", err.response?.data?.message || err.message);
+					this.formSubmitErrors = err.response?.data?.message || err.message;
+				});
+		},
 		getProfilePicUrl() {
 			var a =
 				this.$store.state.serverBaseUrl + "img/" + this.$store.getters.user.profilePicture;
@@ -241,24 +244,28 @@ export default {
 		},
 		saveEditPic() {
 			this.editPicDialog = false;
-			this.pictures.find((pic) => pic.id == this.editPic.id).name = this.editPic.name;
+			this.pictures.find((pic) => pic._id == this.editPic._id).name = this.editPic.name;
 
 			// TODO: edit API call
 		},
 		deleteEditPic() {
 			this.editPicDialog = false;
-			this.pictures = this.pictures.filter((pic) => pic.id !== this.editPic.id);
 
-			// TODO: delete API call
+			axios
+				.delete(`/api/user/gallery/${this.editPic._id}`)
+				.then(() => {
+					this.loading = false;
+					this.pictures = this.pictures.filter((pic) => pic._id !== this.editPic._id);
+				})
+				.catch((err) => {
+					this.loading = false;
+					console.log("Caught error: ", err.response?.data?.message || err.message);
+					this.formSubmitErrors = err.response?.data?.message || err.message;
+				});
 		},
 		addNewPic() {
 			this.addPicDialog = true;
 			this.addPic = { ...this.addPicTemplate };
-
-			console.log("this addpic: ");
-			console.log(this.addPic);
-
-			this.addPic.id = Math.floor(Math.random() * 100000); //create a 'random' id
 			this.newPicture = {};
 		},
 		saveAddPic() {

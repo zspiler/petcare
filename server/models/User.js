@@ -37,7 +37,7 @@ const UserSchema = new Schema({
 	},
 	gallery: [
 		{
-			title: {
+			name: {
 				type: String,
 				required: true,
 			},

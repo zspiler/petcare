@@ -1,5 +1,5 @@
 const express = require("express");
-const { check, validationResult, body } = require("express-validator");
+const { validationResult, body, param } = require("express-validator");
 const multer = require("multer");
 const router = express.Router();
 const fs = require("fs");
@@ -97,6 +97,62 @@ router.post("/gallery", body("title").notEmpty(), auth, async (req, res) => {
 			message: "Successfully uploaded picture to gallery",
 			picture,
 		});
+	});
+});
+
+// GET api/user/gallery
+// Get all photos from user's gallery
+
+router.get("/gallery", auth, async (req, res) => {
+	const user = await User.findOne({ email: req.email });
+	if (!user) {
+		return res.status(409).json({ message: "Could not find user" });
+	}
+
+	// const gallery = user.gallery.map(function (pic) {
+	// 	pic["nig"] = 42;
+	// 	pic["id"] = pic["_id"];
+	// 	delete pic["_id"];
+	// 	return pic;
+	// });
+
+	// console.log("modified gallery: ");
+	// console.log(gallery);
+
+	res.json({
+		gallery: user.gallery,
+	});
+});
+
+// DELETE api/user/gallery/:pictureId
+// Delete a picture from user's gallery
+
+router.delete("/gallery/:pictureId", param("pictureId").notEmpty(), auth, async (req, res) => {
+	const user = await User.findOne({ email: req.email });
+	if (!user) {
+		return res.status(409).json({ message: "Could not find user" });
+	}
+
+	console.log("req params: " + JSON.stringify(req.params));
+
+	await User.findOneAndUpdate(
+		{
+			_id: user._id,
+		},
+		{
+			$pull: {
+				gallery: {
+					_id: req.params.pictureId,
+				},
+			},
+		},
+		{
+			returnDocument: "after",
+		}
+	);
+
+	res.json({
+		message: "Picture deleted successfully",
 	});
 });
 
