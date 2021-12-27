@@ -85,6 +85,7 @@ export default new Vuex.Store({
 						commit("authError");
 						console.log("Caught error: ");
 						console.log(err.response?.data?.message || err.message);
+                        alert("An error occured while registering the user!\n" + err.response?.data?.message || err.message);
 						reject(err);
 					});
 			});

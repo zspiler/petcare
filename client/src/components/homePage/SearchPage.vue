@@ -72,29 +72,36 @@
 			</v-row>
 
 			<div :services="services">
-				<v-row v-for="service in services" :key="service.id" justify="center" class="userRow">
+				<router-link
+					v-for="service in services" :key="service.id"
+					:to="{ name:'Details', params: {serviceId: service.id}}"
+					style="text-decoration: none; color: inherit"
+					
+                >
+					<v-row  justify="center" class="userRow">
 
-					<v-col  md="2" align="center">
-						<v-img
-							:src="service.userProfilePicture"
-							width=80
-						>
-						</v-img>
-					</v-col>
-					<v-col  md="2" align="center" class="top">
-						<b><p>{{service.userFirstName}} {{service.userLastName}}</p></b>
-					</v-col>
-					<v-col  md="2" align="center" class="top">
-						<b><p>{{service.animal}}</p></b>
-					</v-col>
-					<v-col  md="2" align="center" class="date">
-						<b><p>{{service.dateFrom}}<br>{{service.dateTo}}</p></b>
-					</v-col>
-					<v-col  md="2" align="center" class="top">
-						<b><p>{{service.pricePerDay}} €</p></b>
-					</v-col>
-				</v-row>
-			</div>			
+						<v-col  md="2" align="center">
+							<v-img
+								:src="service.userProfilePicture"
+								width=80
+							>
+							</v-img>
+						</v-col>
+						<v-col  md="2" align="center" class="top">
+							<b><p>{{service.userFirstName}} {{service.userLastName}}</p></b>
+						</v-col>
+						<v-col  md="2" align="center" class="top">
+							<b><p>{{service.animal}}</p></b>
+						</v-col>
+						<v-col  md="2" align="center" class="date">
+							<b><p>{{service.dateFrom}}<br>{{service.dateTo}}</p></b>
+						</v-col>
+						<v-col  md="2" align="center" class="top">
+							<b><p>{{service.pricePerDay}} €</p></b>
+						</v-col>
+					</v-row>
+				</router-link>
+			</div>	
 	</v-container>
 </template>
 
@@ -132,7 +139,7 @@
 					for (const service of response.data){
 						if(this.offering){
 							const s = {
-								id : service.id,
+								id : service._id,
 								userFirstName: service.user.firstName,
 								userLastName: service.user.lastName,
 								userProfilePicture: this.$store.state.serverBaseUrl + 'img/' + service.user.profilePicture,
@@ -144,7 +151,7 @@
 							this.services.push(s)
 						}else{
 							const s = {
-								id : service.id,
+								id : service._id,
 								userFirstName: service.user.firstName,
 								userLastName: service.user.lastName,
 								userProfilePicture: this.$store.state.serverBaseUrl + 'img/' + service.user.profilePicture,
@@ -190,5 +197,18 @@
 		margin-top: 50px;
 		margin-right: 15%;
 		margin-left: 15%;
+	}
+	.userRow{
+		height: 100px;
+		background-color: #F0F2EF;
+		border-radius: 10px;
+		margin: 0% 15% 1% 15%;
+		box-shadow: 2px 2px #dedede;
+	}
+	.top{
+		padding-top: 40px;
+	}
+	.date{
+		padding-top: 30px;
 	}
 </style>
