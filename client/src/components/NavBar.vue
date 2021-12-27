@@ -35,32 +35,19 @@
 		<!-- <v-btn class="mr-5" color="primary" outlined @click="testMethod">Test button</v-btn> -->
 		
 		<v-spacer></v-spacer>
+
 		<div v-if="!user.token">
-			<router-link to="/login" style="text-decoration: none; color: inherit">
+			
+            <router-link to="/login" style="text-decoration: none; color: inherit">
 				<v-btn class="mr-5" color="primary" outlined>Login</v-btn>
 			</router-link>
-			<!-- <router-link
-				to="/register"
-				style="text-decoration: none; color: inherit"
-			>
-				<v-btn class="mr-5" color="primary" outlined>Register</v-btn>
-			</router-link> -->
+			
 		</div>
 		<div v-if="user.token" class="userDataDiv mr-3">
 
-			<!-- <div style="display: inline">
-				{{ user.firstName }}
-			</div> -->
-			
 			<!-- profile options dialog -->
 			<UserMenuDialog />
-			<!-- <v-img
-				lazy-src="../assets/profile_default.png"
-				alt="profilka.."
-				max-height="50"
-				max-width="50"
-				:src="getProfilePicUrl()"
-			></v-img> -->
+            
 		</div>
 	</v-app-bar>
 </template>
