@@ -9,7 +9,7 @@ const Chat = require("../models/Chat");
 const auth = require("../middleware/auth");
 
 // GET api/chat/:userId
-// Get chat with user with id 'userId'
+// Get all messages
 
 router.get("/:userId", auth, async (req, res) => {
 	// Get participants
@@ -21,13 +21,24 @@ router.get("/:userId", auth, async (req, res) => {
 	if (!(loggedInUser && otherUser)) {
 		return res.status(404).json({ message: "Unknown user" });
 	}
+	if (loggedInUser == otherUser) {
+		return res.status(400).json({ message: "Bad request" });
+	}
 
 	// Check if conversation between two exists
-
 	let chat = await Chat.findOne({
 		users: { $all: [loggedInUser._id, otherUser._id] },
 	});
 	if (chat) {
+		// Mark other user's messages as 'read'
+		chat.messages.forEach((msg) => {
+			if (msg.author.toString() == otherUser._id && msg.read == false) {
+				msg.read = true;
+				unreadMessages.push(msg);
+			}
+		});
+		await chat.save();
+
 		return res.json({ messages: chat.messages });
 	}
 
@@ -60,6 +71,41 @@ router.get("/:userId", auth, async (req, res) => {
 	);
 
 	return res.json({ messages: [] });
+});
+
+// GET api/chat/:userId/unread
+// Get unread messages
+router.get("/:userId/unread", auth, async (req, res) => {
+	// Get participants
+	const loggedInUser = await User.findOne({
+		email: req.email,
+	}).exec();
+	const otherUser = await User.findById(req.params.userId).exec();
+
+	if (!(loggedInUser && otherUser)) {
+		return res.status(404).json({ message: "Unknown user" });
+	}
+	if (loggedInUser == otherUser) {
+		return res.status(400).json({ message: "Bad request" });
+	}
+
+	let chat = await Chat.findOne({
+		users: { $all: [loggedInUser._id, otherUser._id] },
+	});
+	if (chat) {
+		const unreadMessages = [];
+		// Mark as 'read'
+		chat.messages.forEach((msg) => {
+			if (msg.author.toString() == otherUser._id && msg.read == false) {
+				msg.read = true;
+				unreadMessages.push(msg);
+			}
+		});
+		await chat.save();
+		return res.json({ messages: unreadMessages });
+	} else {
+		return res.status(404).json({ message: "Chat not found" });
+	}
 });
 
 // POST api/chat/:userId

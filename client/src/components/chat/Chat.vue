@@ -37,22 +37,8 @@ export default {
 	components: {},
 	data: () => ({
 		messageInput: "",
-		messages: [
-			// {
-			// 	body: "Welcome to the chat, I'm Bob!",
-			// 	author: "bob",
-			// },
-			// {
-			// 	body: "Thank you Bob",
-			// 	author: "you",
-			// },
-			// {
-			// 	body: "You're most welcome",
-			// 	author: "bob",
-			// },
-		],
-		userId: "",
-		msgId: 0,
+		messages: [],
+		userId: "", // ID of other user you're chatting with
 	}),
 	created() {
 		this.userId = this.$route.params.userId;
@@ -63,7 +49,7 @@ export default {
 		// Get messages
 		this.fetchMessages();
 		window.setInterval(() => {
-			this.fetchMessages();
+			this.checkForNewMessages();
 		}, 2000);
 	},
 	methods: {
@@ -72,8 +58,22 @@ export default {
 				.get(`/api/chat/${this.userId}`)
 				.then((res) => {
 					this.loading = false;
-
 					this.messages = res.data.messages;
+				})
+				.catch((err) => {
+					this.loading = false;
+					console.log("Caught error: ", err.response?.data?.message || err.message);
+					this.formSubmitErrors = err.response?.data?.message || err.message;
+				});
+		},
+		checkForNewMessages() {
+			axios
+				.get(`/api/chat/${this.userId}/unread`)
+				.then((res) => {
+					this.loading = false;
+					if (res.data.messages.length > 0) {
+						this.messages = this.messages.concat(res.data.messages);
+					}
 				})
 				.catch((err) => {
 					this.loading = false;
