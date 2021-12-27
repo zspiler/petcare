@@ -59,6 +59,7 @@ export default {
 				.then((res) => {
 					this.loading = false;
 					this.messages = res.data.messages;
+					this.scrollToBottom();
 				})
 				.catch((err) => {
 					this.loading = false;
@@ -73,6 +74,7 @@ export default {
 					this.loading = false;
 					if (res.data.messages.length > 0) {
 						this.messages = this.messages.concat(res.data.messages);
+						this.scrollToBottom();
 					}
 				})
 				.catch((err) => {
@@ -91,16 +93,19 @@ export default {
 					this.loading = false;
 
 					this.messages.push(res.data.messages[res.data.messages.length - 1]);
-					Vue.nextTick(() => {
-						let messageDisplay = this.$refs.chatArea;
-						messageDisplay.scrollTop = messageDisplay.scrollHeight;
-					});
+					this.scrollToBottom();
 				})
 				.catch((err) => {
 					this.loading = false;
 					console.log("Caught error: ", err.response?.data?.message || err.message);
 					this.formSubmitErrors = err.response?.data?.message || err.message;
 				});
+		},
+		scrollToBottom() {
+			Vue.nextTick(() => {
+				let messageDisplay = this.$refs.chatArea;
+				messageDisplay.scrollTop = messageDisplay.scrollHeight;
+			});
 		},
 	},
 };

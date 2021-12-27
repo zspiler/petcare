@@ -75,6 +75,7 @@ router.get("/:userId", auth, async (req, res) => {
 
 // GET api/chat/:userId/unread
 // Get unread messages
+
 router.get("/:userId/unread", auth, async (req, res) => {
 	// Get participants
 	const loggedInUser = await User.findOne({
