@@ -1,6 +1,7 @@
 <template>
     <v-dialog
         v-model="dialog"
+        content-class="userMenuDialog"
         transition="dialog-top-transition"
         width="250"
     >
@@ -122,15 +123,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .mycontainer {
    margin-bottom: 0px;
    padding-bottom: 0px;
-}
-.v-dialog {
-    position: absolute;
-    top: 6%;
-    right: 0px;
 }
 .img-circle {
     border-radius: 50%;
