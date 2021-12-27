@@ -16,7 +16,7 @@ import PostJob2 from "./components/postJob/postJob2";
 import PostJob3 from "./components/postJob/postJob3";
 import postJobService from "./components/postJob/postJobService";
 import Search from "./components/homePage/SearchPage.vue";
-import Chat from "./components/chatPage/Chat.vue";
+import Chat from "./components/chat/Chat.vue";
 
 Vue.use(VueRouter);
 
@@ -70,11 +70,12 @@ const routes = [
 		},
 	},
 	{
-		path: "/chat",
+		path: "/chat/:userId",
 		component: Chat,
 		meta: {
 			protected: true,
 		},
+		props: true,
 	},
 	{ path: "*", component: NotFound },
 ];
