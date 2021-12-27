@@ -7,7 +7,6 @@ import Home from "./components/homePage/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
-import ProtectedExample from "./components/ProtectedExample";
 import About from "./components/About";
 import UserPage from "./components/userPage/UserPage";
 
@@ -17,6 +16,7 @@ import PostJob2 from "./components/postJob/postJob2";
 import PostJob3 from "./components/postJob/postJob3";
 import postJobService from "./components/postJob/postJobService";
 import Search from "./components/homePage/SearchPage.vue";
+import Chat from "./components/chatPage/Chat.vue";
 
 Vue.use(VueRouter);
 
@@ -26,53 +26,52 @@ const routes = [
 	{ path: "/login", component: Login },
 	{ path: "/about", component: About },
 	{ path: "/search", component: Search },
-	{ 
-		path: "/postJob", 
+	{
+		path: "/postJob",
 		component: postJob,
 		meta: {
 			protected: true,
 		},
 	},
-	{ 
-		path: "/postJob/service", 
+	{
+		path: "/postJob/service",
 		component: postJobService,
 		meta: {
 			protected: true,
 		},
 	},
-	{ 
-		path: "/user", 
+	{
+		path: "/user",
 		component: UserPage,
 		meta: {
 			protected: true,
 		},
 	},
-	{ 
-		path: "/postJob/animal", 
+	{
+		path: "/postJob/animal",
 		component: PostJob1,
-		meta:{
-			protected: true
-		}
+		meta: {
+			protected: true,
+		},
 	},
-	{ 
-		path: "/postJob/animal/details", 
+	{
+		path: "/postJob/animal/details",
 		name: "PostJob2",
 		component: PostJob2,
-		meta:{
-			protected: true
-		}
+		meta: {
+			protected: true,
+		},
 	},
-	{ 
-		path: "/postJob/animal/complete", 
-		component: PostJob3,
-		meta:{
-			protected: true
-		}
-	},
-	// exaple of route that requires authentication
 	{
-		path: "/protected-example",
-		component: ProtectedExample,
+		path: "/postJob/animal/complete",
+		component: PostJob3,
+		meta: {
+			protected: true,
+		},
+	},
+	{
+		path: "/chat",
+		component: Chat,
 		meta: {
 			protected: true,
 		},
