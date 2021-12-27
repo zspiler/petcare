@@ -17,6 +17,7 @@ import PostJob2 from "./components/postJob/postJob2";
 import PostJob3 from "./components/postJob/postJob3";
 import postJobService from "./components/postJob/postJobService";
 import Search from "./components/homePage/SearchPage.vue";
+import Details from "./components/Details.vue";
 
 Vue.use(VueRouter);
 
@@ -26,6 +27,7 @@ const routes = [
 	{ path: "/login", component: Login },
 	{ path: "/about", component: About },
 	{ path: "/search", component: Search },
+	{ path: "/details", name: "Details", component: Details},
 	{ 
 		path: "/postJob", 
 		component: postJob,

@@ -12,6 +12,7 @@ router.get("/", getServices)
 router.post("/", postService)
 router.post("/offer", postServiceOffer)
 router.post("/search", postSearchService)
+router.get("byId/:id", getServiceById)
 
 async function getServices(request, response){
     console.log(`GET ${path}/`);
@@ -23,7 +24,6 @@ async function getServices(request, response){
     response.json({
         services: services
     });
-
 }
 
 async function postService(request, response){
@@ -117,6 +117,18 @@ async function postSearchService(request,response){
     });
 
     response.json(filtered)
+}
+
+async function getServiceById(request,response){
+    console.log(`GET ${path}/byId/${request.query.id}`);
+
+    if(!request.query.id) response.status(400).send()
+
+    const service = await Service.findOne({ 
+        _id: request.query.id
+    }).populate("animals user")
+
+    response.json(service);
 }
 
 module.exports = router;
