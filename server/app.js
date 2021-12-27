@@ -26,6 +26,7 @@ app.use(cors());
 app.use("/api/auth", require("./api/auth"));
 app.use("/api/service", require("./api/service"));
 app.use("/api/user", require("./api/user"));
+app.use("/api/chat", require("./api/chat"));
 
 app.use("/img", express.static(__dirname + "/public/profile_pictures"));
 app.use("/gallery", express.static(__dirname + "/public/galleries"));
