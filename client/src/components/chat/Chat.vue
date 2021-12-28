@@ -125,7 +125,7 @@ html {
 .chat-area {
 	height: 50vh;
 	/* height: 80%; */
-	/* padding: 1em; */
+	padding: 2em;
 	overflow-y: auto;
 	width: 100%;
 	/* box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3); */
@@ -140,15 +140,12 @@ html {
 
 	white-space: normal;
 	word-wrap: break-word;
-
-	/* display: inline-block; */
-	/* max-width: 30px; */
 }
 
 .message-out {
 	background: #5ab368;
 	color: white;
-	margin-left: 50%;
+	margin-left: 65%;
 }
 .message-in {
 	background: #f1f0f0;
@@ -160,11 +157,7 @@ html {
 	height: 100%;
 	justify-content: space-around;
 	background-color: rgb(248, 242, 242);
-
 	padding: 2%;
-	/* margin: 0 auto 2em auto; */
-	/* box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1); */
-	/* position: absolute; */
 	bottom: 0px;
 }
 #person1-input {
