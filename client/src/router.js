@@ -8,6 +8,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 import About from "./components/About";
+import ChatHub from "./components/chat/ChatHub";
 import UserPage from "./components/userPage/UserPage";
 
 import postJob from "./components/postJob/AdType";
@@ -50,8 +51,15 @@ const routes = [
 			protected: true,
 		},
 	},
-	{
-		path: "/postJob/animal",
+  { 
+		path: "/chat", 
+		component: ChatHub,
+		meta: {
+			protected: true,
+		},
+	},
+	{ 
+		path: "/postJob/animal", 
 		component: PostJob1,
 		meta: {
 			protected: true,
