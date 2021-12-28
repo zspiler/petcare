@@ -58,6 +58,14 @@
                                 mdi-chat
                             </v-icon>
                             Chat
+                            <!-- notification icon -->
+                            <v-icon
+                                v-if="user.hasUnreadMessages"
+                                right
+                                color="red"
+                            >
+                                mdi-alert-circle
+                            </v-icon>
                         </v-btn>
                     </v-row>
                     <v-row class="justify-center mb-3 mt-5">

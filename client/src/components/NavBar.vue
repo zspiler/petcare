@@ -48,6 +48,17 @@
 			<!-- profile options dialog -->
 			<UserMenuDialog />
             
+            <!-- chat notification icon -->
+            <!-- TODO: pravi property za unread messages  -->
+            <v-icon
+                v-if="user.hasUnreadMessages"
+                style="position:absolute; margin-left:30px;"
+                right
+                color="red"
+            >
+                mdi-alert-circle
+            </v-icon>
+            
 		</div>
 	</v-app-bar>
 </template>
