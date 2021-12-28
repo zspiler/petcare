@@ -1,7 +1,5 @@
 <template>
 	<section>
-		<p>UserId: {{ userId }}</p>
-		<h1>Todo: talking to : X + profilePic</h1>
 		<section ref="chatArea" class="chat-area">
 			<p
 				v-for="message in messages"
@@ -25,28 +23,29 @@
 			/>
 			<v-btn class="mr-5" color="primary" outlined v-on:click="sendMessage">Send</v-btn>
 		</section>
+		<ScaleLoader class="loader" v-if="loading" />
 	</section>
 </template>
 
 <script>
 import axios from "axios";
 import Vue from "vue";
+import ScaleLoader from "vue-spinner/src/ScaleLoader.vue";
 
 export default {
 	name: "Chat",
-	components: {},
+	components: { ScaleLoader },
 	data: () => ({
 		messageInput: "",
 		messages: [],
-		userId: "", // ID of other user you're chatting with
+		loading: false,
 	}),
-	created() {
-		this.userId = this.$route.params.userId;
-	},
+	props: ["userId"],
 	mounted() {
-		this.loading = true;
-
+		console.log("Chat with user: ");
+		console.log(this.userId);
 		// Get messages
+		this.loading = true;
 		this.fetchMessages();
 		window.setInterval(() => {
 			this.checkForNewMessages();
@@ -91,7 +90,7 @@ export default {
 				.put(`/api/chat/${this.userId}`, { message: this.messageInput })
 				.then((res) => {
 					this.loading = false;
-
+					this.messageInput = "";
 					this.messages.push(res.data.messages[res.data.messages.length - 1]);
 					this.scrollToBottom();
 				})
@@ -124,27 +123,29 @@ html {
 	color: white;
 }
 .chat-area {
-	background: white;
 	height: 50vh;
-	padding: 1em;
-	overflow: auto;
-	width: 40%;
-	margin: 0 auto 2em auto;
-	box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3);
-	margin-top: 10%;
+	/* height: 80%; */
+	padding: 2em;
+	overflow-y: auto;
+	width: 100%;
+	/* box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3); */
 	left: 50%;
 	top: 50%;
 }
 .message {
-	width: 45%;
+	width: 35%;
 	border-radius: 10px;
 	padding: 0.5em;
 	font-size: 0.8em;
+
+	white-space: normal;
+	word-wrap: break-word;
 }
+
 .message-out {
 	background: #5ab368;
 	color: white;
-	margin-left: 50%;
+	margin-left: 65%;
 }
 .message-in {
 	background: #f1f0f0;
@@ -152,13 +153,12 @@ html {
 }
 .chat-inputs {
 	display: flex;
-	width: 40%;
+	width: 100%;
+	height: 100%;
 	justify-content: space-around;
-	background-color: gray;
-	background: white;
-	padding: 1em;
-	margin: 0 auto 2em auto;
-	box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+	background-color: rgb(248, 242, 242);
+	padding: 2%;
+	bottom: 0px;
 }
 #person1-input {
 	padding: 0.5em;
