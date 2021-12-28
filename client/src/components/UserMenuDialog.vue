@@ -3,7 +3,7 @@
         v-model="dialog"
         content-class="userMenuDialog"
         transition="dialog-top-transition"
-        width="250"
+        width="260"
     >
         <!-- activator -->
         <template v-slot:activator="{ on }">
@@ -52,7 +52,15 @@
                             My Profile
                         </v-btn>
                     </v-row>
-                    <v-row class="justify-center mb-3 mt-10">
+                    <v-row class="justify-center mb-3 mt-5">
+                        <v-btn color="primary" outlined @click="openChat">
+                            <v-icon left>
+                                mdi-chat
+                            </v-icon>
+                            Chat
+                        </v-btn>
+                    </v-row>
+                    <v-row class="justify-center mb-3 mt-5">
                         <v-btn color="primary" outlined @click="logout">
                             <v-icon left>
                                 mdi-logout-variant
@@ -105,6 +113,10 @@ export default {
         myProfile() {
             this.dialog = false;
             this.$router.push("/user").catch(() => {});
+        },
+        openChat() {
+            this.dialog = false;
+            this.$router.push("/chat").catch(() => {});
         },
         getProfilePicUrl() {
             var a = this.$store.state.serverBaseUrl + 'img/' + this.$store.getters.user.profilePicture;
