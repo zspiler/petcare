@@ -34,12 +34,12 @@
 		</div>
 		<div v-if="user.token" class="userDataDiv mr-3">
 			<!-- profile options dialog -->
-			<UserMenuDialog />
+			<UserMenuDialog :unreadMessages="unreadMessages" />
 
 			<!-- chat notification icon -->
-			<!-- TODO: pravi property za unread messages  -->
+
 			<v-icon
-				v-if="user.hasUnreadMessages"
+				v-if="unreadMessages"
 				style="position: absolute; margin-left: 30px"
 				right
 				color="red"
@@ -52,9 +52,12 @@
 
 <script>
 import UserMenuDialog from "./UserMenuDialog";
+import axios from "axios";
 export default {
 	name: "NavBar",
-	data: () => ({}),
+	data: () => ({
+		unreadMessages: false,
+	}),
 	computed: {
 		user() {
 			return this.$store.getters.user;
@@ -63,15 +66,31 @@ export default {
 			return this.$store.getters.authStatus;
 		},
 	},
+	mounted() {
+		window.setInterval(() => {
+			this.checkForUnreadMessages();
+		}, 10000);
+	},
 	methods: {
 		getProfilePicUrl() {
-			var a =
-				this.$store.state.serverBaseUrl + "img/" + this.$store.getters.user.profilePicture;
-			console.log("profilePicPath", a);
-			return a;
+			return (
+				this.$store.state.serverBaseUrl + "img/" + this.$store.getters.user.profilePicture
+			);
 		},
 		testMethod() {
 			console.log(this.$store.getters.user);
+		},
+		checkForUnreadMessages() {
+			axios
+				.get(`/api/chat/unread/all`)
+				.then((res) => {
+					const newMessagesFrom = res.data.newMessagesFrom;
+					this.unreadMessages = newMessagesFrom.length > 0;
+				})
+				.catch((err) => {
+					console.log("Caught error: ", err.response?.data?.message || err.message);
+					this.formSubmitErrors = err.response?.data?.message || err.message;
+				});
 		},
 	},
 	components: { UserMenuDialog },

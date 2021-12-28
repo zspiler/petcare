@@ -42,6 +42,8 @@ export default {
 	}),
 	props: ["userId"],
 	mounted() {
+		console.log("Chat with user: ");
+		console.log(this.userId);
 		// Get messages
 		this.loading = true;
 		this.fetchMessages();
