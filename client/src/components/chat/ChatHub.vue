@@ -3,14 +3,14 @@
 		<v-img height="210px" src="../../assets/chatHubBackground.jpg"></v-img>
 
 		<v-row justify="center" style="height: 70%" class="pt-10">
-			<v-col cols="10" md="4" align="center">
+			<v-col cols="10" md="4" align="center" style="height: 100%">
 				<!-- contact list -->
 				<v-container class="border-container" style="padding-top: 30px">
-					<v-row align="center" class="menu-row" v-for="chat in chats" :key="chat.id">
+					<v-row align="center" class="menu-row" v-for="chat in chats" :key="chat.userId">
 						<v-btn
 							color="primary"
 							class="menu-btn"
-							:outlined="currentChatId != chat.id"
+							:outlined="currentChatId != chat.userId"
 							@click="selectChat(chat)"
 						>
 							<v-container>
@@ -40,9 +40,10 @@
 				</v-container>
 			</v-col>
 			<v-col cols="10" md="6" style="width: 80%">
-				<!-- chat container -->
-				<v-container class="border-container">
-					<!-- <ChatComponent chatId="currentChatId" />  idk to bos ze po svoje naredu-->
+				<v-container class="border-container pa-0">
+					<!-- <div> -->
+					<Chat v-if="selectedChat" :userId="selectedChat.userId" />
+					<!-- </div> -->
 				</v-container>
 			</v-col>
 		</v-row>
@@ -53,12 +54,16 @@
 <script>
 import ScaleLoader from "vue-spinner/src/ScaleLoader.vue";
 import axios from "axios";
+import Chat from "./Chat.vue";
 
 export default {
 	name: "ChatHub",
-	components: { ScaleLoader },
+	components: {
+		ScaleLoader,
+		Chat,
+	},
 	data: () => ({
-		selectedChat: "",
+		selectedChat: null,
 		chats: [],
 		loading: false,
 	}),
@@ -68,7 +73,7 @@ export default {
 	},
 	computed: {
 		currentChatId() {
-			return this.selectedChat.id;
+			return this.selectedChat ? this.selectedChat.userId : null;
 		},
 	},
 	methods: {
@@ -100,14 +105,11 @@ export default {
 <style scoped>
 .border-container {
 	height: 100%;
-	max-height: 400px;
+	max-height: 700px;
 	border-style: solid;
 	border-width: 1px;
 	border-color: #448aff;
 	border-radius: 5px;
-
-	/* enables scrolling on overflow*/
-	overflow-y: auto;
 }
 .menu-btn {
 	width: 80%;

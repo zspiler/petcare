@@ -183,7 +183,7 @@ router.get("/", auth, async (req, res) => {
 		}
 
 		chats.push({
-			id: chat._id,
+			userId: participant._id.toString(),
 			firstName: participant.firstName,
 			lastName: participant.lastName,
 			profilePicture: participant.profilePicture,
