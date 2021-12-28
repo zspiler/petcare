@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 import ProtectedExample from "./components/ProtectedExample";
 import About from "./components/About";
+import ChatHub from "./components/chat/ChatHub";
 import UserPage from "./components/userPage/UserPage";
 
 import postJob from "./components/postJob/AdType";
@@ -45,6 +46,13 @@ const routes = [
 	{ 
 		path: "/user", 
 		component: UserPage,
+		meta: {
+			protected: true,
+		},
+	},
+    { 
+		path: "/chat", 
+		component: ChatHub,
 		meta: {
 			protected: true,
 		},
