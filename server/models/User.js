@@ -47,6 +47,12 @@ const UserSchema = new Schema({
 			},
 		},
 	],
+	chats: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "chat",
+		},
+	],
 });
 
 User = mongoose.model("user", UserSchema);
