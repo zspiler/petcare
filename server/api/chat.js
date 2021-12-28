@@ -9,7 +9,7 @@ const Chat = require("../models/Chat");
 const auth = require("../middleware/auth");
 
 // GET api/chat/:userId
-// Get all messages
+// Get all messages (and create conversation if it does not exist)
 
 router.get("/:userId", auth, async (req, res) => {
 	// Get participants
@@ -159,6 +159,38 @@ router.put("/:userId", body("message").notEmpty(), auth, async (req, res) => {
 	).lean();
 
 	return res.json({ messages: updatedChat.messages });
+});
+
+// GET api/chat/
+// Get all user's chats (metadata)
+
+router.get("/", auth, async (req, res) => {
+	const user = await User.findOne({
+		email: req.email,
+	});
+
+	const chats = [];
+
+	for (let i = 0; i < user.chats.length; i++) {
+		const chat = await Chat.findById(user.chats[i], "-messages").lean();
+
+		let participant = null;
+		for (let i = 0; i < chat.users.length; i++) {
+			if (req.userId.toString() !== chat.users[i].toString()) {
+				participant = await User.findById(chat.users[i]);
+				break;
+			}
+		}
+
+		chats.push({
+			id: chat._id,
+			firstName: participant.firstName,
+			lastName: participant.lastName,
+			profilePicture: participant.profilePicture,
+		});
+	}
+
+	res.json({ chats });
 });
 
 module.exports = router;

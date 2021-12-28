@@ -25,20 +25,23 @@
 			/>
 			<v-btn class="mr-5" color="primary" outlined v-on:click="sendMessage">Send</v-btn>
 		</section>
+		<ScaleLoader class="loader" v-if="loading" />
 	</section>
 </template>
 
 <script>
 import axios from "axios";
 import Vue from "vue";
+import ScaleLoader from "vue-spinner/src/ScaleLoader.vue";
 
 export default {
 	name: "Chat",
-	components: {},
+	components: { ScaleLoader },
 	data: () => ({
 		messageInput: "",
 		messages: [],
 		userId: "", // ID of other user you're chatting with
+		loading: false,
 	}),
 	created() {
 		this.userId = this.$route.params.userId;
