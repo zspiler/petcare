@@ -22,9 +22,6 @@
 		<router-link to="/about" style="text-decoration: none; color: inherit">
 			<v-btn class="mr-5" color="primary" outlined>About us</v-btn>
 		</router-link>
-		<router-link to="/chat" style="text-decoration: none; color: inherit">
-			<v-btn class="mr-5" color="primary" outlined>Chat</v-btn>
-		</router-link>
 
 		<!-- <v-btn class="mr-5" color="primary" outlined @click="testMethod">Test button</v-btn> -->
 
@@ -38,13 +35,23 @@
 		<div v-if="user.token" class="userDataDiv mr-3">
 			<!-- profile options dialog -->
 			<UserMenuDialog />
+
+			<!-- chat notification icon -->
+			<!-- TODO: pravi property za unread messages  -->
+			<v-icon
+				v-if="user.hasUnreadMessages"
+				style="position: absolute; margin-left: 30px"
+				right
+				color="red"
+			>
+				mdi-alert-circle
+			</v-icon>
 		</div>
 	</v-app-bar>
 </template>
 
 <script>
 import UserMenuDialog from "./UserMenuDialog";
-
 export default {
 	name: "NavBar",
 	data: () => ({}),
