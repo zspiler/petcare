@@ -1,11 +1,10 @@
 <template>
 	<v-container fluid>
-		<v-row justify="space-around" style="width: 90%; padding-left:0px" align="start">
-			<v-col style="padding-left:0px" cols="12" md="6" lg="4" justify="left">
-				<h2 style="padding-left:0px">Edit Account</h2>
+		<v-row justify="space-around" style="width: 90%; padding-left: 0px" align="start">
+			<v-col style="padding-left: 0px" cols="12" md="6" lg="4" justify="left">
+				<h2 style="padding-left: 0px">Edit Account</h2>
 			</v-col>
-			<v-col cols="12" md="6" lg="4" justify="left" >
-			</v-col>
+			<v-col cols="12" md="6" lg="4" justify="left"> </v-col>
 		</v-row>
 		<v-row justify="space-around">
 			<form style="width: 90%; margin-top: 30px">
@@ -49,7 +48,7 @@
 							@change="$v.selectedRole.$touch()"
 							@blur="$v.selectedRole.$touch()"
 						/>
-           
+
 						<!-- Location -->
 						<v-text-field
 							v-model="locationText"
@@ -104,20 +103,23 @@
 					<p v-if="locationErrors" style="color: red">{{ locationErrors }}</p>
 				</v-row>
 				<v-row justify="center">
-					<p v-if="formSubmitErrors !== ''" style="color: red">The following error ocurred while updating user data: '{{ formSubmitErrors }}'</p>
+					<p v-if="formSubmitErrors !== ''" style="color: red">
+						The following error ocurred while updating user data: '{{
+							formSubmitErrors
+						}}'
+					</p>
 				</v-row>
 				<v-row style="margin-top: 10px">
 					<v-col justify="center" align="center">
-						<v-btn 
+						<v-btn
 							class="mb-1"
-							color="primary" 
+							color="primary"
 							:loading="formLoading"
 							:disabled="formLoading"
-							@click="submit"> 
-								Save changes
-								<v-icon right>
-									mdi-content-save
-								</v-icon>
+							@click="submit"
+						>
+							Save changes
+							<v-icon right> mdi-content-save </v-icon>
 						</v-btn>
 					</v-col>
 				</v-row>
@@ -129,7 +131,7 @@
 <script>
 import { required, maxLength, email } from "vuelidate/lib/validators";
 
-import axios from "axios";
+import axios from "../../axios";
 
 function fileSizeValidation(file) {
 	if (!file) {
@@ -199,7 +201,7 @@ export default {
 		async submit() {
 			//trigger the submit button loading animation
 			this.formLoading = true;
-			await new Promise(r => setTimeout(r, 500));	//wait for half a sec to ensure animation is seen >:)
+			await new Promise((r) => setTimeout(r, 500)); //wait for half a sec to ensure animation is seen >:)
 
 			// Validate
 			this.$v.$touch();
@@ -219,12 +221,12 @@ export default {
 				.then(() => {
 					// ponovno nalozi userja
 					this.$store.dispatch("getUser");
-					this.formSubmitErrors = '';
+					this.formSubmitErrors = "";
 				})
 				.catch((err) => {
 					console.log("Caught error: ", err.response?.data?.message || err.message);
 					//poskrbimo za izpis napake
-					this.formSubmitErrors =  err.response?.data?.message || err.message;
+					this.formSubmitErrors = err.response?.data?.message || err.message;
 					// console.log(this.formSubmitErrors);
 				});
 
@@ -363,5 +365,4 @@ export default {
 	width: 40%;
 	height: 30%;
 }
-
 </style>

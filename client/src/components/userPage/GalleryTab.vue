@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../../axios";
 import ScaleLoader from "vue-spinner/src/ScaleLoader.vue";
 
 function fileSizeValidation(file) {
