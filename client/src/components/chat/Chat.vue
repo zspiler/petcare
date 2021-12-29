@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../../axios";
+
 import Vue from "vue";
 import ScaleLoader from "vue-spinner/src/ScaleLoader.vue";
 
@@ -42,8 +43,6 @@ export default {
 	}),
 	props: ["userId"],
 	mounted() {
-		console.log("Chat with user: ");
-		console.log(this.userId);
 		// Get messages
 		this.loading = true;
 		this.fetchMessages();

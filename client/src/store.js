@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
+import axios from "../src/axios";
 
 Vue.use(Vuex);
 
@@ -85,7 +85,10 @@ export default new Vuex.Store({
 						commit("authError");
 						console.log("Caught error: ");
 						console.log(err.response?.data?.message || err.message);
-                        alert("An error occured while registering the user!\n" + err.response?.data?.message || err.message);
+						alert(
+							"An error occured while registering the user!\n" +
+								err.response?.data?.message || err.message
+						);
 						reject(err);
 					});
 			});
