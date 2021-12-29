@@ -17,7 +17,6 @@ import PostJob2 from "./components/postJob/postJob2";
 import PostJob3 from "./components/postJob/postJob3";
 import postJobService from "./components/postJob/postJobService";
 import Search from "./components/homePage/SearchPage.vue";
-import Chat from "./components/chat/Chat.vue";
 import Details from "./components/Details.vue";
 
 Vue.use(VueRouter);
@@ -29,9 +28,9 @@ const routes = [
 	{ path: "/about", component: About },
 	{ path: "/search", component: Search },
 
-	{ path: "/details", name: "Details", component: Details},
-	{ 
-		path: "/postJob", 
+	{ path: "/details", name: "Details", component: Details },
+	{
+		path: "/postJob",
 		component: postJob,
 		meta: {
 			protected: true,
@@ -51,15 +50,17 @@ const routes = [
 			protected: true,
 		},
 	},
-  { 
-		path: "/chat", 
+	{
+		path: "/chat/:userId?",
 		component: ChatHub,
 		meta: {
 			protected: true,
 		},
+		props: true,
 	},
-	{ 
-		path: "/postJob/animal", 
+
+	{
+		path: "/postJob/animal",
 		component: PostJob1,
 		meta: {
 			protected: true,
@@ -80,14 +81,14 @@ const routes = [
 			protected: true,
 		},
 	},
-	{
-		path: "/chat/:userId",
-		component: Chat,
-		meta: {
-			protected: true,
-		},
-		props: true,
-	},
+	// {
+	// 	path: "/chat/:userId",
+	// 	component: Chat,
+	// 	meta: {
+	// 		protected: true,
+	// 	},
+	// 	props: true,
+	// },
 	{ path: "*", component: NotFound },
 ];
 
