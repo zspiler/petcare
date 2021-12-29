@@ -38,7 +38,7 @@
             <v-col  cols="10" md="8" style="width:80%">
 				<v-container class="border-container">
                     <AboutTab v-if="menuTab === 'about'"/>
-                    <GalleryTab v-if="menuTab === 'gallery'"/>
+                    <GalleryTab v-if="menuTab === 'gallery'" :is-export-mode="false" />
                     <AdsAndRequestsTab v-if="menuTab === 'adsAndRequests'"/>
                     <HistoryTab v-if="menuTab === 'history'"/>
                     <SettingsTab v-if="menuTab === 'settings'"/>
