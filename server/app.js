@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 // load env variables from .env
 require("dotenv").config();
@@ -22,6 +23,9 @@ app.use(express.urlencoded({ limit: "200mb", extended: true }));
 app.use(express.json({ limit: "200mb" }));
 app.use(express.text({ limit: "200mb" }));
 app.use(cors());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/auth", require("./api/auth"));
 app.use("/api/service", require("./api/service"));

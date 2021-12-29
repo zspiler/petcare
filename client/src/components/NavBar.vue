@@ -52,7 +52,7 @@
 
 <script>
 import UserMenuDialog from "./UserMenuDialog";
-import axios from "axios";
+import axios from "../axios";
 export default {
 	name: "NavBar",
 	data: () => ({
@@ -68,7 +68,9 @@ export default {
 	},
 	mounted() {
 		window.setInterval(() => {
-			this.checkForUnreadMessages();
+			if (this.user.token) {
+				this.checkForUnreadMessages();
+			}
 		}, 10000);
 	},
 	methods: {
@@ -81,6 +83,7 @@ export default {
 			console.log(this.$store.getters.user);
 		},
 		checkForUnreadMessages() {
+			// TODO: tuki invalid token?
 			axios
 				.get(`/api/chat/unread/all`)
 				.then((res) => {
@@ -88,7 +91,10 @@ export default {
 					this.unreadMessages = newMessagesFrom.length > 0;
 				})
 				.catch((err) => {
-					console.log("Caught error: ", err.response?.data?.message || err.message);
+					console.log(
+						"/api/chat/unread/all Caught error: ",
+						err.response?.data?.message || err.message
+					);
 					this.formSubmitErrors = err.response?.data?.message || err.message;
 				});
 		},

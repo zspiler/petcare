@@ -39,18 +39,7 @@ const upload = multer({
 // POST api/user/gallery
 // Upload photo to user's gallery
 
-router.post("/gallery", body("title").notEmpty(), auth, async (req, res) => {
-	// Validate
-	const validationErrors = validationResult(req);
-	if (!validationErrors.isEmpty()) {
-		console.log("validation errors");
-		console.log(validationErrors.array());
-		return res.status(400).json({
-			message: "Invalid parameters",
-			errors: validationErrors.array(),
-		});
-	}
-
+router.post("/gallery", auth, async (req, res) => {
 	// Create directory if necessary
 	const userGalleryDir = `${__dirname}/../public/galleries/${req.userId}`;
 	if (!fs.existsSync(userGalleryDir)) {
