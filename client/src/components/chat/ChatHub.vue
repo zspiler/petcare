@@ -54,7 +54,7 @@
 
 <script>
 import ScaleLoader from "vue-spinner/src/ScaleLoader.vue";
-import axios from "axios";
+import axios from "../../axios";
 import Chat from "./Chat.vue";
 
 export default {

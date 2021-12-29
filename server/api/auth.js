@@ -167,12 +167,14 @@ router.post(
 // Get logged-in user's info
 
 router.get("/user", auth, async (req, res) => {
+	console.log("/ USER");
+
 	const user = await User.findOne({ email: req.email });
 	if (!user) {
 		return res.status(409).json({ message: "Could not find user" });
 	}
 	res.json({
-		message: "Successfully logged in",
+		message: "Token valid - user is logged in",
 		token: req.token,
 		user: user,
 	});
