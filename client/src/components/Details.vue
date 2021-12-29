@@ -29,11 +29,11 @@
 							</v-row>
 						</v-col>
 					</div>
-					<div class="div-user">
+					<div class="div-user" style="margin-right: 20px;">
 						<v-col>
 							<v-row>
 								<v-col>
-									<p style="font-weight: bold">Uporabniški podatki</p>
+									<p style="font-weight: bold">User information:</p>
 									<p>
 										{{
 											this.services[this.index].userFirstName +
@@ -53,10 +53,10 @@
 			</v-container>
 
 			<v-container>
-				<v-row style="padding-top: 40px">
+				<v-row style="padding-top: 40px; margin-left: 0px;">
 					<v-col>
 						<div>
-							<p style="font-weight: bold">Opis živali</p>
+							<p style="font-weight: bold">Animal description:</p>
 							<p>
 								{{
 									this.services[this.index].animals[this.selectedAnimal]
@@ -64,34 +64,30 @@
 								}}
 							</p>
 							<p>
-								Starost:
-								{{ this.services[this.index].animals[this.selectedAnimal].age }} let
+								Age:
+								{{ this.services[this.index].animals[this.selectedAnimal].age }} years
 							</p>
 							<p>
-								Tip:
-								{{
-									this.animalTypes[
-										this.services[this.index].animals[this.selectedAnimal].type
-									]
-								}}
+								Type:
+								{{	this.services[this.index].animals[this.selectedAnimal].type }}
 							</p>
 						</div>
 					</v-col>
 					<v-col style="width: 60%">
-						<div class="div-user">
-							<p style="font-weight: bold">Podrobnosti:</p>
+						<div class="div-user" style="width: 60%">
+							<p style="font-weight: bold">Details:</p>
 							<p>
-								Čas: {{ this.services[this.index].dateFrom }} -
+								Date: {{ this.services[this.index].dateFrom }} -
 								{{ this.services[this.index].dateTo }}
 							</p>
-							<p>Cena na dan: {{ this.services[this.index].pricePerDay }} €</p>
+							<p>Price per day: {{ this.services[this.index].pricePerDay }} €</p>
 							<center></center>
 
 							<router-link
 								:to="`/chat/${this.services[this.index].user._id.toString()}`"
 								style="text-decoration: none; color: inherit"
 							>
-								<button>Kontaktiraj</button>
+								<button>Contact</button>
 							</router-link>
 						</div>
 					</v-col>
@@ -111,38 +107,7 @@ export default {
 		this.getData();
 	},
 	data: () => ({
-		/*
-            url: 'http://localhost:5000/api/',
-            id: '',
-            */
-
 		url: "http://localhost:5000/api/",
-		regions: [
-			"Ljubljana",
-			"Maribor",
-			"Celje",
-			"Kranj",
-			"Koper",
-			"Velenje",
-			"Novo mesto",
-			"Ptuj",
-			"Krško",
-		],
-		animalTypes: {
-			Cat: "Mačka",
-			Dog: "Pes",
-			Hamster: "Hrček",
-			Turtle: "Želva",
-			Fish: "Riba",
-			Parrot: "Papagaj",
-			Reptile: "Plazilec",
-			Rabbit: "Zajec",
-			Dinosaur: "Dinozaver",
-			"Other mammal": "Drug sesalec",
-			"Other bird": "Drug ptič",
-			Other: "Drugo",
-		},
-		sortBy: ["Date ascending", "Date descending", "Price ascending", "Price descending"],
 		offering: false,
 		region: "",
 		animalType: "",
@@ -153,15 +118,6 @@ export default {
 	}),
 	methods: {
 		async getData() {
-			/*
-                try {
-                    const response = await axios.get(`${this.url}service/byId`,{
-                        params:{
-                            id: this.id
-                        }
-                    })
-                    console.log(response)
-                }*/
 			try {
 				const data = {
 					offering: this.offering,
@@ -215,21 +171,17 @@ export default {
 			}
 		},
 		findindex() {
-			//console.log(this.services[0].id)
 			for (let i = 0; i < this.services.length; i++) {
 				if (this.services[i].id == this.id) {
 					this.index = i;
 				}
 			}
-			console.log(this.index);
-			console.log(this.services[this.index]);
 		},
 		getProfilePicURL() {
 			var a =
 				this.$store.state.serverBaseUrl +
 				"img/" +
 				this.services[this.index].user.profilePicture;
-			console.log(a);
 			return a;
 		},
 		showAnimal(key) {
@@ -262,6 +214,7 @@ export default {
 	padding-right: 20px;
 	padding-top: 20px;
 	padding-bottom: 20px;
+    margin-left: 10px;
 }
 .div-user {
 	border: 2px solid #1087c3;
@@ -269,7 +222,7 @@ export default {
 	width: 50%;
 	padding: 15px;
 	margin-left: auto;
-	margin-right: 0px;
+	margin-right: 10px;
 }
 .center {
 	text-align: center;
