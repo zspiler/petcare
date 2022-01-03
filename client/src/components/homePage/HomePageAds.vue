@@ -39,7 +39,7 @@
 import axios from "../../axios";
 export default {
 	name: "HomePageAds",
-
+	props: ['offering'],
 	data: () => ({
 		services: [],
 	}),
@@ -47,22 +47,44 @@ export default {
 	methods: {
 		async getServices() {
 			try {
-				const response = await axios.get("http://localhost:5000/api/service", "");
-
+				const data = {
+					offering: this.offering
+				}
+				console.log(data)
+				this.services = [];
+				const response = await axios.get("http://localhost:5000/api/service", data);
 				for (const service of response.data.services) {
-					const s = {
-						id: service._id,
-						userFirstName: service.user.firstName,
-						userLastName: service.user.lastName,
-						userProfilePicture:
-							this.$store.state.serverBaseUrl + "img/" + service.user.profilePicture,
-						animal: service.animals[0].name,
-						dateFrom: new Date(service.dateFrom).toLocaleDateString(),
-						dateTo: new Date(service.dateTo).toLocaleDateString(),
-						pricePerDay: service.pricePerDay,
-					};
-					this.services.push(s);
-					console.log(s)
+					if (this.offering) {
+						const s = {
+							id: service._id,
+							userFirstName: service.user.firstName,
+							userLastName: service.user.lastName,
+							userProfilePicture:
+								this.$store.state.serverBaseUrl +
+								"img/" +
+								service.user.profilePicture,
+							animal: service.animalsType[0],
+							dateFrom: new Date(service.dateFrom).toLocaleDateString(),
+							dateTo: new Date(service.dateTo).toLocaleDateString(),
+							pricePerDay: service.pricePerDay,
+						};
+						this.services.push(s);
+					} else {
+						const s = {
+							id: service._id,
+							userFirstName: service.user.firstName,
+							userLastName: service.user.lastName,
+							userProfilePicture:
+								this.$store.state.serverBaseUrl +
+								"img/" +
+								service.user.profilePicture,
+							animal: service.animalsType[0],
+							dateFrom: new Date(service.dateFrom).toLocaleDateString(),
+							dateTo: new Date(service.dateTo).toLocaleDateString(),
+							pricePerDay: service.pricePerDay,
+						};
+						this.services.push(s);
+					}
 				}
 			} catch (err) {
 				console.log(err);
@@ -74,7 +96,7 @@ export default {
 	watch: {
 		offering: function (val) {
 			this.offering = val;
-			this.getData();
+			this.getServices();
 		},
 	},
 

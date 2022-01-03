@@ -17,9 +17,14 @@ router.get("byId/:id", getServiceById);
 async function getServices(request, response) {
 	console.log(`GET ${path}/`);
 
-	const services = await Service.find({
-		type: "petSitting",
-	}).populate("animals user");
+	const { offering } = request.body;
+	let query = {
+		type: offering ? "serviceOffering" : "petSitting",
+	};
+
+	const services = await Service.find({query})
+								  .limit(5)
+								  .populate("animals user");
 
 	response.json({
 		services: services,

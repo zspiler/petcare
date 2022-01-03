@@ -170,7 +170,7 @@ export default {
 								this.$store.state.serverBaseUrl +
 								"img/" +
 								service.user.profilePicture,
-							animal: service.animals[0].name,
+							animal: service.animalsType[0],
 							dateFrom: new Date(service.dateFrom).toLocaleDateString(),
 							dateTo: new Date(service.dateTo).toLocaleDateString(),
 							pricePerDay: service.pricePerDay,
