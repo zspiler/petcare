@@ -1,30 +1,38 @@
 <template>
 	<div :services="services">
-		<v-row v-for="service in services" :key="service.id" justify="center" class="userRow">
-			<v-col md="2" align="center">
-				<v-img :src="service.userProfilePicture" width="80"> </v-img>
-			</v-col>
-			<v-col md="2" align="center" class="top">
-				<b
-					><p>{{ service.userFirstName }} {{ service.userLastName }}</p></b
-				>
-			</v-col>
-			<v-col md="2" align="center" class="top">
-				<b
-					><p>{{ service.animal }}</p></b
-				>
-			</v-col>
-			<v-col md="2" align="center" class="date">
-				<b
-					><p>{{ service.dateFrom }}<br />{{ service.dateTo }}</p></b
-				>
-			</v-col>
-			<v-col md="2" align="center" class="top">
-				<b
-					><p>{{ service.pricePerDay }} €</p></b
-				>
-			</v-col>
-		</v-row>
+		<router-link 
+			v-for="service in services"
+			:key="service.id"
+			:to="{ name: 'Details', params: { serviceId: service.id } }"
+			style="text-decoration: none; color: inherit"
+			>
+			<v-row justify="center" class="userRow"
+			>
+				<v-col md="2" align="center">
+					<v-img :src="service.userProfilePicture" width="80"> </v-img>
+				</v-col>
+				<v-col md="2" align="center" class="top">
+					<b
+						><p>{{ service.userFirstName }} {{ service.userLastName }}</p></b
+					>
+				</v-col>
+				<v-col md="2" align="center" class="top">
+					<b
+						><p>{{ service.animal }}</p></b
+					>
+				</v-col>
+				<v-col md="2" align="center" class="date">
+					<b
+						><p>{{ service.dateFrom }}<br />{{ service.dateTo }}</p></b
+					>
+				</v-col>
+				<v-col md="2" align="center" class="top">
+					<b
+						><p>{{ service.pricePerDay }} €</p></b
+					>
+				</v-col>
+			</v-row>
+		</router-link>
 	</div>
 </template>
 <script>
@@ -43,7 +51,7 @@ export default {
 
 				for (const service of response.data.services) {
 					const s = {
-						id: service.id,
+						id: service._id,
 						userFirstName: service.user.firstName,
 						userLastName: service.user.lastName,
 						userProfilePicture:
@@ -54,11 +62,19 @@ export default {
 						pricePerDay: service.pricePerDay,
 					};
 					this.services.push(s);
+					console.log(s)
 				}
 			} catch (err) {
 				console.log(err);
 			}
 			return Promise.resolve("Dummy response to keep the console quiet");
+		},
+	},
+
+	watch: {
+		offering: function (val) {
+			this.offering = val;
+			this.getData();
 		},
 	},
 
