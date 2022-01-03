@@ -17,12 +17,15 @@ router.get("byId/:id", getServiceById);
 async function getServices(request, response) {
 	console.log(`GET ${path}/`);
 
-	const { offering } = request.body;
-	let query = {
-		type: offering ? "serviceOffering" : "petSitting",
-	};
+	let query = {};
 
-	const services = await Service.find({query})
+	if(request.query.offering === 'true'){
+		query.type = "serviceOffering"
+	}else{
+		query.type = "petSitting"
+	}
+
+	const services = await Service.find(query)
 								  .limit(5)
 								  .populate("animals user");
 
