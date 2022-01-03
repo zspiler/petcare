@@ -13,7 +13,6 @@
 				</v-col>
 				<v-col md="2" align="center">
 				</v-col>
-				<!-- <ToggleButton /> -->
 				<v-col md="2" align="center">
 					<v-row align="center" justify="center">
 						<span style="margin: 10px 10px -20px 0px">Searching</span>
@@ -42,10 +41,12 @@
 				</v-col>
 			</v-row>
 
-			<span><HomePageAds /></span>
+			<span><HomePageAds :offering="offering"/></span>
 			
 			<center>
-				<v-btn class="mr-5" color="primary" style="margin-top: 80px;" outlined>Show more</v-btn>
+				<router-link to="/search" style="text-decoration: none; color: inherit">
+					<v-btn class="mr-5" color="primary" style="margin-top: 80px;" outlined>Show more</v-btn>
+				</router-link>
 			</center>
 			
 	</v-container>
@@ -59,7 +60,10 @@
 
 		components: {
 			HomePageAds,
-		}
+		},
+		data: () => ({
+			offering: false,
+		})
 	}
 	
 </script>
