@@ -11,7 +11,7 @@
 			<v-col md="2" align="center">
 				<v-row align="center" justify="center">
 					<span style="margin: 10px 10px -20px 0px">Searching</span>
-					<span>
+					<span style="margin-top: 30px;">
 						<v-switch v-model="offering"></v-switch>
 					</span>
 					<span style="margin: 10px 0px -20px 10px">Offering</span>

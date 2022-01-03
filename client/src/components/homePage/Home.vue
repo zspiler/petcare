@@ -13,12 +13,15 @@
 				</v-col>
 				<v-col md="2" align="center">
 				</v-col>
+				<!-- <ToggleButton /> -->
 				<v-col md="2" align="center">
-					<div>
-						<span style="margin: 10px 10px 0px 0px">Searching</span>
-						<span><ToggleButton /></span>
-						<span style="margin: 10px 0px 0px 10px">Offering</span>
-					</div>
+					<v-row align="center" justify="center">
+						<span style="margin: 10px 10px -20px 0px">Searching</span>
+						<span style="margin-top: 30px;">
+							<v-switch v-model="offering"></v-switch>
+						</span>
+						<span style="margin: 10px 0px -20px 10px">Offering</span>
+					</v-row>
 				</v-col>
 			</v-row>
 			
@@ -49,15 +52,12 @@
 </template>
 
 <script>
-
- import ToggleButton from './ToggleButton.vue'
  import HomePageAds from './HomePageAds.vue'
 
 	export default {
 		name: 'Home',
 
 		components: {
-			ToggleButton,
 			HomePageAds,
 		}
 	}
