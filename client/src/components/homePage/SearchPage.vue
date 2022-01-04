@@ -103,7 +103,6 @@ export default {
 		this.getData();
 	},
 	data: () => ({
-		url: this.$store.state.serverBaseUrl + "api/",
 		regions: [
 			"Ljubljana",
 			"Maribor",
@@ -169,6 +168,11 @@ export default {
 			}
 		},
 	},
+    computed: {
+        url(){
+            return this.$store.state.serverBaseUrl + "api/";   
+        }      
+    },
 	watch: {
 		offering: function (val) {
 			this.offering = val;
