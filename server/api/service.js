@@ -136,15 +136,35 @@ async function postSearchService(request, response) {
 	response.json(filtered);
 }
 
+///
+//@params: 
+// id: id of user whos services we want,
+// active: bool (fetches active or inactive services based on date)
+///
 async function getServiceByUserId(request, response) {
-	console.log(`GET ${path}/`);
-	
-	const id = request.query.id;
+    
+    const id = request.query.id;
+	console.log(`GET ${path}/`, "id:", request.query.id, "active:", request.query.active);
 
-	let query = {
-		user: id,
-		dateTo: { $lte: new Date() }
-	};
+    if (!id) {
+        response.status(400).send();
+        return;
+    }
+
+    var query = null;
+    if(request.query.active == "true") {
+	    query = {
+            user: id,
+            dateTo: { $gte: new Date() }
+        };
+    }
+    else {
+        query = {
+            user: id,
+            dateTo: { $lt: new Date() }
+        };
+    }
+    // console.log("query:", query);
 
 	const services = await Service.find(query)
 								  .populate("animals user");
