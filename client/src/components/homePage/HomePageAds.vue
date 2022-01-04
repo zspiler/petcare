@@ -9,7 +9,10 @@
 			<v-row justify="center" class="userRow"
 			>
 				<v-col md="2" align="center">
-					<v-img :src="service.userProfilePicture" width="80"> </v-img>
+					<v-img 
+                        :src="service.userProfilePicture" 
+                        class="profileImage"
+                    > </v-img>
 				</v-col>
 				<v-col md="2" align="center" class="top">
 					<b
@@ -54,22 +57,7 @@ export default {
 				this.services = [];
 				const response = await axios.get("http://localhost:5000/api/service", data);
 				for (const service of response.data.services) {
-					if (this.offering) {
-						const s = {
-							id: service._id,
-							userFirstName: service.user.firstName,
-							userLastName: service.user.lastName,
-							userProfilePicture:
-								this.$store.state.serverBaseUrl +
-								"img/" +
-								service.user.profilePicture,
-							animal: service.animalsType[0],
-							dateFrom: new Date(service.dateFrom).toLocaleDateString(),
-							dateTo: new Date(service.dateTo).toLocaleDateString(),
-							pricePerDay: service.pricePerDay,
-						};
-						this.services.push(s);
-					} else {
+					if (this.offering === (service.type === 'serviceOffering')) {
 						const s = {
 							id: service._id,
 							userFirstName: service.user.firstName,
@@ -119,4 +107,9 @@ export default {
 .date {
 	padding-top: 30px;
 }
+.profileImage {
+    max-height: 80px;
+    max-width: 80px;
+}
+
 </style>
