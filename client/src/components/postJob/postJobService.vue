@@ -132,7 +132,6 @@ export default {
 		},
 	},
 	data: () => ({
-		url: "http://localhost:5000/api/",
 		name: "",
 		surname: "",
 		city: "",
@@ -215,6 +214,11 @@ export default {
 			return Difference_In_Days;
 		},
 	},
+    computed: {
+        url(){
+            return this.$store.state.serverBaseUrl + "api/";   
+        }      
+    },
 };
 </script>
 
