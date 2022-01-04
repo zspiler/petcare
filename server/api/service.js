@@ -12,6 +12,7 @@ router.get("/", getServices);
 router.post("/", postService);
 router.post("/offer", postServiceOffer);
 router.post("/search", postSearchService);
+router.get("/byUserId", getServiceByUserId)
 router.get("byId/:id", getServiceById);
 
 async function getServices(request, response) {
@@ -133,6 +134,24 @@ async function postSearchService(request, response) {
 	});
 
 	response.json(filtered);
+}
+
+async function getServiceByUserId(request, response) {
+	console.log(`GET ${path}/`);
+	
+	const id = request.query.id;
+
+	let query = {
+		user: id,
+		dateTo: { $lte: new Date() }
+	};
+
+	const services = await Service.find(query)
+								  .populate("animals user");
+
+	response.json({
+		services: services,
+	});
 }
 
 async function getServiceById(request, response) {
