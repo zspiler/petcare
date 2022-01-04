@@ -37,13 +37,14 @@
 							</v-container>
 						</v-btn>
 					</v-row>
+                    <v-row v-if="chats.length == 0 || !chats" align="center" justify="center">
+                        <p>You don't have active contacts at the moment...</p>
+                    </v-row>
 				</v-container>
 			</v-col>
 			<v-col cols="10" md="6" style="width: 80%">
 				<v-container class="border-container pa-0">
-					<!-- <div> -->
 					<Chat v-if="selectedChat" :userId="selectedChat.userId" />
-					<!-- </div> -->
 				</v-container>
 			</v-col>
 		</v-row>

@@ -38,7 +38,6 @@ const upload = multer({
 
 // POST api/user/gallery
 // Upload photo to user's gallery
-
 router.post("/gallery", auth, async (req, res) => {
 	// Create directory if necessary
 	const userGalleryDir = `${__dirname}/../public/galleries/${req.userId}`;

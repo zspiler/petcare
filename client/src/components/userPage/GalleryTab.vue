@@ -2,7 +2,7 @@
 	<v-card style="height: 100%; border: none" outlined>
 		<v-card-title class="justify-center">YOUR PRIVATE GALLERY</v-card-title>
 		<v-container>
-			<v-row style="width: 100%">
+			<v-row style="width: 100%; margin: 0 !important;" align="center" justify="center">
 				<div v-for="pic in pictures" :key="pic.id">
 					<!-- picture card -->
 					<v-col>
@@ -37,6 +37,9 @@
 											<v-btn fab @click="editImage(pic)">
 												<v-icon>mdi-pencil</v-icon>
 											</v-btn>
+                                            <v-btn v-if="isExportMode" fab @click="exportImage(pic)">
+												<v-icon>mdi-export-variant</v-icon>
+											</v-btn>
 										</v-overlay>
 									</v-fade-transition>
 								</v-card>
@@ -47,7 +50,7 @@
 			</v-row>
 		</v-container>
 		<v-card-actions class="justify-center">
-			<v-btn color="primary" class="menu-btn" outlined @click="addNewPic()">Add photo</v-btn>
+			<v-btn color="primary" class="menu-btn mt-2" outlined @click="addNewPic()">Add photo</v-btn>
 		</v-card-actions>
 
 		<!-- edit picture dialog -->
@@ -59,7 +62,7 @@
 					style="margin-inline: 20px"
 					maxWidth="80%"
 					maxHeight="50%"
-					:src="editPic.url"
+					:src="$store.state.serverBaseUrl + 'gallery/' + editPic.url"
 				></v-img>
 
 				<v-text-field
@@ -155,6 +158,10 @@ export default {
 	components: {
 		ScaleLoader,
 	},
+    props: {
+        //determines whether the 'export' button is visible (it emits the pic obj. on which it was clicked)
+        isExportMode: Boolean,
+    },
 	data: () => ({
 		pictures: [],
 		loading: false,
@@ -183,6 +190,9 @@ export default {
 			fileTypeValidation,
 		},
 	},
+    emits: [
+        'export-pic'
+    ],
 	computed: {
 		user() {
 			return this.$store.getters.user;
@@ -238,6 +248,9 @@ export default {
 			this.editPic = { ...pic };
 			this.editPicDialog = true;
 		},
+        exportImage(pic) {
+            this.$emit("export-pic", pic);
+        },
 		saveEditPic() {
 			this.editPicDialog = false;
 

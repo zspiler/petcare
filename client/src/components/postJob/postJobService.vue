@@ -164,6 +164,9 @@ export default {
 			"Other bird",
 			"Other",
 		],
+    //TODO: idk nared neki s tem, js sm dodal ker je metal error
+    menu1: "",
+    menu2: "",
 	}),
 	async created() {
 		this.name = this.$store.getters.user.firstName;
