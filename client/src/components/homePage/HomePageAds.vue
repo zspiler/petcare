@@ -47,12 +47,12 @@ export default {
 	methods: {
 		async getServices() {
 			try {
-				const data = {
-					offering: this.offering
-				}
-				console.log(data)
 				this.services = [];
-				const response = await axios.get("http://localhost:5000/api/service", data);
+				const response = await axios.get("http://localhost:5000/api/service",{
+					params: {
+						offering: this.offering
+					}
+				});
 				for (const service of response.data.services) {
 					if (this.offering) {
 						const s = {
