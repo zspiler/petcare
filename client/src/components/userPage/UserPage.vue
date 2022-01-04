@@ -65,8 +65,8 @@
 
           <AboutTab v-if="menuTab === 'about'"/>
           <GalleryTab v-if="menuTab === 'gallery'" :is-export-mode="false" />
-          <AdsAndRequestsTab v-if="menuTab === 'adsAndRequests'"/>
-          <HistoryTab v-if="menuTab === 'history'"/>
+          <AdsAndRequestsTab v-if="menuTab === 'adsAndRequests'" :offering="user.role === 'Pet sitter'" />
+          <HistoryTab v-if="menuTab === 'history'" :offering="user.role === 'Pet sitter'" />
           <SettingsTab v-if="menuTab === 'settings'"/>
         </v-container>
 			</v-col>
