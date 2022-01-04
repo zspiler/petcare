@@ -122,7 +122,7 @@ html {
 	color: white;
 }
 .chat-area {
-	height: 50vh;
+	height: 47vh;
 	/* height: 80%; */
 	padding: 2em;
 	overflow-y: auto;
@@ -164,5 +164,6 @@ html {
 }
 #person2-input {
 	padding: 0.5em;
+    width: 60%;
 }
 </style>

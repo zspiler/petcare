@@ -63,7 +63,10 @@
 			>
 				<v-row justify="center" class="userRow">
 					<v-col md="2" align="center">
-						<v-img :src="service.userProfilePicture" width="80"> </v-img>
+						<v-img 
+                            :src="service.userProfilePicture"
+                            class="profileImage"
+                        > </v-img>
 					</v-col>
 					<v-col md="2" align="center" class="top">
 						<b
@@ -100,7 +103,6 @@ export default {
 		this.getData();
 	},
 	data: () => ({
-		url: "http://localhost:5000/api/",
 		regions: [
 			"Ljubljana",
 			"Maribor",
@@ -146,43 +148,31 @@ export default {
 				const response = await axios.post(`${this.url}service/search`, data);
 				this.services = [];
 				for (const service of response.data) {
-					if (this.offering) {
-						const s = {
-							id: service._id,
-							userFirstName: service.user.firstName,
-							userLastName: service.user.lastName,
-							userProfilePicture:
-								this.$store.state.serverBaseUrl +
-								"img/" +
-								service.user.profilePicture,
-							animal: service.animalsType[0],
-							dateFrom: new Date(service.dateFrom).toLocaleDateString(),
-							dateTo: new Date(service.dateTo).toLocaleDateString(),
-							pricePerDay: service.pricePerDay,
-						};
-						this.services.push(s);
-					} else {
-						const s = {
-							id: service._id,
-							userFirstName: service.user.firstName,
-							userLastName: service.user.lastName,
-							userProfilePicture:
-								this.$store.state.serverBaseUrl +
-								"img/" +
-								service.user.profilePicture,
-							animal: service.animalsType[0],
-							dateFrom: new Date(service.dateFrom).toLocaleDateString(),
-							dateTo: new Date(service.dateTo).toLocaleDateString(),
-							pricePerDay: service.pricePerDay,
-						};
-						this.services.push(s);
-					}
+                    const s = {
+                        id: service._id,
+                        userFirstName: service.user.firstName,
+                        userLastName: service.user.lastName,
+                        userProfilePicture:
+                            this.$store.state.serverBaseUrl +
+                            "img/" +
+                            service.user.profilePicture,
+                        animal: service.animalsType[0],
+                        dateFrom: new Date(service.dateFrom).toLocaleDateString(),
+                        dateTo: new Date(service.dateTo).toLocaleDateString(),
+                        pricePerDay: service.pricePerDay,
+                    };
+                    this.services.push(s);
 				}
 			} catch (err) {
 				console.error(err);
 			}
 		},
 	},
+    computed: {
+        url(){
+            return this.$store.state.serverBaseUrl + "api/";   
+        }      
+    },
 	watch: {
 		offering: function (val) {
 			this.offering = val;
@@ -223,4 +213,9 @@ export default {
 .date {
 	padding-top: 30px;
 }
+.profileImage {
+    max-height: 80px;
+    max-width: 80px;
+}
+
 </style>
