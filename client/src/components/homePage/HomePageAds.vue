@@ -51,7 +51,7 @@ export default {
 		async getServices() {
 			try {
 				this.services = [];
-				const response = await axios.get("http://localhost:5000/api/service",{
+				const response = await axios.get(this.$store.state.serverBaseUrl + "api/service",{
 					params: {
 						offering: this.offering
 					}

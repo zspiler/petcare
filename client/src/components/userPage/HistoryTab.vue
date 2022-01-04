@@ -55,7 +55,7 @@ export default {
 				}
 				console.log(data)
 				this.services = [];
-				const response = await axios.get("http://localhost:5000/api/service", data);
+				const response = await axios.get(this.$store.state.serverBaseUrl + "api/service", data);
 				for (const service of response.data.services) {
 					if (this.offering === (service.type === 'serviceOffering')) {
 						const s = {

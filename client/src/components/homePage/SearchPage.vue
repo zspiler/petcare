@@ -103,7 +103,7 @@ export default {
 		this.getData();
 	},
 	data: () => ({
-		url: "http://localhost:5000/api/",
+		url: this.$store.state.serverBaseUrl + "api/",
 		regions: [
 			"Ljubljana",
 			"Maribor",
