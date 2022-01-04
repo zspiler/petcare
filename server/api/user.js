@@ -38,7 +38,6 @@ const upload = multer({
 
 // POST api/user/gallery
 // Upload photo to user's gallery
-
 router.post("/gallery", auth, async (req, res) => {
 	// Create directory if necessary
 	const userGalleryDir = `${__dirname}/../public/galleries/${req.userId}`;
@@ -167,5 +166,32 @@ router.put(
 		});
 	}
 );
+
+// GET api/user/:userId
+// Get a user's basic data (first name, last name, profile picture, userId)
+
+router.get("/:userId", param("userId").notEmpty(), auth, async (req, res) => {
+	var ObjectId = require("mongoose").Types.ObjectId;
+	if (!ObjectId.isValid(req.params.userId)) {
+		return res.status(409).json({ message: "Invalid user id" });
+	}
+
+	const user = await User.findOne({ _id: req.params.userId });
+
+	if (!user) {
+		return res.status(409).json({ message: "Could not find user", user: null });
+	}
+
+	const { firstName, lastName, profilePicture, _id } = user;
+
+	res.json({
+		user: {
+			firstName,
+			lastName,
+			profilePicture,
+			userId: _id.toString(),
+		},
+	});
+});
 
 module.exports = router;

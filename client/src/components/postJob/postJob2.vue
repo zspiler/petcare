@@ -120,7 +120,7 @@
 					<p>
 						Total: <b>{{ this.calculatedPrice }} €</b>
 					</p>
-					<v-btn class="mr-4" color="primary" @click="postService()" outlined
+					<v-btn class="mr-4" color="primary" @click="postService()"
 						>Post job</v-btn
 					>
 				</form>
