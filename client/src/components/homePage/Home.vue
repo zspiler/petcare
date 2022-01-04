@@ -14,11 +14,13 @@
 				<v-col md="2" align="center">
 				</v-col>
 				<v-col md="2" align="center">
-					<div>
-						<span style="margin: 10px 10px 0px 0px">Searching</span>
-						<span><ToggleButton /></span>
-						<span style="margin: 10px 0px 0px 10px">Offering</span>
-					</div>
+					<v-row align="center" justify="center">
+						<span style="margin: 10px 10px -20px 0px">Searching</span>
+						<span style="margin-top: 30px;">
+							<v-switch v-model="offering"></v-switch>
+						</span>
+						<span style="margin: 10px 0px -20px 10px">Offering</span>
+					</v-row>
 				</v-col>
 			</v-row>
 			
@@ -39,27 +41,29 @@
 				</v-col>
 			</v-row>
 
-			<span><HomePageAds /></span>
+			<span><HomePageAds :offering="offering"/></span>
 			
 			<center>
-				<v-btn class="mr-5" color="primary" style="margin-top: 80px;" outlined>Show more</v-btn>
+				<router-link to="/search" style="text-decoration: none; color: inherit">
+					<v-btn class="mr-5" color="primary" style="margin-top: 80px;" outlined>Show more</v-btn>
+				</router-link>
 			</center>
 			
 	</v-container>
 </template>
 
 <script>
-
- import ToggleButton from './ToggleButton.vue'
  import HomePageAds from './HomePageAds.vue'
 
 	export default {
 		name: 'Home',
 
 		components: {
-			ToggleButton,
 			HomePageAds,
-		}
+		},
+		data: () => ({
+			offering: false,
+		})
 	}
 	
 </script>

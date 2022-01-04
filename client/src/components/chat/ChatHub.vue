@@ -78,6 +78,20 @@ export default {
 		},
 	},
 	methods: {
+		startNewChat(userId) {
+			// fetch user data
+			axios
+				.get(`/api/user/${userId}`)
+				.then((res) => {
+					const newChat = res.data.user;
+					this.chats.push(newChat);
+					this.selectChat(newChat);
+				})
+				.catch((err) => {
+					// TODO: if user not found -> ignore ...
+					console.log("Caught error: ", err.response?.data?.message || err.message);
+				});
+		},
 		fetchChats() {
 			this.loading = true;
 			axios
@@ -85,6 +99,13 @@ export default {
 				.then((res) => {
 					this.loading = false;
 					this.chats = res.data.chats;
+
+					// Open new chat if userId in URL and chat does not yet exist
+					const existingChats = this.chats.map((chat) => chat.userId);
+					const newChatUserId = this.$route.params.userId;
+					if (newChatUserId && !existingChats.includes(newChatUserId)) {
+						this.startNewChat(newChatUserId);
+					}
 				})
 				.catch((err) => {
 					this.loading = false;
