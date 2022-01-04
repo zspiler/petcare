@@ -107,7 +107,6 @@ export default {
 		this.getData();
 	},
 	data: () => ({
-		url: "http://localhost:5000/api/",
 		offering: false,
 		region: "",
 		animalType: "",
@@ -188,6 +187,11 @@ export default {
 			this.selectedAnimal = key;
 		},
 	},
+    computed: {
+        url(){
+            return this.$store.state.serverBaseUrl + "api/";   
+        }      
+    },
 };
 </script>
 

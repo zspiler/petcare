@@ -135,7 +135,6 @@ import axios from "../../axios";
 export default {
 	name: "PostJob2",
 	data: () => ({
-		url: "http://localhost:5000/api/",
 		name: "",
 		surname: "",
 		address: "",
@@ -201,6 +200,11 @@ export default {
 			return Difference_In_Days;
 		},
 	},
+    computed: {
+        url(){
+            return this.$store.state.serverBaseUrl + "api/";   
+        }      
+    },
 };
 </script>
 
