@@ -122,7 +122,7 @@
                         </v-list-item>
                     </template>
                 </v-virtual-scroll> 
-                <v-row align="right" justify="end" style="margin-top: 60px">
+                <v-row justify="end" style="margin-top: 60px">
                     <router-link
                         :to="{ name:'PostJob2', params: {animals: JSON.stringify(this.animals)}}"
                         style="text-decoration: none; color: inherit"
