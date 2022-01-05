@@ -126,11 +126,7 @@
 <script>
 import axios from "../../axios";
 export default {
-	computed: {
-		user() {
-			return this.$store.getters.user;
-		},
-	},
+	
 	data: () => ({
 		name: "",
 		surname: "",
@@ -203,6 +199,8 @@ export default {
 					experience: this.experience,
 				};
 				await axios.post(`${this.url}service/offer`, data);
+                this.$router.push("/postJob/animal/complete");
+
 			} catch (err) {
 				console.error(err);
 			}
@@ -215,6 +213,9 @@ export default {
 		},
 	},
     computed: {
+        user() {
+			return this.$store.getters.user;
+		},
         url(){
             return this.$store.state.serverBaseUrl + "api/";   
         }      

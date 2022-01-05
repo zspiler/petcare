@@ -8,7 +8,7 @@ export default new Vuex.Store({
 	state: {
 		user: {},
 		status: null,
-		serverBaseUrl: "http://localhost:5000/",
+		serverBaseUrl: "http://178.128.193.133:5000/",
 	},
 	mutations: {
 		authLoading(state) {

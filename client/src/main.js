@@ -9,11 +9,6 @@ import store from "./store";
 
 import "@/assets/styles.css"; // global styles
 
-// // configure axios
-// axios.defaults.baseURL = "http://localhost:5000/";
-// axios.defaults.headers.common["Authorization"] =
-// 	"Bearer " + localStorage.getItem("token");
-
 // configure axios
 
 Vue.config.productionTip = false;

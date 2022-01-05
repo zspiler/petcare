@@ -130,39 +130,21 @@ export default {
 				console.log(response.data);
 				this.services = [];
 				for (const service of response.data) {
-					if (this.offering) {
-						const s = {
-							id: service._id,
-							userFirstName: service.user.firstName,
-							userLastName: service.user.lastName,
-							userProfilePicture:
-								this.$store.state.serverBaseUrl +
-								"img/" +
-								service.user.profilePicture,
-							animals: service.animals,
-							dateFrom: new Date(service.dateFrom).toLocaleDateString(),
-							dateTo: new Date(service.dateTo).toLocaleDateString(),
-							pricePerDay: service.pricePerDay,
-							user: service.user,
-						};
-						this.services.push(s);
-					} else {
-						const s = {
-							id: service._id,
-							userFirstName: service.user.firstName,
-							userLastName: service.user.lastName,
-							userProfilePicture:
-								this.$store.state.serverBaseUrl +
-								"img/" +
-								service.user.profilePicture,
-							animals: service.animals,
-							dateFrom: new Date(service.dateFrom).toLocaleDateString(),
-							dateTo: new Date(service.dateTo).toLocaleDateString(),
-							pricePerDay: service.pricePerDay,
-							user: service.user,
-						};
-						this.services.push(s);
-					}
+                    const s = {
+                        id: service._id,
+                        userFirstName: service.user.firstName,
+                        userLastName: service.user.lastName,
+                        userProfilePicture:
+                            this.$store.state.serverBaseUrl +
+                            "img/" +
+                            service.user.profilePicture,
+                        animals: service.animals,
+                        dateFrom: new Date(service.dateFrom).toLocaleDateString(),
+                        dateTo: new Date(service.dateTo).toLocaleDateString(),
+                        pricePerDay: service.pricePerDay,
+                        user: service.user,
+                    };
+                    this.services.push(s);
 				}
 				this.findindex();
 			} catch (err) {

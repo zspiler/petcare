@@ -3,7 +3,9 @@
 		<v-row justify="center" align="center">
             <v-col justify="center" align="center">
                 <p>Your job post was successful added!</p>
-                <v-btn color="primary">Check profile</v-btn>
+                    <router-link to="/" style="text-decoration: none; color: inherit">
+                        <v-btn color="primary">Show services</v-btn>
+					</router-link>
                 <v-img
                     alt="Animal's"
                     src="../../assets/Pets.jpg"
