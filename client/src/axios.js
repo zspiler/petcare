@@ -1,7 +1,7 @@
 import { default as _axios } from "axios";
 
 const axios = _axios.create({
-	baseURL: "http://localhost:5000/",
+	baseURL: "http://178.128.193.133:5000/",
 	headers: {
 		Authorization: `Bearer ${localStorage.getItem("token")}`,
 	},

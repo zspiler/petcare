@@ -1,5 +1,6 @@
 const express = require("express");
 const axios = require("axios");
+const moment = require("moment");
 const { validationResult, query } = require("express-validator");
 const User = require("../models/User");
 const Animal = require("../models/Animal");
@@ -13,7 +14,7 @@ router.post("/", postService);
 router.post("/offer", postServiceOffer);
 router.post("/search", postSearchService);
 router.get("/byUserId", getServiceByUserId)
-router.get("byId/:id", getServiceById);
+router.get("/byId/:id", getServiceById);
 
 async function getServices(request, response) {
 	console.log(`GET ${path}/`);
@@ -143,6 +144,7 @@ async function postSearchService(request, response) {
 ///
 async function getServiceByUserId(request, response) {
     
+
     const id = request.query.id;
 	console.log(`GET ${path}/`, "id:", request.query.id, "active:", request.query.active);
 
@@ -175,14 +177,16 @@ async function getServiceByUserId(request, response) {
 }
 
 async function getServiceById(request, response) {
-	console.log(`GET ${path}/byId/${request.query.id}`);
+    
+	if (!request.params.id) return response.status(400).send();
 
-	if (!request.query.id) response.status(400).send();
-
-	const service = await Service.findOne({
-		_id: request.query.id,
+	let service = await Service.findOne({
+		_id: request.params.id,
 	}).populate("animals user");
 
+    service = JSON.parse(JSON.stringify(service))
+    service.dateFrom = moment(new Date(service.dateFrom)).format('DD/MM/YYYY');
+    service.dateTo = moment(new Date(service.dateTo)).format('DD/MM/YYYY');
 	response.json(service);
 }
 
